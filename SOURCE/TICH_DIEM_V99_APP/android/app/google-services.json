@@ -1,0 +1,63 @@
+{
+  "project_info": {
+    "project_number": "243074458243",
+    "firebase_url": "https://imotor-69f07.firebaseio.com",
+    "project_id": "imotor-69f07",
+    "storage_bucket": "imotor-69f07.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:243074458243:android:c313e5e5724e7dd061b1b6",
+        "android_client_info": {
+          "package_name": "vn.com.tdtd"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "243074458243-pggr7cmsn21grk84ed78gs7g0jrvtccf.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "vn.com.tdtd",
+            "certificate_hash": "9773e05b2c98fdbd10f2cbf6ae8446ae4844b1a2"
+          }
+        },
+        {
+          "client_id": "243074458243-k6gp28b4fobid6rmg1dmmdaesskmbicn.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "vn.com.tdtd",
+            "certificate_hash": "244af7e5557a17a960f80abeebd4f817cb8ecd08"
+          }
+        },
+        {
+          "client_id": "243074458243-0m2msf1stdlhip6mhfm07ealgu79phju.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD3OIMFmkxOMCloECE2YCZE8jFXTJCDWAo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "243074458243-0m2msf1stdlhip6mhfm07ealgu79phju.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "243074458243-5uhanka2q5b2q8bphk0juenide0mnnmf.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "vn.com.tdtd"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

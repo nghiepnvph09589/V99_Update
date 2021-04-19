@@ -1,0 +1,7 @@
+<resources>
+	<string moduleConfig="true" name="reactNativeCodePush_androidDeploymentKey">ttCixp9F3c3t1dzOBlArV4-WwWluJhLVx0NZ-</string>
+    <string name="app_name">Trà Tiên Thảo</string>
+    <string name="appCenterCrashes_whenToSendCrashes" moduleConfig="true" translatable="false">DO_NOT_ASK_JAVASCRIPT</string>
+    <string name="appCenterAnalytics_whenToEnableAnalytics" moduleConfig="true" translatable="false">ALWAYS_SEND</string>
+    <string name="facebook_app_id">480148729353277</string>
+</resources>
