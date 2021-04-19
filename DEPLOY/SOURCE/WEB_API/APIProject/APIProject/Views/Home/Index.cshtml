@@ -1,0 +1,54 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="col-md-12 mt-5">
+    <div class="breadcrumb-holder">
+        <div class="row pb-3 pt-3">
+            <div class="text-dark">
+                <h4><i class="fa fa-fw fa-tachometer"></i> Tổng quan</h4>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row rowCount" id="countDashboard">
+    <div class="col-xs-12 col-md-6 col-lg-6 col-xl-3 mb-3">
+        <a a href="/Customer/Index">
+            <div class="card-box padding-card-home bg-home-batch" id="">
+                <i class="fa fa-plus-circle ic-menu float-left text-white size-icon-cardbox-home" style="font-size:30px"></i>
+                <h5 class="text-white text-center text-uppercase">Khách hàng</h5>
+                <h1 class="text-white text-center countBatch pb-4">@ViewBag.CountCus</h1>
+            </div>
+        </a>
+    </div>
+    <div class="col-xs-12 col-md-6 col-lg-6 col-xl-3 mb-3">
+        <a href="/Item/Index">
+            <div class="card-box padding-card-home bg-home-item" id="">
+                <i class="fa fa-product-hunt float-left text-white size-icon-cardbox-home" style="font-size: 30px"></i>
+                <h5 class="text-white text-center text-uppercase">Sản phẩm</h5>
+                <h1 class="text-white text-center countItem pb-4">@ViewBag.CountItem</h1>
+            </div>
+        </a>
+    </div>
+    <div class="col-xs-12 col-md-6 col-lg-6 col-xl-3 mb-3" id="card-i">
+        <a href="/Order/Index">
+            <div class="card-box padding-card-home" id="bg-home-card">
+                <i class="fa fa-credit-card float-left text-white size-icon-cardbox-home" style="font-size: 30px"></i>
+                <h5 class="text-white text-center text-uppercase">Đơn hàng</h5>
+                <h1 class="text-white text-center countItem pb-4">@ViewBag.countOrder</h1>
+            </div>
+        </a>
+    </div>
+    <div class="col-xs-12 col-md-6 col-lg-6 col-xl-3 mb-3">
+        <a href="/Request/Index">
+            <div class="card-box padding-card-home bg-home-order" id="">
+                <i class="fa fa-sun-o float-left text-white size-icon-cardbox-home" style="font-size: 30px"></i>
+                <h5 class="text-white text-center text-uppercase">Yêu cầu</h5>
+                <h1 class="text-white text-center countOrder pb-4">@ViewBag.CountReq</h1>
+            </div>
+        </a>
+    </div>
+    
+
+</div>

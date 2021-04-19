@@ -1,0 +1,405 @@
+﻿@*@{
+        ViewBag.Title = "Index";
+        Layout = "~/Views/Shared/_Layout.cshtml";
+    }*@
+@using Data.Utils
+
+<div class="col-md-12 mt-5">
+    <div class="breadcrumb-holder">
+        <div class="row mb-3 mt-3">
+            <div class="col-md-10 col-sm-10 col-9 text-dark px-0 mt-3">
+                <h4><i class="fa fa-plus"></i> Thêm sản phẩm </h4>
+            </div>
+        </div>
+    </div>
+</div>
+<form id="form_create_item" name="form_create_item">
+    <div class="row">
+        <div class="col-md-6 ">
+            @*Left content*@
+            <div class="row">
+                <div class="col-md-4 col-sm-12 mt-2 ">
+                    <p class="color-require"><label class="text-dark">Mã sản phẩm</label> *</p>
+                </div>
+                <div class="col-md-8 col-sm-12 mb-md-2 mb-sm-2">
+                    <input type="text" class="form-control" id="CodeCreate" name="Code" placeholder="Nhập mã sản phẩm">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4 col-sm-12 mt-2">
+                    <p class="color-require"><label class="text-dark">Tên sản phẩm</label> *</p>
+                </div>
+                <div class="col-md-8 col-sm-12 mb-md-2 mb-sm-2">
+                    <input type="text" class="form-control" id="NameCreate" name="Name" placeholder="Nhập tên sản phẩm">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4 col-sm-12 mt-2">
+                    <p class=" color-require"><label class="text-dark">Danh mục</label> *</p>
+                </div>
+                <div class="col-md-8 col-sm-12 mb-md-2 mb-sm-2">
+                    <select class="form-control" id="cbbCategory" name="CategoryID">
+                        @{
+                            foreach (var c in ViewBag.listCategory)
+                            {
+                                <option value="@c.CategoryID">@c.Name</option>
+                            }
+                        }
+                    </select>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4 col-sm-12 mt-2">
+                    <p class="mb-0 color-require"><label class="text-dark">Giá tiền</label> *</p>
+                </div>
+                <div class="col-md-8 col-sm-12 mb-md-2 mb-sm-2">
+                    <input type="text" class="form-control number" id="PriceCreate" name="Price" placeholder="Nhập giá tiền">
+                </div>
+            </div>
+
+
+            <div class="row col-12 mt-3 collapse">
+                <div class="col-md-5">
+                    <p class="mb-0 color-require"><label class="text-dark">Trạng thái</label> *</p>
+                </div>
+                <div class="col-md-7">
+                    <select id="StatusCreate" name="Status" class="form-control">
+                        <option value="@SystemParam.STATUS_ACTIVE">Đang hoạt động</option>
+                        <option value="@SystemParam.STATUS_NO_ACTIVE">Ngừng hoạt động</option>
+                    </select>
+                </div>
+            </div>
+            <div class="row col-12 mt-3 collapse">
+                <div class="col-md-5">
+                    <p class="mb-0 color-require"><label class="text-dark">Trạng thái</label> *</p>
+                </div>
+                <div class="col-md-7">
+                    <select id="StockStatusCreate" name="Status" class="form-control">
+                        <option value="@SystemParam.IN_STOCK">Còn hàng</option>
+                        <option value="@SystemParam.OUT_OF_STOCK">Hết hàng</option>
+                    </select>
+                </div>
+            </div>
+            <div class="row col-12 mt-3 collapse">
+                <div class="col-md-5">
+                    <p class="mb-0 color-require"><label class="text-dark">Bảo hành</label> *</p>
+                </div>
+                <div class="col-md-7">
+                    <input type="text" class="form-control number" id="warrantyCreate" name="Warranty" placeholder="Nhập số tháng bảo hành" value="1">
+                </div>
+            </div>
+        </div>
+        @*End left content
+            Right conntent*@
+        <div class="col-md-6">
+            <div class="row">
+                @*<div class="col-md-4 col-sm-12 mt-2">
+                        <p class="color-require"><label class="text-dark">Ảnh sản phẩm</label> *</p>
+                    </div>
+                    <div class="col-md-8 col-sm-12 mb-md-2 mb-sm-2">
+                        <a href="" class="text-bold mb-3" style="width:100%;height:100%; color: #5A5A5A;" id="addImg">
+                            <img id="Imgtag" src="https://cdn4.iconfinder.com/data/icons/social-communication/142/add_photo-512.png" class="col-ml-2 col-md-2 px-0" alt="Chọn" />
+                        </a>
+                        <div class="Items">
+                            <div class="article" id="divAddImg">
+                                <input value="" type="hidden" id="txt-url-img" name="ImageUrl" />
+                            </div>
+                        </div>
+                    </div>*@
+                <div class="col-md-4 col-sm-12 mt-2 text-center"><p class="mb-0 color-require"><label class="text-dark" style="margin-left:20px;">Ảnh</label> *</p></div>
+                <div class="col-md-8 col-sm-12 mb-md-2 mb-sm-2 ">
+                    <a href="" class="text-bold mb-3" style="width:100%;height:100%; color: #5A5A5A;" id="addImg">
+                        <img id="tagImg" src="https://cdn4.iconfinder.com/data/icons/social-communication/142/add_photo-512.png" class="col-ml-4 col-md-4 px-0" alt="Chọn" />
+                    </a>
+                </div>
+                <div class="row mt-1" id="divAddImg" style="position:relative;">
+                    <input type="hidden" id="txturlImage" />
+                </div>
+            </div>
+
+            <div class="row collapse">
+                <div class="col-md-12 ">
+                    <label class="container">
+                        Hiển thị sản phẩm lên màn hình home
+                        <input type="checkbox" id="sendNotify">
+                        <span class="checkmark"></span>
+                    </label>
+                </div>
+            </div>
+        </div>
+        @*End right content*@
+
+        <div class="row col-12 mt-5 collapse">
+            <div class="col-md-6">
+                <div class="row col-md-12 col-sm-12">
+                    <p class="color-require"><label class="text-dark">Thông số kỹ thuật</label> *</p>
+                </div>
+                <div class="col-md-12 col-sm-12 col-12 mt-3">
+                    <textarea name="Technical" class="form-control mb-3" id="technicalCreate">Thông số kỹ thuật</textarea>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12 col-sm-12 mt-2">
+            <p class="color-require"><label class="text-dark">Mô tả</label> *</p>
+        </div>
+        <div class="col-md-12 col-sm-12  mb-md-2 mb-sm-2">
+            <textarea name="Note" class="form-control mb-3" id="NoteCreate"></textarea>
+        </div>
+    </div>
+
+</form>
+
+<div class="row">
+    <div class="col-md-2 col-sm-2 mt-2 offset-md-8 offset-sm-8 mb-2">
+        <button type="button" class="btn btn-outline-secondary btn-block" onclick="window.location='/Item/Index'">Đóng</button>
+    </div>
+    <div class="col-md-2 col-sm-2 mt-2">
+        <button type="button" class="btn btn-primary btn-block" onclick="CreateItem()">Lưu</button>
+
+    </div>
+</div>
+
+@*<script type="text/javascript">
+        $("#addImg").off('click').on('click', function (e) {
+            e.preventDefault();
+            var fider = new CKFinder();
+            fider.selectActionFunction = function (fileUrl) {
+                $("#DivtagImg ").remove();
+                $("#divAddImg").append('<div id="DivtagImg" style ="box-sizing:border-box;display:inline-block;margin-top:10px;"><img width="100%" height="100%" src="' + fileUrl + '" /></div>');
+                $("#txt-url-img").val(fileUrl);
+            }
+            fider.popup();
+        });
+    </script>*@
+
+<script>
+
+    $(document).ready(function () {
+
+        //CKEDITOR.replace('editor', {
+        //    height: 300
+        //});
+
+        CKEDITOR.replace('technicalCreate', {
+            height: 300,
+            disableObjectResizing: true
+        });
+        CKEDITOR.replace('NoteCreate', {
+            height: 300,
+            disableObjectResizing: true
+        });
+
+        //CKEDITOR.on('dialogDefinition', function (ev) {
+        //    var dialogName = ev.data.name;
+        //    var dialogDefinition = ev.data.definition;
+        //    //var editorO = ev.data.definition.dialog.getParentEditor();
+
+        //    if (dialogName == 'image' || dialogName == 'image2') {
+        //        var infoTab = dialogDefinition.getContents('info');
+
+        //        if (dialogName == 'image') {
+        //            infoTab.remove('txtHeight');
+        //            infoTab.remove('txtWidth');
+        //            infoTab.remove('ratioLock');
+        //        }
+        //        else {
+        //            infoTab.remove('height');
+        //            infoTab.remove('width');
+        //            infoTab.remove('lock');
+        //        }
+        //    }
+        //});
+
+    });
+
+    //$("#add_logo_place").off('click').on('click', function (e) {
+    //    e.preventDefault();
+    //    var fider = new CKFinder();
+
+    //    fider.selectActionFunction = function (fileUrl) {
+    //        $("#AddImgLogoPlace ").remove();
+    //        $("#AddLogoPlace").append('<img id="AddImgLogoPlace" src="' + fileUrl + '" class="col-md-12 px-0 border-dekko contentImg" alt="your image" />');
+    //        var url = window.location.origin + fileUrl;
+    //        $('#txtAddLogoPlace').val(url);
+    //    }
+    //    fider.popup();
+    //});
+
+</script>
+
+
+<script type="text/javascript">
+    var count = 0;
+    $("#addImg").off('click').on('click', function (e) {
+        e.preventDefault();
+        count++;
+        var fider = new CKFinder();
+        fider.selectActionFunction = function (fileUrl) {
+            $("#divAddImg").append('<div class="_lstImage col-md-6" id="img' + count + '" style ="box-sizing:border-box;display:inline-block;margin-top:10px;"><img class="imgs" src="' + fileUrl + '" onclick="ChangeImg($(this));" style="height:auto; width: 100%;  margin-right:-15px;"/><i  title ="Xóa" onclick="DeleteImage(event);" src="' + fileUrl + '" class="fa fa-2x fa-remove icon-remove display-none " data="img' + count + '" style="position:absolute;color: #ff0000;"></i></div>');
+            var listUrl = $("#_txturlImage").val();
+            if (listUrl == "") {
+                listUrl = fileUrl;
+                $("#_txturlImage").val(listUrl);
+            }
+            else {
+                var url = listUrl + "," + fileUrl;
+                $("#_txturlImage").val(url);
+            }
+            $("._lstImage").mouseover(function () {
+                $(this).find(".icon-remove").removeClass("display-none");
+            });
+            $("._lstImage").mouseout(function () {
+                $(this).find(".icon-remove").addClass("display-none");
+            });
+        }
+        fider.popup();
+    });
+</script>
+
+<script type="text/javascript">
+    //$('#myModal').on('show.bs.modal', function (e) {
+    //    $("#txtNameDetail").val("");
+    //    $("#txtDescriptions").val("");
+    //    $("#typeDetail").val($("#typeDetail option:first").val());
+    //})
+    var count = 0;
+    $("#addImg2").off('click').on('click', function (e) {
+        e.preventDefault();
+        count++;
+        var fider = new CKFinder();
+        fider.selectActionFunction = function (fileUrl) {
+            $("#divAddImg2").append('<div id="img_' + count + '" class="Imgs" style ="box-sizing:border-box;display:inline-block;height: 75px; width: 75px;"><img class="imgCreateShop cursor-pointer" width="100%" height="100%" src="' + fileUrl + '" onclick="ChangeImg($(this));" /><i onclick="DeleteImg($(this));" src="' + fileUrl + '" class="fa fa-2x fa-remove " data="img_' + count + '" title="Xóa"  style="position:relative;color: #ff0000;"></i></div>');
+            var listUrl = $("#txturlImage").val();
+            if (listUrl == "") {
+                listUrl = fileUrl;
+                $("#txturlImage").val(listUrl);
+            }
+            else {
+                var url = listUrl + "," + fileUrl;
+                $("#txturlImage").val(url);
+            }
+        }
+        fider.popup();
+    });
+</script>
+
+<script type="text/javascript">
+    function ChangeImg($url) {
+        var fider = new CKFinder();
+        fider.selectActionFunction = function (fileUrl) {
+            var url_old = $url.attr('src');
+            $url.attr('src', fileUrl);
+            if (fileUrl != url_old) {
+                var str = $('#txturlImage').val().replace(url_old, fileUrl);
+                $('#txturlImage').val(str);
+            }
+        }
+        fider.popup();
+    }
+</script>
+
+<script type="text/javascript">
+    function DeleteImage(event) {
+        $(event.target).closest("div").remove();
+    }
+</script>
+
+
+@*<style>
+        td {
+            white-space: normal !important;
+        }
+    </style>*@
+@*<script>
+        $("#cleanInput").click(function () {
+            $("#txtCapacity").val('');
+            $("#txtPrice").val('');
+        });
+    </script>*@
+
+
+<script>
+
+    $(document).ready(function () {
+
+        //CKEDITOR.replace('editor', {
+        //    height: 300
+        //});
+
+        //CKEDITOR.replace('editorHighlights', {
+        //    height: 300,
+        //    disableObjectResizing: true
+        //});
+        //CKEDITOR.replace('editorFurniture', {
+        //    height: 300,
+        //    disableObjectResizing: true
+        //});
+        //CKEDITOR.replace('editorExterior', {
+        //    height: 300,
+        //    disableObjectResizing: true
+        //});
+        //CKEDITOR.replace('editorOperater', {
+        //    height: 300,
+        //    disableObjectResizing: true
+        //});
+        //CKEDITOR.replace('editorSafe', {
+        //    height: 300,
+        //    disableObjectResizing: true
+        //});
+        //CKEDITOR.replace('editorConvenient', {
+        //    height: 300,
+        //    disableObjectResizing: true
+        //});
+
+        //CKEDITOR.on('dialogDefinition', function (ev) {
+        //    var dialogName = ev.data.name;
+        //    var dialogDefinition = ev.data.definition;
+        //    //var editorO = ev.data.definition.dialog.getParentEditor();
+
+        if (dialogName == 'image' || dialogName == 'image2') {
+            var infoTab = dialogDefinition.getContents('info');
+
+            if (dialogName == 'image') {
+                infoTab.remove('txtHeight');
+                infoTab.remove('txtWidth');
+                infoTab.remove('ratioLock');
+            }
+            else {
+                infoTab.remove('height');
+                infoTab.remove('width');
+                infoTab.remove('lock');
+            }
+        }
+    });
+
+    });
+
+    //function getItemNews(category) {
+    //    if (category == 4) {
+    //        $('#cbbItemNews').removeAttr('disabled');
+    //        $('#labelItem').css('color', '#5A5A5A');
+    //    }
+    //    else {
+    //        $('#cbbItemNews').attr("disabled", "disabled");
+    //        $('#labelItem').css('color', 'hsl(0, 0%, 85%)');
+    //    }
+
+    //}
+
+    $("#add_logo_place").off('click').on('click', function (e) {
+        e.preventDefault();
+        var fider = new CKFinder();
+
+        fider.selectActionFunction = function (fileUrl) {
+            $("#AddImgLogoPlace ").remove();
+            $("#AddLogoPlace").append('<img id="AddImgLogoPlace" src="' + fileUrl + '" class="col-md-12 px-0 border-dekko contentImg" alt="your image" />');
+            var url = window.location.origin + fileUrl;
+            $('#txtAddLogoPlace').val(url);
+        }
+        fider.popup();
+    });
+
+</script>

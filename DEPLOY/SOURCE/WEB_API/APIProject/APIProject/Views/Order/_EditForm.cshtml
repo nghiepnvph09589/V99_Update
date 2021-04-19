@@ -1,0 +1,301 @@
+﻿@using Data.Model.APIWeb
+@model Data.Model.APIWeb.OrderDetailEditOutput
+@using Data.Utils 
+<!--Modal-->
+
+<div class="modal fade" id="mdEdit" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Chi Tiết Đơn Hàng</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="frmEditOrder">
+                    <div class="row">
+                        <div class="col-md-12 col-sm-12">
+                            <h3>
+                                Thông tin khách hàng
+                            </h3>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <table class="table table-borderless">
+                                <tbody>
+                                    <tr>
+                                        <th>Người mua</th>
+                                        <td>
+                                            <label id="txtCusName">@Model.BuyerName</label>
+                                            @*<input id="txtCusName" name="CusName" value="@Model.BuyerName" disabled />*@
+                                        </td>
+                                        <th>Ngày đặt</th>
+                                        <td>
+                                            <label>@Model.CreateDate.ToString("dd-MM-yyy hh:mm")</label>
+                                            @*<input type="text" value="@Model.CreateDate.ToString("dd-MM-yyy hh:mm")" disabled />*@
+                                        </td>
+                                    </tr>
+                                    <tr class="mt-2">
+                                        <th>Số điện thoại</th>
+                                        <td>
+                                            <label id="txtPhone">@Model.BuyerPhone</label>
+                                            @*<input id="txtPhone" name="CusPhone" value="@Model.BuyerPhone" disabled />*@
+                                        </td>
+                                        <th>Trạng Thái</th>
+                                        <td>
+                                            <select class="form-control" id="slStatus" name="status">
+                                                @{
+                                                    <option value="@SystemParam.STATUS_ORDER_CANCEL" hidden>Hủy</option>
+                                                    <option value="@SystemParam.STATUS_ORDER_PENDING" id="id_pending">Chờ xác nhận</option>
+                                                    <option value="@SystemParam.STATUS_ORDER_CONFIRM">Đang thực hiện</option>
+                                                    <option value="@SystemParam.STATUS_ORDER_PAID" id="id_paid" >Đã hoàn thành</option>
+                                                    <option value="@SystemParam.STATUS_ORDER_REFUSE" id="id_refuse">Từ chối</option>
+                                                }
+
+                                            </select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th>Địa chỉ</th>
+                                        <td>
+                                            <input class="form-control" id="txtAddress" name="CusAddress" value="@Model.BuyerAddress" disabled/>
+                                            @*<input id="txtAddress" name="CusAddress" value="@Model.BuyerAddress" disabled />*@
+                                        </td>
+                                        <th>Mã giới thiệu</th>
+                                        <td>
+                                            <label type="text">@Model.LastRefCode</label>
+                                            @*<input class="form-control text-left" type="text" value="@Model.AgentCode" disabled />*@
+                                        </td>
+                                    </tr>
+                                    <tr class="collapse">
+                                        <td class="text-left"><i class="fa fa-hashtag mr-2 ml-5"></i>Mã Đại Lý</td>
+                                        <td>
+                                            <input class="form-control text-left" type="text" value="@Model.AgentCode" disabled />
+                                        </td>
+                                    </tr>
+                                    <tr id="trAddPoint" class="transistion collapse">
+                                        <td class="text-left"><i class="fa fa-bitcoin ml-5 mr-2"></i>Tích Điểm</td>
+                                        <td>
+                                            <input class="form-control number" id="txtAddPoint" type="text" name="AddPoint" placeholder="Số Điểm Được Tích" />
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+
+                    <div class="row mt-4">
+                        <div class="col-md-12 col-sm-12">
+                            <h3>Chi tiết đơn hàng</h3>
+                        </div>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col-md-12 ">
+                            <table class="table table-hover table-bordered">
+                                <thead class="text-center">
+                                    <tr>
+                                        <th>Tên Sản Phẩm</th>
+                                        <th>Số Lượng</th>
+                                        <th>Đơn Giá</th>
+                                        <th>Thành Tiền</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="text-center">
+                                    @{
+                                        foreach (var item in Model.ListItem)
+                                        {
+                                            <tr>
+                                                <td>@item.ItemName</td>
+                                                <td>@item.ItemQTY</td>
+                                                <td>@String.Format("{0:0,0 vnđ}", @item.ItemPrice)</td>
+                                                <td>@String.Format("{0:0,0 vnđ}", @item.ItemTotalPrice)</td>
+                                            </tr>
+                                        }
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="row-mt-4">
+                        <div class="col-md-7 offset-md-5">
+                            <table class="table text-bold table-borderless">
+                                <tr class="collapse">
+                                    <td class="text-left">Tổng Tiền:</td>
+                                    <td class="text-right" id="dtTotalPrice">@String.Format("{0:0,0 vnđ}", @Model.TotalPrice)</td>
+                                </tr>
+                                <tr class="collapse">
+                                    <td class="text-left">Chiết Khấu <span class="text-danger">(%)</span>:</td>
+                                    <td>
+                                        <div class="row">
+                                            <input type="text" class="form-control number text-center col-md-4" id="txtDiscount" name="Discount" value="@Model.Discount" onkeyup="calPrice(this)" />
+                                            <span style="padding-top: 10px;" class="col-md-8 text-right" id="textMoneyDiscount"></span>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="text-danger text-left">Tổng Cộng:</td>
+                                    <td class="text-right" id="Pay"></td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="modal-footer" >
+                        <button type="button" id="btnBill" class="btn btn-success"><i class="fa fa-download mr-1"></i>Xuất Hóa Đơn</button>
+                        <button type="submit" id="btnSave" class="btn btn-primary" onclick="SaveEditOrder(@Model.OrderID)">Lưu</button>
+                        <button type="button" class="btn btn-secondary float-left" data-dismiss="modal">Thoát</button>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function() {
+        var valInit = $("#mdEdit #txtDiscount").val();
+
+        //valInit = valInit.replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
+       // $("#mdEdit #txtDiscount").val(valInit);
+        $("#mdEdit #trAddPoint").hide();
+        $('#mdEdit #slStatus').val(@Model.Status);
+        if (@Model.Status == @SystemParam.STATUS_ORDER_PAID || @Model.Status == @SystemParam.STATUS_ORDER_CANCEL|| @Model.Status == @SystemParam.STATUS_ORDER_REFUSE) {
+            $('#mdEdit #slStatus').prop('disabled', true);
+            $('#mdEdit #btnSave').prop('hidden', true); 
+            $('#mdEdit #txtAddress').prop('disabled', true);
+        }
+        if (@Model.Status ==@SystemParam.STATUS_ORDER_CONFIRM) {
+            $('#mdEdit #id_pending').hide();
+            $('#mdEdit #id_refuse').hide();
+        }
+        if (@Model.Status ==@SystemParam.STATUS_ORDER_PENDING) {
+            $('#mdEdit #id_paid').hide();
+            $('#mdEdit #txtAddress').prop('disabled', false);
+        }
+        //var convertPrice = $("#mdEdit #dtTotalPrice").text().replace(/,/g, '');
+        var convertPrice = parseInt($("#mdEdit #dtTotalPrice").text().replace(/,/g, ''));
+
+        var payPrice = convertPrice-$("#mdEdit #txtDiscount").val() * convertPrice / 100;
+        $('#mdEdit #Pay').text(formatNumber(payPrice, '.', ','));
+
+        var totalDiscount = $("#mdEdit #txtDiscount").val() * convertPrice / 100;
+        $("#mdEdit #textMoneyDiscount").html(cms_encode_currency_format(totalDiscount) + " vnđ");
+
+
+        @*begin close hiden show btn
+        if(@Model.Status == 0 || @Model.Status == 2) {
+            $('#mdEdit #slStatus').prop('disabled', true);
+            if(@Model.addPoint.ToString().Count() > 0) {
+                $("#mdEdit #txtAddPoint").val(@Model.addPoint);
+            }else {
+                $("#mdEdit #txtAddPoint").val(0);
+            }
+
+            $("#mdEdit #trAddPoint").show();
+
+        }
+        else{
+            $("#mdEdit #slStatus").change(function() {
+
+                var show = $('#mdEdit #slStatus').val();
+                if(show == 2)
+                {
+                    $("#mdEdit #trAddPoint").show();
+                }
+                else {
+                    $("#mdEdit #txtAddPoint").val('');
+                    $("#mdEdit #trAddPoint").hide();
+                }
+            });
+        }
+        if (@Model.Status == 0 ||@Model.Status == 2) {
+             $("#mdEdit #trAddPoint").hide();
+            $('#mdEdit #btnSave').hide();
+            $('#mdEdit #slStatus').prop('disabled', true);
+        }
+
+        // handler Export Excel
+
+        $("form :input").change(function() {
+            $(this).closest('form').data('changed', true);
+        });
+
+        if(@Model.Status == 2) {
+            $("#mdEdit #btnBill").show();
+        }
+        else {
+            $("#mdEdit #btnBill").hide();
+        }
+        end close hiden show btn*@
+
+
+        $("#mdEdit #btnBill").on('click', function(e) {
+            if($(this).closest('#mdEdit #frmEditOrder').data('changed')) {
+                swal({
+                    title: "Bạn đã thay đổi thông tin đơn hàng",
+                    text: "Vui Lòng Lưu Lại Trước Khi Xuất Hóa Đơn",
+                    icon: "warning"
+                });
+                $("#mdEdit #frmEditOrder").data("changed", false);
+            }
+            else {
+                window.location.href = "/Order/ExportBill?id=" + @Model.OrderID;
+            }
+        })
+
+
+    });
+    /*function format_curency(a) {
+        a.value = a.value.replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
+    }*/
+
+    function calPrice(a) {
+        var convertPrice = parseInt($("#mdEdit #dtTotalPrice").text().replace(/,/g, ''));
+        var val = $("#mdEdit #txtDiscount").val();
+        //alert(val);
+        if(val == '') {
+            val = 0;
+        }
+        else {
+            val = parseInt(val.replace(/,/g, ''));
+        }
+        a.value = val;
+        var totalDiscount = $("#mdEdit #txtDiscount").val() * convertPrice / 100;
+        var payPrice = convertPrice - totalDiscount;
+        $("#mdEdit #textMoneyDiscount").html(cms_encode_currency_format(totalDiscount) + " vnđ");
+        if(payPrice < 0)
+        {
+            $("#mdEdit #txtDiscount").val("");
+            swal({
+                title: "Thông báo",
+                text: "Chiết khấu không được vượt quá tổng tiền",
+                icon: "warning"
+            });
+            //$("#mdEdit").modal("hide");
+            return;
+        }
+        $('#mdEdit #Pay').text(formatNumber(payPrice, '.', ','));
+        //a.value = val;
+        a.value = a.value.replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
+    }
+
+
+    // format number
+    function formatNumber(nStr, decSeperate, groupSeperate) {
+        nStr += '';
+        x = nStr.split(decSeperate);
+        x1 = x[0];
+        x2 = x.length > 1 ? '.' + x[1] : '';
+        var rgx = /(\d+)(\d{3})/;
+        while (rgx.test(x1)) {
+            x1 = x1.replace(rgx, '$1' + groupSeperate + '$2');
+        }
+        return x1 + x2 +" vnđ";
+    }
+</script>
+<script type="text/javascript">
+    $("#txtAddPoint").maskMoney({ precision: 0 });
+</script>

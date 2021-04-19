@@ -1,0 +1,77 @@
+﻿@using Data.Model.APIWeb
+@using Data.Utils
+@using PagedList
+@using PagedList.Mvc
+@model PagedList.IPagedList<RequestDetailWebOutputModel>
+@*@model PagedList.IPagedList<RequestDetailWebOutputModel>*@
+<table class="table table-light table-bordered table-hover table-responsive-md table-responsive-sm my-4" id="list-request">
+    <thead class="text-center text-white bg-thead">
+        <tr>
+            <th>STT</th>
+            <th>Điểm</th>
+            <th>Tên khách hàng</th>
+            <th>Số điện thoại</th>
+            <th>Tài khoản</th>
+            <th>Trạng thái</th>
+            <th>Ngày tạo</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @{
+            int STT = ((Model.PageNumber-1)*Model.PageSize)+1;
+            foreach (var rq in Model)
+            {
+                <tr>
+                    <td>@STT</td>
+                    <td>@rq.Point</td>
+                    <td>@rq.Name</td>
+                    <td>@rq.Phone</td>
+                    <td>
+                        @rq.BankName
+                        <br />
+                        @rq.BankOwner
+                        <br />
+                        @rq.BankAccout
+                    </td>
+                    @{ switch (rq.Status)
+                        {
+                            case SystemParam.STATUS_ORDER_PENDING:
+                                <td class="text-success">@SystemParam.STATUS_REQUEST_PENDING_STRING</td>
+                                break;
+                            case SystemParam.STATUS_ORDER_CONFIRM:
+                                <td class="text-warning text-bold">@SystemParam.STATUS_REQUEST_ACCEPTED_STRING</td>
+                                break;
+                            case SystemParam.STATUS_ORDER_REFUSE:
+                                <td>Từ chối</td>
+                                break;
+                            default:
+                                break;
+                        } }
+                    <td>@rq.CreateDate</td>
+                    <td class="width2btn">
+                        <a href="javascript:void(0);" onclick="GetRequestDetail(@rq.ID)" data-toggle="tooltip" data-placement="top" title="Chi tiết yêu cầu ." class="cursor-pointer">
+                            <i class="btnEdit fa fa-fw fa-eye"></i>
+                        </a>
+                        @*<a href="javascript:void(0);" data-toggle="tooltip" data-placement="top" title="Xóa yêu cầu." class="cursor-pointer" onclick="deleteRequest(@rq.ID)">
+                            <i class="btnDelete fa fa-fw fa-trash-o"></i>
+                        </a>*@
+                    </td>
+                </tr>
+                STT++;
+            }
+        }
+    </tbody>
+</table>
+<div class="col-md-12">
+    <div class="row float-right">
+        @*phân trang*@
+        @Html.PagedListPager(Model, Page => Url.Action("NameSearch", new { Page=Page, Name = ViewBag.Name, FromDate = ViewBag.FromDate, ToDate = ViewBag.ToDate , StatusR = ViewBag.Status}),
+     PagedListRenderOptions.EnableUnobtrusiveAjaxReplacing(new AjaxOptions()
+     {
+         HttpMethod = "GET",
+         UpdateTargetId = "tableRequest"
+     })
+     )
+    </div>
+</div>

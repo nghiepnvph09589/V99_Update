@@ -1,0 +1,229 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@using Data.Utils 
+<div id="View">
+    <div class="row mt-5 mt-sm-5">
+        <div class="col-md-10 col-sm-12 mt-2">
+            <h3><i class="fa fa-fw fa-product-hunt mt-md-2"></i> Sản phẩm</h3>
+        </div>
+        
+    </div>
+    @*<div class="row mb-2">
+            <div class="col-md-10">
+                <div class="row">
+                    <div class="col-md-3 offset-md-0 col-sm-4 mt-1">
+                        <input type="text" id="fromDateItem" class="form-control relative-icon-calendar date" placeholder="Từ ngày" />
+                        <i class="fa fa-calendar absolute-icon-calendar"></i>
+                    </div>
+                    <div class="col-md-3 offset-md-0 col-sm-4 mt-1">
+                        <input type="text" id="toDateItem" class="form-control relative-icon-calendar date" placeholder="Đến ngày" />
+                        <i class="fa fa-calendar absolute-icon-calendar"></i>
+                    </div>
+                    <div class="col-md-3 offset-md-0 col-sm-4 mt-1">
+                        <select id="itemStatus" class="form-control">
+                            <optgroup label="Trạng thái">
+                                <option value="0">Ngừng hoạt động</option>
+                                <option value="1" selected>Đang hoạt động</option>
+                            </optgroup>
+                        </select>
+                    </div>
+                    <div class="col-md-6 offset-md-0 col-sm-4 mt-1">
+                        <input value="" type="text" id="itemName" class="form-control" placeholder="Nhập tên sản phẩm" />
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-2 offset-md-0 col-sm-2 offset-sm-5 mt-1 col-4 offset-4">
+                <button class="btn btn-primary" onclick="SearchItem();"><i class="fa fa-search"></i> Tìm kiếm</button>
+            </div>
+        </div>*@
+
+    <div class="row">
+        <div class="col-md-4  col-sm-12  mt-2">
+            <input value="" type="text" id="itemName" onkeyup="SearchItem();" class="form-control" placeholder="Nhập tên sản phẩm" />
+        </div>
+        <div class="col-md-4 offset-md-0 col-sm-12 mt-2">
+            <select id="cbbCategorySearch" class="form-control">
+                @{
+                    <option value="1">Tất cả danh mục</option>
+                    foreach (var p in ViewBag.listCategory)
+                    {
+                        <option value="@p.Name">@p.Name</option>
+                    }
+                }
+            </select>
+        </div>
+        <div class="col-md-2 col-sm-12 mt-2">
+            <input type="text" id="fromDateItem" class="form-control relative-icon-calendar date" placeholder="Từ ngày" />
+            <i class="fa fa-calendar absolute-icon-calendar"></i>
+        </div>
+        <div class="col-md-2 col-sm-12 mt-2">
+            <input type="text" id="toDateItem" class="form-control relative-icon-calendar date" placeholder="Đến ngày" />
+            <i class="fa fa-calendar absolute-icon-calendar"></i>
+        </div>
+        
+
+    </div>
+    @*Button tìm kiếm*@
+<div class="row">
+    <div class="col-md-4  col-sm-12 mt-2">
+        <select id="itemStatus" class="form-control">
+            <option>Tất cả trạng thái hoạt động </option>
+            <option value="@SystemParam.ACTIVE_FALSE">Ngừng hoạt động</option>
+            <option value="@SystemParam.ACTIVE">Đang hoạt động</option>
+        </select>
+    </div>
+    <div class="col-md-4  col-sm-12 mt-2">
+        <select id="itemStockStatus" class="form-control">
+                <option>Tất cả trạng thái</option>
+                <option value="@SystemParam.IN_STOCK">Còn hàng</option>
+                <option value="@SystemParam.OUT_OF_STOCK">Hết hàng</option>
+        </select>
+    </div>
+    <div class="col-md-2 col-sm-12 mt-2">
+        <button type="button" class="btn btn-success btn-block text-center" @*data-toggle="modal" data-target="#md-create-Item"*@ onclick="resetInputItem();">
+            <i class="fa fa-fw fa-plus"> </i>
+            Thêm
+        </button>
+    </div>
+    <div class="col-md-2 col-sm-12 mt-2">
+        <button class="btn btn-primary btn-block text-center" onclick="SearchItem();" id="btnSearchItem">
+            <i class="fa fa-fw fa-search"></i>
+            Tìm kiếm
+        </button>
+    </div>
+</div>
+
+    @*lấy dữ liệu từ bảng*@
+    <div class="row ">
+        <div class="col-md-12 mt-2" id="tableItem">
+            @{Html.RenderAction("Search", "Item", new { Page = 1, itemName = ""}); }
+        </div>
+    </div>
+
+    <div id="mdcreateitem">
+
+    </div>
+    <!--end create table-->
+    <div id="UpdateItem">
+    </div>
+
+
+</div>
+<script type="text/javascript">
+    $("#itemName").keypress(function (e) {
+        var key = e.which;
+        if (key == 13) {
+            $("#btnSearchItem").click();
+        }
+    });
+    $("#toDateItem").on('change', function (e) {
+        SearchItem();
+    });
+    $("#fromDateItem").on('change', function (e) {
+        SearchItem();
+    });
+    $("#addImg").off('click').on('click', function (e) {
+        e.preventDefault();
+        var fider = new CKFinder();
+        fider.selectActionFunction = function (fileUrl) {
+            $("#DivtagImg ").remove();
+            $("#divAddImg").append('<div id="DivtagImg" style ="box-sizing:border-box;display:inline-block;margin-top:10px;"><img width="180" height="120" src="' + fileUrl + '" /></div>');
+            $("#txt-url-img").val(fileUrl);
+        }
+        fider.popup();
+    });
+</script>
+<script type="text/javascript">
+    function DeleteImg() {
+        $("#DivtagImg ").remove();
+        $("#txt-url-img").val("");
+    }
+</script>
+
+<style>
+    td {
+        white-space: normal !important;
+    }
+</style>
+
+<script>
+
+    $(document).ready(function () {
+
+        //CKEDITOR.replace('editor', {
+        //    height: 300
+        //});
+
+        CKEDITOR.replace('editor', {
+            height: 300,
+            disableObjectResizing: true
+        });
+
+        CKEDITOR.on('dialogDefinition', function (ev) {
+            var dialogName = ev.data.name;
+            var dialogDefinition = ev.data.definition;
+            //var editorO = ev.data.definition.dialog.getParentEditor();
+
+            if (dialogName == 'image' || dialogName == 'image2') {
+                var infoTab = dialogDefinition.getContents('info');
+
+                if (dialogName == 'image') {
+                    infoTab.remove('txtHeight');
+                    infoTab.remove('txtWidth');
+                    infoTab.remove('ratioLock');
+                }
+                else {
+                    infoTab.remove('height');
+                    infoTab.remove('width');
+                    infoTab.remove('lock');
+                }
+            }
+        });
+    });
+
+    $("#add_logo_place").off('click').on('click', function (e) {
+        e.preventDefault();
+        var fider = new CKFinder();
+
+        fider.selectActionFunction = function (fileUrl) {
+            $("#AddImgLogoPlace ").remove();
+            $("#AddLogoPlace").append('<img id="AddImgLogoPlace" src="' + fileUrl + '" class="col-md-12 px-0 border-dekko contentImg" alt="your image" />');
+            var url = window.location.origin + fileUrl;
+            $('#txtAddLogoPlace').val(url);
+        }
+        fider.popup();
+    });
+
+</script>
+<script>
+    $(document).ready(function () {
+        $("#cbbCategorySearch").on('change', function () {
+            $("#btnSearchItem").click();
+        });
+    })
+</script>
+@*<script>
+    function resetInputItem() {
+        $('#CodeCreate').val("");
+        $('#NameCreate').val("");
+        $('#PriceCreate').val();
+        $('#DivtagImg').remove();
+        //window.location = "/Item/AddItem";
+        $.ajax({
+            url: "/Item/AddItem",
+            //data: { ID: $id },
+            type: 'POST',
+            success: function (response) {
+                $('#mdcreateitem').html(response);
+                $('#md-create-item').modal('show');
+            },
+            error: function (result) {
+                console.log(result.responseText);
+            }
+
+        });
+    }
+</script>*@

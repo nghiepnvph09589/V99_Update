@@ -1,0 +1,207 @@
+﻿@using Data.Model.APIWeb
+@using Data.Utils
+@model BatchDetailOutputModel
+
+<!-- The Modal -->
+<div class="modal fade" id="myModal">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title"><i class="fa fa-dropbox ic-menu mr-2"></i>Sửa thông tin lô hàng</h4>
+                <button type="button" class="close" data-dismiss="modal" onclick="window.Location='/Batch/Index'">&times;</button>
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body">
+                <form id="EditBatch" name="EditBatch">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <label>Mã lô</label>
+                                </div>
+                                <div class="col-md-9">
+                                    <p class="text-bold text-primary" id="batchCode" name="BatchCode">@Model.BatchCode</p>
+                                    <input type="hidden" name="BatchID" value="@Model.BatchID" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <label>Người tạo</label>
+                                </div>
+                                <div class="col-md-9">
+                                    <p class="text-bold text-primary" id="userNameLogin">@Model.CreateUserName</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <label>Số lượng</label>
+                                </div>
+                                <div class="col-md-9">
+                                    <input class="form-control number" type="text" name="QtyStr" id="pointEdit" value="@String.Format("{0:n0}", Model.QTY)" />
+                                    @*<p class="text-bold text-primary" id="qtyEdit">@String.Format("{0:n0}", Model.QTY)</p>*@
+                                    @*<input name="QtyStr" type="hidden" value="@String.Format("{0:n0}", Model.QTY)" />*@
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <label>Số điểm</label>
+                                </div>
+                                <div class="col-md-9">
+                                    <input class="form-control number" type="text" id="pointEdit" name="PointStr" value="@String.Format("{0:n0}", Model.Point)" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-md-6">
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <label>Tên lô</label>
+                                </div>
+                                <div class="col-md-9">
+                                    <input class="form-control" type="text" id="batchName" name="BatchName" value="@Model.BatchName" />
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <label>Ghi chú</label>
+                                </div>
+                                <div class="col-md-9">
+                                    <input class="form-control" type="text" name="Note" id="noteEdit" value="@Model.Note" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-md-6">
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <label>Sản phẩm</label>
+                                </div>
+                                <div class="col-md-9">
+                                    <select id="showProduct" class="form-control" name="ProductID">
+                                        @{
+                                            <option value="@Model.ProductID">Tất cả sản phẩm</option>
+                                            foreach (var p in ViewBag.listProduct)
+                                            {
+                                                <option value="@p.ID">@p.Name</option>
+                                            }
+
+                                        }
+                                    </select>
+                                    @*<input class="form-control" type="text" name="ProductName" id="productName" value="@Model.ProductName" />*@
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <label>Giá</label>
+                                </div>
+                                <div class="col-md-9">
+                                    <input class="form-control number" type="text" id="priceEdit" name="PriceStr" value="@String.Format("{0:n0}", Convert.ToInt32(Model.Price))" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12 border-form"></div>
+                    <div class="row mt-1">
+                        <div class="col-md-12 col-sm-12 col-12">
+                            <label class="mb-2 mt-2">Danh sách sản phẩm</label>
+                            <table class="table table-light table-bordered table-hover table-responsive-sm table-responsive-md">
+                                <thead class="text-center text-white bg-thead">
+                                    <tr>
+                                        <th>Mã sản phẩm</th>
+                                        <th>Trạng thái</th>
+                                        <th>Mã Barcode</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="text-center">
+                                    @{ var bc = 0;
+                                        foreach (var product in Model.ListProduct)
+                                        {
+                                            string qrcodeProduct = product.ProductCode;
+                                            <tr>
+                                                <td>@qrcodeProduct</td>
+                                                @{
+                                                    if (product.Status == SystemParam.STATUS_PRODUCT_ACTIVE)
+                                                    {
+                                                        <td>@SystemParam.STATUS_PRODUCT_ACTIVE_STRING</td>
+                                                    }
+                                                    else
+                                                        if (product.Status == SystemParam.STATUS_PRODUCT_NO_ACTIVE)
+                                                    {
+                                                        <td class="text-info text-bold">@SystemParam.STATUS_PRODUCT_NO_ACTIVE_STRING</td>
+                                                    }
+                                                }
+                                                <td class="text-center">
+                                                    @*gen mã QR*@
+                                                    <svg id="barcode_@bc"></svg>
+                                                    @*<input class="@qrcodeProduct" type="text" style="display: none" value="@qrcodeProduct" />
+                                                        <div id="@qrcodeProduct"></div>*@
+                                                    <script type="text/javascript">
+                                                JsBarcode("#barcode_@bc", "@qrcodeProduct",{
+                                                    height: 40,
+                                                    displayValue: false,
+                                                });
+                                                    @*$(document).ready(function () {
+                                                        var qrcode = new QRCode(document.getElementById("@qrcodeProduct"), {
+                                                            width: 60,
+                                                            height: 60,
+                                                            correctLevel: QRCode.CorrectLevel.L
+                                                        });
+                                                        function makeCode() {
+                                                            var codeValue = $(".@qrcodeProduct").val();
+                                                            qrcode.makeCode(codeValue);
+                                                        }
+                                                        makeCode();
+                                                    });*@
+                                                    </script>
+                                                </td>
+                                            </tr>
+                                            bc++;
+                                        }
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </form>
+
+
+            </div>
+
+            <!-- Modal footer -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Đóng</button>
+                <button type="button" class="btn btn-success" onclick="saveEditBatch()">Lưu thay đổi</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $("#priceEdit").maskMoney({ precision: 0 });
+    $("#qtyEdit").maskMoney({ precision: 0 });
+    $("#pointEdit").maskMoney({ precision: 0 });
+</script>
+@*<script type="text/javascript">
+        $(window).on('load', function () {
+            $('select[name="ProductID"]:first').val('@Model.ProductID');
+    });
+    </script>*@

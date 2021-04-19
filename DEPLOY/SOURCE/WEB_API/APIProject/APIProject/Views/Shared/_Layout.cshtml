@@ -1,0 +1,264 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <script src="~/Scripts/JsBarcode.all.min.js"></script>
+    <script src="~/Scripts/JsBarcode.code128.min.js"></script>
+    <script src="~/Scripts/jquery.maskMoney.min.js"></script>
+    <style>
+        .sec {
+            position: relative;
+            right: 10px;
+        }
+
+        .counter.counter-lg {
+            top: -15px !important;
+        }
+    </style>
+    <title>TIÊU DÙNG</title>
+    <link rel="shortcut icon" href="~/Content/images/LogoHT.png" />
+    @*@Styles.Render("~/layout/css")*@
+    @Styles.Render("~/dekko/css")
+    @Scripts.Render("~/layout/js")
+    @Scripts.Render("~/dekko/js")
+    @Scripts.Render("~/bundle/js")
+</head>
+<body class="theme-orange" ng-app="appDekko" ng-controller="controllerDekko">
+    <div class="divLoading" style="display: none">
+        <div class="col-md-12 spinner">
+            <img class="spinner" src="~/Content/images/LogoHT.png" />
+            @*<span class="text-white spinner" style="font-size: 20px; height: 200px; text-align: center; margin-top: 28%">Đang xử lý...</span>*@
+        </div>
+    </div>
+    <input type="hidden" id="txtRole" />
+    <div id="wrapper">
+        <nav class="navbar navbar-fixed-top navbar navbar-expand-md navbar-dark fixed-top bg-white">
+            <div class="row container-fluid" style="height:97px;">
+                <div class="navbar-btn" style="margin-left:50px;">
+                    <button type="button" class="btn-toggle-offcanvas"><i class="lnr lnr-menu fa fa-bars"></i></button>
+                </div>
+                <div class="navbar-brand d-inline-flex p-2">
+                    <!-- d-inline-flex p-2 giống wrap-content của android-->
+                    <a href="/Home/Index"><img src="~/Content/images/LogoHT.png" class="img-responsive logo" style="height:80px;width:auto;"></a>
+                </div>
+                <div class="navbar-btn">
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="" style="color:#000000;"><i class="fa fa-user-secret"></i></span>
+                    </button>
+                </div>
+
+            </div>
+            <div class="col-md-6 col-sm-12 text-md-right collapse navbar-collapse" style="font-size:20px; font-weight:bold;" id="navbarCollapse">
+                <ul class="navbar-nav" style="float:right">
+                    <li class="nav-item">
+                        <a href="#" class="text-primary notification " data-toggle="modal" data-target="#Notifications"><i class="fa fa-bell"></i><small><span class="sec counter counter-lg text-white badge badge-pill m-0 p-1" style="background-color:darkorange;font-size:10px;" id="all-noti"></span></small>Thông báo</a>
+                    </li>
+                    <li class="nav-item ml-md-5">
+                        <a href="#" class="text-primary" data-toggle="modal" data-target="#changePassword"><i class="fa fa-key "></i> Đổi mật khẩu</a>
+
+                    </li>
+                    <li class="nav-item ml-md-5">
+                        <a href="#" class="text-primary" onclick="logout();"><i class="fa fa-sign-out"></i> Đăng xuất</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </div>
+    <div id="left-sidebar" class="sidebar" style="margin-top: 100px;">
+        <div class="sidebar-scroll bg-white">
+            <div class="tab-content p-l-0 p-r-0 bg-white">
+                <div class="tab-pane active">
+                    <nav class="sidebar-nav">
+                        <ul class="main-menu metismenu">
+                            <li id="tabHome">
+                                <a href="/Home/Index"><i class="fa fa-tachometer ic-menu"></i>Tổng quan</a>
+                            </li>
+                            <li id="tabCustomer">
+                                <a href="/Customer/Index"><i class="fa fa-users ic-menu"></i>Khách hàng</a>
+                            </li>
+                            <li id="tabCategory">
+                                <a href="/Category/Index"><i class="fa fa-th-list ic-menu"></i>Danh mục</a>
+                            </li>
+                            <li id="tabItem">
+                                <a href="/Item/Index"><i class="fa fa-product-hunt ic-menu"></i>Sản phẩm</a>
+                            </li>
+                            <li id="tabOrder">
+                                <a href="/Order/Index"><i class="fa fa-shopping-basket ic-menu"></i>Đơn hàng</a>
+                            </li>
+                            <li id="tabConfig">
+                                <a href="/Config/Index"><i class="fa fa-gears ic-menu"></i>Thiết lập</a>
+                            </li>
+                            <li id="tabRequest">
+                                <a href="/Request/Index"><i class="fa fa-fw fa-refresh"></i>Yêu cầu rút điểm</a>
+                            </li>
+                            <li id="tabNews">
+                                <a href="/News/Index"><i class="fa fa-newspaper-o ic-menu"></i>Tin tức</a>
+                            </li>
+                            <li id="tabUser">
+                                <a href="/User/Index"><i class="fa fa-user-secret ic-menu"></i>Tài khoản</a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="main-content">
+        <div class="container-fluid">
+            @RenderBody()
+        </div>
+    </div>
+    <script src="~/Scripts/jquery.maskMoney.min.js"></script>
+</body>
+</html>
+
+<script>
+    var app = angular.module("appDekko", []);
+    app.controller("controllerDekko", function ($scope) { });
+</script>
+
+<div id="changePassword" class="modal fade" role="dialog">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel"><i class="fa fa-lock" aria-hidden="false"></i> Thay đổi mật khẩu</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12 col-sm-12 col-12">
+                        <label>Mật khẩu hiện tại</label>
+                        <input class="form-control" type="password" id="txtCurrentPassword" />
+                    </div>
+                </div>
+                <div class="row mt-2">
+                    <div class="col-md-12 col-sm-12 col-12">
+                        <label>Mật khẩu mới</label>
+                        <input class="form-control" type="password" id="txtNewPassword" />
+                    </div>
+                </div>
+                <div class="row mt-2">
+                    <div class="col-md-12 col-sm-12 col-12">
+                        <label>Xác nhận mật khẩu mới</label>
+                        <input class="form-control" type="password" id="txtConfirmPassword" />
+                        <i class="iconChangePassword text-success fa fa-check"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" style="width:80px;" data-dismiss="modal">Đóng</button>
+                <button type="button" class="btn btn-primary" style="width:80px;" onclick="changePassword()">Thay đổi</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@*modal loading *@
+<div class="modal" id="modalLoad" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
+        <div class="modal-content text-center py-3">
+            <div class="modal-body text-center">
+                <i class="fa fa-spinner text-success fa-spin" style="font-size: 40px;"></i>
+                <div class="col-md-12 text-center mt-2">
+                    <span>Đang xử lý</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@*Modal notifications*@
+<div id="Notifications" class="modal fade" role="dialog">
+    <div class="modal-dialog modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel"><i class="fa fa fa-bell" aria-hidden="false"></i> Thông báo</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <a class="btn btn-primary text-center col-12 mt-3" href="/Order/Index">Có <span class="text-danger" id="order-number"></span> đơn hàng đang chờ duyệt</a>
+                <a class="btn btn-secondary text-center col-12 mt-3" href="/Request/Index">Có <span class="text-danger" id="request-number"></span> yêu cầu đang chờ duyệt</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        socket();
+    })
+    function socket() {
+        // var audio = new Audio('../Content/mp3/swiftly.mp3');
+        //http://tdtd.winds.vn/
+        var socket = io.connect('http://tdtd.winds.vn:8090',
+            {
+                reconnect: true,
+                forceWebsockets: true
+            });
+        socket.on('connect', () => {
+            console.log("connect");
+        });
+
+        socket.on('newOder', (msg) => {
+            // audio = null;
+            $('#all-noti').text(parseInt($('#all-noti').text()) + 1);
+            if (msg.type == 1) {
+                $('#order-number').text(parseInt($('#order-number').text()) + 1);
+            } else {
+                $('#request-number').text(parseInt($('#request-number').text()) + 1);
+            }
+            var audio = new Audio('../Content/mp3/swiftly.mp3');
+            toastr.options = {
+                "debug": false,
+                "positionClass": "toast-bottom-right",
+                //"onclick": window.location="/Transaction/Index",
+                "fadeIn": 300,
+                "fadeOut": 1000,
+                "timeOut": 6000,
+                "extendedTimeOut": 5000,
+                "progressBar": true
+            }
+            toastr.options.onclick = function () { window.location.href = msg.type == 1 ? "/Order/Index" :"/Request/Index"}
+            toastr.info(msg.content, 'Thông báo');
+            audio.play();
+        });
+        socket.on('disconnect', () => {
+            console.log("disconnect");
+        });
+    }
+
+    // Hiện thị ngày giờ
+    function showTime() {
+        var date = new Date();
+        var h = date.getHours(); // 0 - 23
+        var m = date.getMinutes(); // 0 - 59 
+
+        if (h == 0) {
+            h = 12;
+        }
+
+        if (h > 12) {
+            h = h - 12;
+        }
+
+        h = (h < 10) ? "0" + h : h;
+        m = (m < 10) ? "0" + m : m;
+
+        var time = h + ":" + m;
+        document.getElementById("MyClockDisplay").innerText = time;
+        document.getElementById("MyClockDisplay").textContent = time;
+
+        setTimeout(showTime, 1000);
+
+    }
+    showTime();
+    var today = new Date();
+    var date = today.getDate() + "-" + (today.getMonth() + 1) + "-" + today.getFullYear();
+    document.getElementById("hvn").innerHTML = date;
+
+</script>

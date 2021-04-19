@@ -1,0 +1,101 @@
+﻿
+@{
+    ViewBag.Title = "OderDetail";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<div class="row col-md-12 col-sm-12 col-12">
+    <div class="col-md-12 col-sm-12 col-12">
+        <table class="table table-borderless table-responsive-sm table-responsive-md">
+            <thead ">
+                <tr>
+                    <th colspan="4" class="text-dark"><h5>Thông tin khách hàng</h5></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Người mua:</td>
+                    <td>Nguyễn Minh Tú</td>
+                    <td>Ngày đặt:</td>
+                    <td class=" pl-md-4 pl-sm-4 pl-4">9:12 27/07/2020</td>
+                </tr>
+                <tr>
+                    <td>Số điện thoại:</td>
+                    <td>0965588888</td>
+                    <td>Trạng thái:</td>
+                    <td>
+                        <div class="col-md-4 col-sm-8 ">
+                            <select class="form-control-md">
+                                <optgroup label="Trạng thái:">
+                                    <option value="1">Trạng thái 1</option>
+                                    <option value="2">Trạng thái 2</option>
+                                </optgroup>
+                            </select>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Địa chỉ:</td>
+                    <td>HH2 Hà Bắc, Nam Từ Liêm</td>
+                    <td>Mã giới thiệu:</td>
+                    <td class=" pl-md-4 pl-sm-4 pl-4">0394974141</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="row col-md-12 mt-5">
+    <div class="col-md-12 col-sm-12 text-dark pl-4">
+        <h5>Danh sách sản phẩm</h5>
+    </div>
+</div>
+@*Danh sách sản phẩm*@
+<div class="row col-md-12 col-sm-12 col-12">
+    <div class="col-md-12 col-sm-12 col-12">
+        <table class="table table-light table-bordered table-hover table-responsive-sm table-responsive-md">
+            <thead class="text-center">
+                <tr>
+                    <th>STT</th>
+                    <th>Tên sản phẩm</th>
+                    <th>Danh mục</th>
+                    <th>Số lượng</th>
+                    <th>Đơn giá</th>
+                    <th>Thành tiền</th>
+                </tr>
+            </thead>
+            <tbody class="text-center">
+                <tr>
+                    <td>1</td>
+                    <td>Trà tiên thảo</td>
+                    <td>Trà thảo dược </td>
+                    <td>1</td>
+                    <td>5000000</td>
+                    <td>1.200.000</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+@*Tông tiền*@
+<div class="row col-md-12 mb-2" style="color:blue">
+    <div class="col-md-6 col-sm-6 col-6 offset-sm-6 offset-md-6 offset-6">
+        <label class="col-md-4 col-sm-4 col-4">Doanh số:</label>
+        <label class="offset-md-0 offset-0 offset-sm-0 col-md-7 col-sm-7 col-7 text-left">100000000 VNĐ</label>
+    </div>
+</div>
+@*2 buton Trở về và lưu*@
+<<div class="row col-md-12">
+    <div class="col-md-2 mb-2 col-sm-12 offset-md-8">
+        <button type="button" class="btn btn-secondary btn-block" ">
+            <i class="fa fa-arrow-left"> Trở về</i>
+
+        </button>
+    </div>
+    <div class="col-md-2 md-2 mb-2 col-sm-12 offset-md-0 ">
+        <button type="button" class="btn btn-primary btn-block" ">
+            <i class="fa fa-save"> Lưu</i>
+        </button>
+    </div>
+</div>

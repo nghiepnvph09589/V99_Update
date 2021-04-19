@@ -1,0 +1,176 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@using Data.DB
+
+<div class="mt-5" id="View">
+    <div class="col-md-12">
+        <div class="breadcrumb-holder">
+            <div class="row mt-3">
+                <div class="col-md-10 col-sm-9 col-8 text-dark px-0 mt-3">
+                    <h4><i class="fa fa-fw fa-users"></i> Quản lý khách hàng</h4>
+                </div>
+                <!-- <div class="col-md-2 col-sm-3 col-4 text-right px-0 mt-3">
+                        <button class="btn width-btn-create-batch btn-dekko" id="btnAddPoint" data-toggle="modal" data-target="#mdAddPoint"><i class="fa fa-fw fa-plus"></i> Thêm điểm</button>
+                     </div>
+                -->
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-4 col-sm-12 col-12 mt-2">
+            <input type="text" class="form-control" id="txtPhone" placeholder="Nhập tên hoặc số điện thoại khách hàng" />
+        </div>
+        <div class="col-md-4 col-sm-12 col-12 mt-2">
+            <select class="form-control" id="cbbStatusCustomer">
+                <option>Tất cả</option>
+                <option value="0">Không hoạt động</option>
+                <option value="1">Hoạt động</option>
+            </select>
+        </div>
+        <div class="col-md-2 col-sm-12 col-12 mt-2">
+            <input type="text" class="form-control relative-icon-calendar date" id="dtFromdateIndex" placeholder="Từ ngày" />
+            <i class="fa fa-calendar absolute-icon-calendar"></i>
+        </div>
+        <div class="col-md-2 col-sm-12 col-12 mt-2">
+            <input type="text" class="form-control relative-icon-calendar date" id="dtTodateIndex" placeholder="Đến ngày" />
+            <i class="fa fa-calendar absolute-icon-calendar"></i>
+        </div>
+        <!--
+        <div class="col-md-3 offset-md-0 col-sm-6 mt-1">
+        <select class="form-control" id="slProvince" onchange="loadListDistrict(this.value)">
+            @{
+                <option>Tất cả Tỉnh/Thành phố</option>
+                foreach (var p in (List<Province>)ViewBag.listCity)
+                {
+                    if (@p.Code.Equals(1))
+                    {
+                        <option value="@p.Code">@p.Name</option>}
+                    else
+                    {
+                        <option value="@p.Code">@p.Name</option>}
+                }
+            }
+        </select>
+        </div>
+
+        <div class="col-md-3 offset-md-0 col-sm-6 mt-1 cursor-pointer" id="ListDistrict">
+            @{ Html.RenderAction("LoadDistrict", "Customer", new { ProvinceID = 1 });}
+        </div>
+        -->
+    </div>
+
+    <div class="row">
+        <div class="col-md-2 col-sm-12 mt-2 offset-md-8">
+            <button class="btn btn-block btn-success" onclick="exportListCustomerExcel();"><i class="fa fa-file-excel-o"></i> Xuất Excel</button>
+        </div>
+        <div class="col-md-2 col-sm-12 mt-2">
+            <button class="btn btn-block btn-primary" id="btnSearch" onclick="searchCustomer()"><i class="fa fa-search"></i> Tìm kiếm</button>
+        </div>
+    </div>
+    <div class="row mt-3">
+        <div class="col-md-6 col-12 mt-2">
+            <h5 class="text-danger text-bold">Tổng điểm ví point: @String.Format("{0:0,0.00 Point}", @ViewBag.RevenuePoint) </h5>
+        </div>
+        <div class="col-md-6 col-12 mt-2">
+            <h5 class="text-danger text-bold">Tổng điểm ví điểm tích: @String.Format("{0:0,0.00 Point}", @ViewBag.RevenuePointRanking) </h5>
+        </div>
+    </div>
+        <!--
+        <div class="col-md-3 offset-md-0 col-sm-6 mt-1">
+            <select class="form-control" id="cmbRoleCus">
+                <option>Tất cả đối tượng</option>
+                <option value="2">
+                    Đại lý
+                </option>
+                <option value="1">
+                    Khách hàng
+                </option>
+            </select>
+        </div>
+        @*<div class="col-md-3 offset-md-0 col-sm-6 mt-1">
+            <select class="form-control" id="cbbStatusCustomer">
+                <option>Tất cả trạng thái</option>
+                <option value="1">
+                    Hoạt động
+                </option>
+                <option value="0">
+                    Tạm dừng
+                </option>
+            </select>
+        </div>*@
+        <div class="col-md-3 offset-md-0 col-sm-6 mt-1">
+            <select class="form-control" id="cusRanking">
+                <option>Ranking</option>
+                <option value="0">Thành viên</option>
+                <option value="1">Bạc</option>
+                <option value="2">Vàng</option>
+                <option value="3">Bạch kim</option>
+            </select>
+        </div>
+        -->
+    <div class="row">
+        <div class="col-md-12 mt-2" id="ListCustomer">
+            @{
+                Html.RenderAction("Search", "Customer", new { Page = 1, Phone = "" });
+            }
+        </div>
+    </div>
+
+
+    <div id="addpoint">
+
+    </div>
+
+    <!-- start modal -->
+
+</div>
+
+<script>
+    $("#txtPhone").keypress(function (e) {
+        var key = e.which;
+        if (key == 13) {
+            $("#btnSearch").click();
+        }
+    });
+    $(document).ready(function () {
+
+        $("#dtFromdateIndex").on('change', function (e) {
+            if ($("#dtFromdateIndex").val() == '')
+                $("#btnSearch").click();
+        });
+
+        $("#dtTodateIndex").on('change', function (e) {
+            if ($("#dtTodateIndex").val() == '')
+                $("#btnSearch").click();
+        });
+        $("#cbbStatusCustomer").on('change', function (e) {
+            $("#btnSearch").click();
+        });
+        $("#dtFromdateIndex").on('change', function (e) {
+            $("#btnSearch").click();
+        });
+        $("#dtTodateIndex").on('change', function (e) {
+            $("#btnSearch").click();
+        });
+        $("#cusRanking").on('change', function (e) {
+            $("#btnSearch").click();
+        });
+    })
+</script>
+<!-- end modal -->
+@*export file excel*@
+<script>
+    $('.showModalRequest').click(function () {
+
+    });
+
+    function exportListCustomerExcel() {
+        var fromDate = $("#dtFromdateIndex").val();
+        var toDate = $("#dtTodateIndex").val();
+        var status = $("#cbbStatusCustomer").val();
+        var CusPhone = $("#txtPhone").val();
+        window.location.href = "/Customer/ExportCustomer?FromDate=" + fromDate + "&ToDate=" + toDate + "&Status=" + status + "&Phone=" + CusPhone;
+    }
+</script>

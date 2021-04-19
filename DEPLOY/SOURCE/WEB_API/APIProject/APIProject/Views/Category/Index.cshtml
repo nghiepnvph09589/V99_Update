@@ -1,0 +1,200 @@
+﻿@using Data.Model.APIWeb
+@using Data.Utils
+@using PagedList.Mvc
+@using APIProject.Controllers
+@model List<ListCategoryOutputModel>
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="col-md-12 mt-5">
+    <div class="breadcrumb-holder">
+        <div class="row pb-3 pt-3">
+            <div class="text-dark">
+                <h4><i class="fa fa-th-list ic-menu"></i> Danh mục sản phẩm</h4>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+
+    <div class="col-md-4 col-sm-12 co-12 mt-2">
+        <input class="form-control" onkeyup="SearchCategory();" placeholder="Tên danh mục" id="txtName" />
+    </div>
+    <div class="col-md-4 col-sm-12 co-12 mt-2">
+        <select class="form-control" id="ctgr">
+            <option>Tất cả</option>
+            <option value="0">Không hoạt động</option>
+            <option value="1">Hoạt động</option>
+        </select>
+    </div>
+    <div class="col-md-2 col-sm-12 co-12 mt-2">
+        <input type="text" class="form-control relative-icon-calendar date" id="txtFromDate" placeholder="Từ ngày" />
+        <i class="fa fa-calendar absolute-icon-calendar"></i>
+    </div>
+    <div class="col-md-2 col-sm-12 co-12 mt-2">
+        <input type="text" class="form-control relative-icon-calendar date" id="txtToDate" placeholder="Đến ngày" />
+        <i class="fa fa-calendar absolute-icon-calendar"></i>
+    </div>
+</div>
+
+    
+<div class="row">
+    <div class="col-md-2 col-sm-12 mt-2 offset-md-8">
+        <button class="btn btn-primary btn-block" onclick="SearchCategory()" id="btnSearchCategory"><i class="fa fa-search"></i> Tìm kiếm</button>
+    </div>
+    <div class="col-md-2 col-sm-12 mt-2">
+        <button class="btn btn-success btn-block" data-toggle="modal" data-target="#myModal"><i class="fa fa-plus mr-1"></i>Thêm mới</button>
+    </div>
+</div>
+    
+<div class="row mt-3" id="TableCategory">
+
+    @{ Html.RenderAction("Search", "Category", new { Page = 1, CateName = "", FromDate = "", ToDate = "" });}
+</div>
+
+
+<div class="modal fade" id="myModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title">Thêm danh mục sản phẩm</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body" id="createCategory">
+                <form id="form_create_categories" name="form_create_categories">
+                    <div class="row m-3">
+                        <p class="mb-0 color-require"><label class="text-dark">Tên Danh Mục</label> *</p>
+                        <input placeholder="Nhập vào tên danh mục" id="Name" name="Name" class="form-control" type="text" />
+                    </div>
+                </form>
+            </div>
+
+            <!-- Modal footer -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary" data-dismiss="modal"><i class="fa fa-times pr-1"></i>Đóng</button>
+                <button type="button" class="btn btn-primary px-3" onclick="saveCreateCategory();"><i class="fa fa-check pr-1"></i>Lưu</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+<div id="UpdateCategory">
+
+</div>
+<script type="text/javascript">
+    var count = 0;
+    $("#addImg").off('click').on('click', function (e) {
+        e.preventDefault();
+        count++;
+        var fider = new CKFinder();
+        fider.selectActionFunction = function (fileUrl) {
+            $("#divAddImg").append('<div id="img_' + count + '" class="Imgs" style ="box-sizing:border-box;display:inline-block;margin-top:10px;"><img class="imgCreateCategory cursor-pointer" width="100%" height="100%" src="' + fileUrl + '" onclick="ChangeImg($(this));" /><i onclick="DeleteImg($(this));" src="' + fileUrl + '" class="fa fa-2x fa-remove " data="img_' + count + '" title="Xóa"  style="position:relative;top:-42px;left:-23px;color: #ff0000;"></i></div>');
+            var listUrl = $("#txturlImage").val();
+            if (listUrl == "") {
+                listUrl = fileUrl;
+                $("#txturlImage").val(listUrl);
+            }
+            else {
+                var url = listUrl + "," + fileUrl;
+                $("#txturlImage").val(url);
+            }
+        }
+        fider.popup();
+    });
+</script>
+
+<script type="text/javascript">
+    function ChangeImg($url) {
+        var fider = new CKFinder();
+        fider.selectActionFunction = function (fileUrl) {
+            var url_old = $url.attr('src');
+            $url.attr('src', fileUrl);
+            if (fileUrl != url_old) {
+                var str = $('#txturlImage').val().replace(url_old, fileUrl);
+                $('#txturlImage').val(str);
+            }
+        }
+        fider.popup();
+    }
+</script>
+
+<script type="text/javascript">
+    function DeleteImg(obj) {
+        var temp = obj.attr('data');
+        var url = obj.attr('src');
+        $('#' + temp + '').remove();
+        var str = $('#txturlImage').val();
+        $('#txturlImage').val(str.replace(url, ""));
+    }
+</script>
+<style>
+    td {
+        white-space: normal !important;
+    }
+</style>
+<script>
+    $(document).ready(function () {
+        $("#ctgr").on('change', function () {
+            $("#btnSearchCategory").click();
+        });
+    })
+</script>
+<script type="text/javascript">
+    function saveCreateCategory() {
+        var parent = $.trim($('#createCategory #ParentID').val());
+        var name = $.trim($('#Name').val());
+        var url = $(".imgCreateCategory").attr("src");
+        var description = $.trim($('#createCategory #description').val());
+        console.log(1);
+        if (name == "") {
+            swal({
+                title: "Thông báo",
+                text: "Vui lòng nhập vào tên danh mục",
+                icon: "warning"
+            })
+            return;
+        }
+        //else if (url == null) {
+        //    swal({
+        //        title: "Thông báo",
+        //        text: "Vui lòng chọn ít nhất 1 ảnh",
+        //        icon: "warning"
+        //    })
+        //    return;
+        //}
+        else {
+            $.ajax({
+                url: "/Category/CreateCategory",
+                data: {
+                    Name: name
+                },
+                success: function (response) {
+                    if (response == EXISTING) {
+                        swal("Không thể tạo danh mục sản phẩm", "Danh mục đã tồn tại!!!", "warning")
+                    }
+                    else if (response == SUCCESS) {
+                        swal("Tạo danh mục thành công", "", "success");
+                        SearchCategory();
+                        window.location = "/Category/Index";
+                        $("#myModal").modal('toggle');
+                        //$(".modal-backdrop").hide();
+                    }
+                    else {
+                        swal("có lỗi xảy ra", "không thể tạo danh mục", "warning");
+                    }
+                }
+            });
+        }
+    }
+    $("#txtName").keypress(function (e) {
+        var key = e.which;
+        if (key == 13) {
+            $("#btnSearchCategory").click();
+        }
+    });
+</script>

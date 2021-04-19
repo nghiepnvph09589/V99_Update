@@ -1,0 +1,132 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@using Data.Model.APIWeb
+@using Data.Utils
+<div class="col-md-12 mt-5">
+    <div class="breadcrumb-holder">
+        <div class="row  mt-3">
+            <div class="col-md-6 col-sm-4 col-4 text-dark px-0 mt-3">
+                <h4><i class="fa fa-fw fa-newspaper-o"></i> Tin tức</h4>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row ">
+    <div class="col-md-4 col-sm-12 col-12 mt-2">
+        <select class="form-control" id="cbbTypeNews">
+            @{
+                foreach (var c in ViewBag.listcaterogy)
+                {
+                    <option value="@c.type">@c.value</option>
+                }
+            }
+            <option selected>Tất cả danh mục</option>
+        </select>
+    </div>
+    <div class="col-md-4 col-sm-12 col-12 mt-2">
+        <select class="form-control" id="cbbStatusNews">
+            <option selected>Tất cả trạng thái</option>
+            <option value="@SystemParam.STATUS_NEWS_ACTIVE">Bài đăng</option>
+            <option value="@SystemParam.STATUS_NEWS_DRAFT">Bản nháp</option>
+        </select>
+    </div>
+    <div class="col-md-2 col-sm-12 col-12 mt-2">
+        <input type="text" class="form-control relative-icon-calendar date" id="txtNewsFromDate" placeholder="Từ ngày" />
+        <i class="fa fa-calendar absolute-icon-calendar"></i>
+    </div>
+    <div class="col-md-2 col-sm-12 col-12 mt-2">
+        <input type="text" class="form-control relative-icon-calendar date" id="txtNewsToDate" placeholder="Đến ngày" />
+        <i class="fa fa-calendar absolute-icon-calendar"></i>
+    </div>
+</div>
+
+@*<div class="row mt-3">
+        <div class="col-md-12 text-right">
+            <div class="ml-auto">
+                <button class="btn btn-primary" onclick="searchNews()"><i class="fa fa-search"></i> Tìm kiếm</button>
+                <a class="btn btn-dekko" href="/News/CreateNews"><i class="fa fa-fw fa-plus"></i> Thêm bài</a>
+            </div>
+        </div>
+    </div>*@
+<div class="row">
+    <div class="col-md-8 col-sm-12 col-12 mt-2">
+        <input type="text" class="form-control" onkeyup="searchNews();" id="txtTitle" placeholder="Nhập tiêu đề" />
+    </div>
+    <div class="col-md-2 col-sm-12 mt-2">
+        <button class="btn btn-primary btn-block" onclick="searchNews()" id="searchNews"><i class="fa fa-search"></i> Tìm kiếm</button>
+    </div>
+    <div class="col-md-2 col-sm-12 mt-2">
+        <a class="btn btn-success btn-block" href="/News/CreateNews"><i class="fa fa-fw fa-plus"></i> Thêm bài</a>
+
+    </div>
+</div>
+@*<div class="row ">
+        <div class="col-md-12 text-right">
+            <div class="ml-auto">
+                <button class="btn btn-primary" onclick="searchNews()" id="searchNews"><i class="fa fa-search"></i> Tìm kiếm</button>
+            </div>
+        </div>
+    </div>*@
+
+<div class="row">
+    <div class="col-md-12 mt-2" id="tableNews">
+        @{
+            //if (ViewBag.PageCurrentNews == null)
+            //{
+            //    ViewBag.PageCurrentNews = 1;
+            //}
+            //if (ViewBag.TitleNews == null)
+            //{
+            //    ViewBag.TitleNews = "";
+            //}
+            //Html.RenderAction("Search", "News", new { Page = ViewBag.PageCurrentNews, Title = ViewBag.TitleNews, CreateUserID = ViewBag.CreateUserIDNews, Type = ViewBag.TypeNews, Status = ViewBag.StatusNews, FromDate = ViewBag.FromDateNews, ToDate = ViewBag.ToDateNews });
+            Html.RenderAction("Search", "News", new { Page = 1, Title = "" });
+        }
+    </div>
+</div>
+<input type="hidden" id="txtPageCurrentNews" value="@ViewBag.PageCurrentNews" />
+<script type="text/javascript">
+    $("#txtTitle").keypress(function (e) {
+        var key = e.which;
+        if (key == 13) {
+            $("#searchNews").click();
+        }
+    });
+    $('#cbbStatusNews').on('change', function () {
+        searchNews();
+    });
+    $('#cbbTypeNews').on('change', function () {
+        searchNews();
+    });
+    $('#txtNewsFromDate').on('change', function () {
+        searchNews();
+    });
+    $('#txtNewsToDate').on('change', function () {
+        searchNews();
+    });
+    $(document).ready(function () {
+        var page = $("#txtPageCurrentNews").val();
+        if (page == null) {
+            page = 1;
+        }
+        $.ajax({
+            url: '/News/Search',
+            data: {
+                Page: page,
+                Title: $("#txtTitle").val(),
+                CreateUserID: $("#cbbCreateUser").val(),
+                Type: $("#cbbTypeNews").val(),
+                Status: $("#cbbStatusNews").val(),
+                FromDate: $("#txtNewsFromDate").val(),
+                ToDate: $("#txtNewsToDate").val()
+            },
+            type: 'POST',
+            success: function (response) {
+                $("#tableNews").html(response);
+            }
+        });
+
+    })
+</script>

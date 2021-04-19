@@ -1,0 +1,681 @@
+﻿@using Data.DB
+@using Data.Model.APIWeb
+@model ListImageAgentModel
+
+@{
+    Customer CusDetail = ViewBag.CusDetail;
+    Ranking MemberRank = ViewBag.MemberRank;
+    Ranking SliverRank = ViewBag.SliverRank;
+    Ranking GoldRank = ViewBag.GoldRank;
+    Ranking PlatinumRank = ViewBag.PlatinumRank;
+}
+<div class="content" id="backToIndex">
+    <div class="col-md-12">
+        <div class="breadcrumb-holder">
+            <div class="row mb-3 mt-3">
+                <div class="col-md-10 col-sm-10 col-9 text-dark px-0">
+                    <h4><i class="fa fa-fw fa-users"></i> Chi tiết khách hàng</h4>
+                </div>
+                @*<div class="col-md-2 col-sm-2 col-3 text-right px-0">
+                        <a class="btn btn-outline-secondary" href="javascript:void(0);" onclick="backToIndexCustomer()"><i class="fa fa-fw fa-arrow-left"></i> Trở về</a>
+                    </div>*@
+            </div>
+        </div>
+    </div>
+
+    @* Thông tin khách hàng *@
+    <div class="col-md-12">
+        <div class="breadcrumb-holder">
+            <div class="row mb-3 mt-3">
+                <div class="col-md-10 col-sm-10 col-9 text-dark px-0">
+                    <h5 class="font-weight-bold"> Thông tin khách hàng</h5>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-12">
+        <table class="table table-borderless table-responsive-sm table-responsive-md">
+            @* dòng 1 *@
+            <tr>
+                <td>Họ tên</td>
+                <td>@CusDetail.Name</td>
+                <td>Email</td>
+                <td>
+                    @{
+                        if (CusDetail.Email == "" || CusDetail.Email == null)
+                        {
+                            <p class="text-white">Chưa cập nhật</p>
+                        }
+                        else
+                        {
+                            <p class="">@CusDetail.Email</p>
+                        }
+                    }
+                </td>
+            </tr>
+            @* dòng 2 *@
+            <tr>
+                <td>Số điện thoại</td>
+                <td>@CusDetail.Phone</td>
+                <td>Địa chỉ</td>
+                <td>@CusDetail.Address</td>
+            </tr>
+            @* dòng 3 *@
+            <tr>
+                <td>Giới tính</td>
+                <td>
+                    @{
+                        if (CusDetail.Sex == 1)
+                        {
+                            <p class="">Nữ</p>
+                        }
+                        else
+                        {
+                            <p class="">Nam</p>
+                        }
+                    }
+                </td>
+                <td>Ngày sinh</td>
+                <td>
+                    @CusDetail.DOB.ToString("dd/MM/yyyy")
+                </td>
+            </tr>
+            @* dòng 4 *@
+            <tr>
+                <td></td>
+                <td></td>
+                <td>Trạng thái</td>
+                <td>
+                    <style>
+                        .switch {
+                            position: relative;
+                            display: inline-block;
+                            width: 45px;
+                            height: 20px;
+                        }
+
+                            .switch input {
+                                opacity: 0;
+                                width: 0;
+                                height: 0;
+                            }
+
+                        .slider {
+                            position: absolute;
+                            cursor: pointer;
+                            top: 0;
+                            left: 0;
+                            right: 0;
+                            bottom: 0;
+                            background-color: #ccc;
+                            -webkit-transition: .4s;
+                            transition: .4s;
+                        }
+
+                            .slider:before {
+                                position: absolute;
+                                content: "";
+                                height: 13px;
+                                width: 13px;
+                                left: 4px;
+                                bottom: 4px;
+                                background-color: white;
+                                -webkit-transition: .4s;
+                                transition: .4s;
+                            }
+
+                        input:checked + .slider {
+                            background-color: #2196F3;
+                        }
+
+                        input:focus + .slider {
+                            box-shadow: 0 0 1px #2196F3;
+                        }
+
+                        input:checked + .slider:before {
+                            -webkit-transform: translateX(26px);
+                            -ms-transform: translateX(26px);
+                            transform: translateX(26px);
+                        }
+
+                        /* Rounded sliders */
+                        .slider.round {
+                            border-radius: 34px;
+                        }
+
+                            .slider.round:before {
+                                border-radius: 50%;
+                            }
+                    </style>
+                    <label class="switch">
+                        @{
+                            if (CusDetail.Status == 1)
+                            {
+                                <input type="checkbox" id="val-check-active" checked>
+                            }
+                            else
+                            {
+                                <input type="checkbox" id="val-check-active">
+                            }
+                        }
+
+                        <span class="slider round"></span>
+                    </label>
+                </td>
+            </tr>
+        </table>
+    </div>
+
+    @* Thông tin ví *@
+    <div class="col-md-12">
+        <div class="breadcrumb-holder">
+            <div class="row mb-3 mt-3">
+                <div class="col-md-10 col-sm-10 col-9 text-dark px-0">
+                    <h5 class="font-weight-bold"> Thông tin ví</h5>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Nav tabs -->
+    <ul class="nav nav-tabs justify-content-center mt-2" role="tablist">
+        @*<li class="nav-item">
+                <a class="nav-link active" data-toggle="tab" href="#profile" onclick="">Thông tin cá nhân</a>
+            </li>*@
+        <li class="nav-item">
+            <a class="nav-link" data-toggle="tab" href="#addPoint" style="width:180px; text-align:center;">Ví point</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" data-toggle="tab" href="#changePoint" style="width:180px; text-align:center;">Ví điểm tích</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" data-toggle="tab" href="#BookHistory">Tài khoản ngân hàng</a>
+        </li>
+    </ul>
+
+    <!-- Tab panes -->
+    <div class="tab-content">
+        <div id="profile" class="tab-pane ">
+            <p class="mt-3 mb-0" style="font-size:25px;">Số điểm: &nbsp;<span class="text-danger text-bold">@String.Format("{0:n0}", CusDetail.Point)</span> điểm</p>
+            <div class="row mx-0 mt-3 mb-3">
+                <div class="col-md-3 offset-md-0 col-sm-10 offset-sm-1 col-10 offset-1 bg-dekko px-4 py-4 text-center">
+                    <div class="avatar">
+                        <img class="avatar-circle avatar-xxlg img-responsive" src="@CusDetail.AvatarUrl" width="300">
+                    </div>
+                    @*<p class="mt-1 mb-0"><span class="text-danger text-bold">@String.Format("{0:n0}", CusDetail.Point)</span> Điểm</p>*@
+                </div>
+                <div class="col-md-9 offset-md-0 col-sm-10 offset-sm-1 col-10 offset-1 bg-white position-relative" style="font-size:20px; font: 22px;">
+                    <div class="row pt-md-5 pt-sm-2 pt-2">
+                        <div class="col-md-6 col-sm-6">
+                            <div class="row">
+                                <div class="col-md-2 col-sm-2 col-2 text-center">
+                                    <i class="fa fa-user-o"></i>
+                                </div>
+                                <div class="col-md-10 col-sm-10 col-10">
+                                    <p class="text-bold">@CusDetail.Name</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-sm-6">
+                            <div class="row">
+                                <div class="col-md-2 col-sm-2 col-2 text-center">
+                                    <i class="fa fa-venus-mars"></i>
+                                </div>
+                                <div class="col-md-10 col-sm-10 col-10">
+                                    @{
+                                        if (CusDetail.Sex == 1)
+                                        {
+                                            <p class="text-bold">Nữ</p>
+                                        }
+                                        else
+                                        {
+                                            <p class="text-bold">Nam</p>
+                                        }
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mt-1">
+                        <div class="col-md-6 col-sm-6">
+                            <div class="row">
+                                <div class="col-md-2 col-sm-2 col-2 text-center">
+                                    <i class="fa fa-phone"></i>
+                                </div>
+                                <div class="col-md-10 col-sm-10 col-10">
+                                    <p class="text-bold">@CusDetail.Phone</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-sm-6">
+                            <div class="row">
+                                <div class="col-md-2 col-sm-2 col-2 text-center">
+                                    <i class="fa fa-birthday-cake"></i>
+                                </div>
+                                <div class="col-md-10 col-sm-10 col-10">
+                                    <p class="text-bold">@CusDetail.DOB.ToString("dd/MM/yyyy")</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mt-1">
+                        <div class="col-md-6 col-sm-6">
+                            <div class="row">
+                                <div class="col-md-2 col-sm-2 col-2 text-center">
+                                    <i class="fa fa-envelope-o"></i>
+                                </div>
+                                <div class="col-md-10 col-sm-10 col-10">
+                                    @{
+                                        if (CusDetail.Email == "" || CusDetail.Email == null)
+                                        {
+                                            <p class="text-white">.</p>
+                                        }
+                                        else
+                                        {
+                                            <p class="text-bold">@CusDetail.Email</p>
+                                        }
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-sm-6">
+                            <div class="row">
+                                <div class="col-md-2 col-sm-2 col-2 text-center">
+                                    <i class="fa fa-map-marker"></i>
+                                </div>
+                                <div class="col-md-10 col-sm-10 col-10">
+                                    <p class="text-bold">@CusDetail.Address</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mt-1">
+                        <div class="col-md-6 col-sm-6">
+                            @{
+                                if (CusDetail.Status == 1)
+                                {
+                                    <div class="row">
+                                        <div class="col-md-2 col-sm-2 col-2 text-center">
+                                            <i class="fa fa-toggle-on" style="color:green"></i>
+                                        </div>
+                                        <div class="col-md-10 col-sm-10 col-10">
+                                            @*@{
+                                                    if (CusDetail.Role == 1)
+                                                    {
+                                                        <p class="text-bold">Khách Hàng</p>
+                                                    }
+                                                    else if (CusDetail.Role == 2)
+                                                    {
+                                                        <p class="text-bold">Đại Lý</p>
+                                                    }
+                                                }*@
+                                            <p class="text-bold">Hoạt động</p>
+                                        </div>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="row">
+                                        <div class="col-md-2 col-sm-2 col-2 text-center">
+                                            <i class="fa fa-toggle-off" style="color:black"></i>
+                                        </div>
+                                        <div class="col-md-10 col-sm-10 col-10">
+                                            @*@{
+                                                    if (CusDetail.Role == 1)
+                                                    {
+                                                        <p class="text-bold">Khách Hàng</p>
+                                                    }
+                                                    else if (CusDetail.Role == 2)
+                                                    {
+                                                        <p class="text-bold">Đại Lý</p>
+                                                    }
+                                                }*@
+                                            <p class="text-bold">Dừng hoạt động</p>
+                                        </div>
+                                    </div>
+                                }
+                            }
+                            @*<div class="row">
+                                    <div class="col-md-2 col-sm-2 col-2 text-center">
+                                        <i class="fa fa-smile-o"></i>
+                                    </div>
+                                    <div class="col-md-10 col-sm-10 col-10">
+                                        @{
+                                            if (CusDetail.Role == 1)
+                                            {
+                                                <p class="text-bold">Khách Hàng</p>
+                                            }
+                                            else if (CusDetail.Role == 2)
+                                            {
+                                                <p class="text-bold">Đại Lý</p>
+                                            }
+                                        }
+                                    </div>
+                                </div>*@
+                        </div>
+                        <div class="col-md-6 col-sm-6">
+                            @*<div class="row">
+                                    <div class="col-md-2 col-sm-2 col-2 text-center">
+                                        <i class="fa fa-trophy"></i>
+                                    </div>
+                                    <div class="col-md-10 col-sm-10 col-10">
+                                        @{
+                                            if (CusDetail.PointRanking >= SliverRank.MinPoint && CusDetail.PointRanking <= SliverRank.MaxPoint)
+                                            {
+                                                <p class="text-bold">Bạc</p>
+                                            }
+                                            else if (CusDetail.PointRanking >= GoldRank.MinPoint && CusDetail.PointRanking <= GoldRank.MaxPoint)
+                                            {
+                                                <p class="text-bold">Vàng</p>
+                                            }
+                                            else if (CusDetail.PointRanking >= PlatinumRank.MinPoint)
+                                            {
+                                                <p class="text-bold">Bạch Kim</p>
+                                            }
+                                            else
+                                            {
+                                                <p class="text-bold">Thành Viên</p>
+                                            }
+                                        }
+                                    </div>
+                                </div>*@
+                        </div>
+                    </div>
+                    <button data-toggle="modal" data-target="#EditCustomer" data-placement="top" title="Chỉnh Sửa Thông Tin." class="btn btn-outline-danger btn-delete-customer"><i class="fa fa-edit"></i></button>
+                </div>
+            </div>
+        </div>
+        @* Lịch sử tích điểm *@
+        <div id="addPoint" class="tab-pane active">
+
+            <div class="row mb-2 mt-2 ml-2">
+                <p class="mt-3 mb-0" style="font-size:25px;">Số điểm: &nbsp;<span class="text-danger text-bold">@String.Format("{0:0.00}", CusDetail.Point)</span> điểm</p>
+            </div>
+            <div class="row mb-2 mt-2 ml-2">
+                <p>Lịch sử ví Point</p>
+            </div>
+
+            <div class="row" id="ListHistoryPoint">
+                @{Html.RenderAction("SearchHistoryPoint", "Customer", new { Page = 1, cusID = CusDetail.ID }); }
+            </div>
+
+        </div>
+
+        @* Ví tích điểm *@
+        <div id="changePoint" class="tab-pane">
+            <div class="row mb-2 mt-2 ml-2">
+                <p class="mt-3 mb-0" style="font-size:25px;">Số điểm: &nbsp;<span class="text-danger text-bold">@String.Format("{0:0.00}", CusDetail.PointRanking)</span> điểm</p>
+            </div>
+            <div class="row mb-2 mt-2 ml-2">
+                <p>Lịch sử tích điểm</p>
+            </div>
+
+            <div class="row" id="ListRequest">
+                @{Html.RenderAction("SearchHistoryPointR", "Customer", new { Page = 1, cusID = CusDetail.ID }); }
+            </div>
+        </div>
+
+        @* tài khoản ngân hàng *@
+        <div id="BookHistory" class="tab-pane">
+            <div class="row" id="ListCustomerbank">
+                @{
+                    foreach (var data in (List<ListCustomerBank>)ViewBag.CustomerBank)
+                    {
+                                <div class="col-md-5 col-8 mt-5 ml-5" style="background-color: white; border-radius:6px; font-size:20px;">
+                                    <div class="row ">
+                                        <div class="col-md-12 col-sm-12 col-12 text-center">
+                                            <p>@data.BankName</p>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-3 col-sm-2 col-2 text-center ">
+                                            @*<i class="fa fa-bank" style="color: blueviolet"></i>*@
+                                            <img style="width:50px; height:50px;" src="@data.ImgUrl"></img>
+                                        </div>
+                                        <div class="col-md-8 col-sm-10 col-10 mt-1">
+                                            <p>@data.ShortName</p>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-3 col-sm-2 col-2 text-center">
+                                            <i class="fa fa-user-o" style="color: black"></i>
+                                        </div>
+                                        <div class="col-md-8 col-sm-10 col-10">
+                                            <p>@data.BankAcount</p>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-3 col-sm-2 col-2 text-center">
+                                            <i class="fa fa-address-card" style="color: black"></i>
+                                        </div>
+                                        <div class="col-md-8 col-sm-10 col-10">
+                                            <p>@data.BankOwer</p>
+                                        </div>
+                                    </div>
+                                </div>
+                    }
+
+                    //Html.RenderAction("searchCustomerbank", "Customer", new { Page = 1, cusID = CusDetail.ID });
+                }
+            </div>
+        </div>
+
+    </div>
+    @*  
+    <div class="modal fade" id="EditCustomer" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog mw-100 w-50" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel"><i class="fa fa-calendar"></i> Sửa thông tin khách hàng</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form id="frmEdit_Customer" method="post">
+                    <div class="modal-body">
+                        <div class="row pb-3">
+                            <div class="col-md-12 col-sm-12 col-12">
+                                <input type="hidden" value="@CusDetail.ID" id="data_id" />
+                                <label>Tên Khách Hàng<span class="text-danger"> *</span></label>
+                                <input type="text" class="form-control" name="cusName" id="txtCusName" value="@CusDetail.Name" placeholder="Tên Khách Hàng" />
+                            </div>
+                        </div>
+                        <div class="row pb-3">
+                            <div class="col-md-12 col-sm-12 col-12">
+                                <label>Số Điện Thoại</label>
+                                <input type="text" readonly class="form-control" name="cusPhone" id="txtCusPhone" value="@CusDetail.Phone" placeholder="Số Điện Thoại" />
+                            </div>
+                        </div>
+                        <div class="row pb-3">
+                            <div class="col-md-12 col-sm-12 col-12">
+                                <label>Email</label>
+                                <input type="email" class="form-control" id="txtCusEmail" value="@CusDetail.Email" name="cusEmail" placeholder="Email">
+                            </div>
+                        </div>
+                        <div class="row pb-3">
+                            <div class="col-md-12 col-sm-12 col-12">
+                                <label>Giới Tính</label>
+                                <select class="form-control" id="cmbSex" name="cusSex">
+                                    <option value="2">Nam</option>
+                                    <option value="1">Nữ</option>
+                                    <option value="0">Khách hàng chưa cập nhật</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row pb-3">
+                            <div class="col-md-12 col-sm-12 col-12">
+                                <label>Ngày Sinh</label>
+                                <input type="text" class="form-control relative-icon-calendar-warranty date" value="@CusDetail.DOB.ToString("dd/MM/yyyy")" id="dtpBirthDay" name="BirthDay" placeholder="Ngày Sinh">
+                                <i class="fa fa-calendar absolute-icon-calendar-warranty"></i>
+                            </div>
+                        </div>
+                        <div class="row pb-3">
+                            <div class="col-md-12 col-sm-12 col-12">
+                                <label>Địa Chỉ</label>
+                                <input type="text" id="txtAddress" name="cusAdress" class="form-control" value="@CusDetail.Address" placeholder="Địa chỉ" />
+                            </div>
+                        </div>
+                        @*<div class="row pb-3">
+                                <div class="col-md-12 col-sm-12 col-12">
+                                    <label>Trạng thái</label>
+                                    <select class="form-control" id="cbbStatusUpdate" name="cbbStatusUpdate">
+                                        <option value="1">Hoạt động</option>
+                                        <option value="0">Tạm dừng</option>
+                                    </select>
+                                </div>
+                            </div>
+                        @{
+                            if (CusDetail.Role == 2)
+                            {
+                                <div class="row mt-3">
+                                    <div class="col-md-4 offset-md-4 text-center">
+                                        <p class="text-bold text-center">Ảnh đại lý</p>
+                                    </div>
+                                    <div class="col-md-4 text-right">
+                                        <a href="" class="text-bold mb-3" style="width:100%;height:100%; color: #5A5A5A;" id="addImg" title="Thêm ảnh">
+                                            <img id="Imgtag" src="https://cdn4.iconfinder.com/data/icons/social-communication/142/add_photo-512.png" class="col-ml-2 col-md-2 px-0" alt="Chọn" />
+                                        </a>
+                                    </div>
+                                </div>
+                                if (ViewBag.listCusImage == null)
+                                {
+
+                                }
+                                else
+                                {
+                                    <div class="row mt-2">
+                                        <div class="col-md-12" id="divAddImg">
+
+                                            @foreach (var c in (List<ListImageAgentModel>)ViewBag.listCusImage)
+                                            {
+                                                <div class="col-md-4 float-left mt-2 text-right" id="c_@c.ID">
+                                                    <i type="button" id="@c.ID" title="Xóa ảnh" class="fa fa-2x fa-remove text-danger" onclick="delImageAgent(@c.ID)"></i>
+                                                    <img src="@c.ImgUrl" class="w-100 h-100" alt="Error">
+                                                    <script>
+                                                        $(document).ready(function () {
+                                                            $("#@c.ID").click(function () {
+                                                                $("#c_@c.ID").hide(300);
+                                                            });
+                                                        });
+                                                    </script>
+                                                </div>
+
+                                            }
+                                            <input type="hidden" id="val_id_img" />
+                                            <input type="hidden" id="txturlImage" />
+                                            @*Lấy ID ảnh đại lý
+                                            <script type="text/javascript">
+                                                var idImg = [];
+                                                function delImageAgent($id) {
+                                                    idImg.push($id);
+                                                    document.getElementById("val_id_img").innerHTML = idImg;
+                                                    document.getElementById("val_id_img").value = idImg;
+                                                }
+                                            </script>
+                                        </div>
+                                    </div>
+                                }
+                            }
+                            else { }
+                        }
+
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Đóng</button>
+                        <button type="submit" id="btnSaveEdit" onclick="saveEditCustomer(@CusDetail.ID)" class="btn btn-primary px-3">Lưu</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    *@
+    <div class="modal-footer">
+        <a class="btn btn-danger" style="width:110px;" href="javascript:void(0);" onclick="backToIndexCustomer()"><i class="fa fa-fw fa-arrow-left"></i> Trở về</a>
+        <button type="submit" id="btnSaveEdit" style="width:110px;" onclick="saveEditCustomer(@CusDetail.ID)" class="btn btn-primary px-3">Lưu</button>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+
+        $('.date').datepicker({
+           dateFormat: "dd/mm/yy"
+        });
+        
+        $('#EditCustomer #cmbSex').val(@CusDetail.Sex);
+        $('#EditCustomer #cbbStatusUpdate').val(@CusDetail.Status);
+
+    }); //end document.ready
+</script>
+
+
+<script type="text/javascript">
+
+    var count = 0;
+    $("#addImg").off('click').on('click', function (e) {
+        e.preventDefault();
+        count++;
+        var fider = new CKFinder();
+        fider.selectActionFunction = function (fileUrl) {
+            $("#divAddImg").append('<div id="img_' + count + '" class="col-md-4 float-left mt-2 text-right"><i onclick="DeleteImg($(this));" src="' + fileUrl + '" class="fa fa-2x fa-remove text-danger" data="img_' + count + '" title="Xóa" ></i><input type="hidden" name="ImageUrl" value="' + fileUrl + '"><img class="imgCreateShop cursor-pointer" width="100%" height="100%" src="' + fileUrl + '" onclick="ChangeImg($(this));" /></div>');
+            var listUrl = $("#txturlImage").val();
+            if (listUrl == "") {
+                listUrl = fileUrl;
+                $("#txturlImage").val(listUrl);
+            }
+            else {
+                var url = listUrl + "," + fileUrl;
+                $("#txturlImage").val(url);
+            }
+        }
+        fider.popup();
+    });
+</script>
+
+<script type="text/javascript">
+    var count = 0;
+    $("#addImg2").off('click').on('click', function (e) {
+        e.preventDefault();
+        count++;
+        var fider = new CKFinder();
+        fider.selectActionFunction = function (fileUrl) {
+            $("#divAddImg2").append('<div id="img_' + count + '" class="col-md-4 float-left mt-2" style ="box-sizing:border-box;display:inline-block;margin-top:10px;"><img class="imgCreateShop cursor-pointer" width="100%" height="100%" src="' + fileUrl + '" onclick="ChangeImg($(this));" /><i onclick="DeleteImg($(this));" src="' + fileUrl + '" class="fa fa-2x fa-remove " data="img_' + count + '" title="Xóa"  style="position:relative;top:-42px;left:-23px;color: #ff0000;"></i></div>');
+            var listUrl = $("#txturlImage").val();
+            if (listUrl == "") {
+                listUrl = fileUrl;
+                $("#txturlImage").val(listUrl);
+            }
+            else {
+                var url = listUrl + "," + fileUrl;
+                $("#txturlImage").val(url);
+            }
+        }
+        fider.popup();
+    });
+</script>
+
+<script type="text/javascript">
+    function ChangeImg($url) {
+        var fider = new CKFinder();
+        fider.selectActionFunction = function (fileUrl) {
+            var url_old = $url.attr('src');
+            $url.attr('src', fileUrl);
+            if (fileUrl != url_old) {
+                var str = $('#txturlImage').val().replace(url_old, fileUrl);
+                $('#txturlImage').val(str);
+            }
+        }
+        fider.popup();
+    }
+</script>
+
+<script type="text/javascript">
+    function DeleteImg(obj) {
+        var temp = obj.attr('data');
+        var url = obj.attr('src');
+        $('#' + temp + '').remove();
+        var str = $('#txturlImage').val();
+        $('#txturlImage').val(str.replace(url, ""));
+    }
+</script>
