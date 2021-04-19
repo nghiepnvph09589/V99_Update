@@ -1,0 +1,186 @@
+﻿@using Data.DB
+@using Data.Model.APIWeb
+@using PagedList.Mvc
+@using PagedList
+@model IPagedList<ListCustomerOutputModel>
+
+
+<table class="table table-light table-bordered table-hover table-responsive-sm table-responsive-md">
+    <thead class="text-center text-white bg-thead">
+        <tr>
+            <th>STT</th>
+            <th>Họ tên</th>
+            <th>Điện thoại</th>
+            @*<th class="wrap">Đối tượng</th>
+        <th>Ranking</th>*@
+            <th>Email</th>
+            @*<th>Đăng nhập</th>*@
+            @*<th>Số điểm</th>*@
+            <th>Ví point</th>
+            <th>Ví điểm tích</th>
+            <th>Trạng thái</th>
+            <th>Mã giới thiệu</th>
+            <th class="widthCreatedDate">Ngày tạo</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @{
+            if (Model.Count <= 0)
+            {
+                <tr class="text-center">
+                    <td colspan="10">Không có dữ liệu.</td>
+                </tr>
+            }
+            else
+            {
+                int stt = ((Model.PageNumber - 1) * Model.PageSize) + 1;
+                foreach (var cus in Model)
+                {
+    <tr>
+        <td>@stt</td>
+        <td>@cus.CustomerName</td>
+        <td id="colPhone">@cus.PhoneNumber</td>
+        @*@{
+            if (cus.Role == 2)
+            {
+                <td>Đại Lý</td>
+            }
+            else
+            {
+                <td>Khách Hàng</td>
+            }
+        }
+        @{
+            if (cus.PointRanking >= 0 && cus.PointRanking <= 999)
+            {
+                <td>Thành viên</td>
+            }
+            if (cus.PointRanking >= 1000 && cus.PointRanking <= 9999)
+            {
+                <td>Bạc</td>
+            }
+            if (cus.PointRanking >= 10000 && cus.PointRanking <= 29999)
+            {
+                <td>Vàng</td>
+            }
+            if (cus.PointRanking >= 30000)
+            {
+                <td>Bạch kim</td>
+            }
+        }*@
+        <td>
+            @{
+                if (@cus.Email == "" || @cus.Email == null)
+                {
+                    <p>Chưa cập nhật</p>
+                }
+                else
+                {
+                    <p class="">@cus.Email</p>
+                }
+            }
+        </td>
+
+
+
+        @*@{
+            if (@cus.TypeLogin == 1)
+            {
+                <td>FACEBOOK</td>
+            }
+            else if (@cus.TypeLogin == 2)
+            {
+                <td>Google</td>
+            }
+            else if (@cus.TypeLogin == 3)
+            {
+                <td>Số Điện Thoại</td>
+            }
+        }*@
+
+        <!--<td>@cus.Address-->@*@String.Format("{0:n0}", cus.Point)*@<!--</td>-->
+        <td>@String.Format("{0:0,0.00}", @cus.Point)</td>
+        <td>@String.Format("{0:0,0.00}", @cus.PointRanking)</td>
+        @{
+            if (cus.Status == 1)
+            {
+                <td class="text-primary">Hoạt động</td>
+            }
+            else if (cus.Status == 0)
+            {
+                <td class="text-danger">Dừng hoạt động</td>
+            }
+        }
+        <td>@cus.LastRefCode</td>
+        <td>@cus.CreateDate.Value.ToString("dd/MM/yyyy")</td>
+        <td class="width2btn text-center" style="width:140px; ">
+            <a href="javascript:void(0);" data-placement="top" title="Reset mật khẩu" class="cursor-pointer text-sm-center" style="font-size:16px;" onclick="RefreshCus(@cus.CustomerID)">
+                <i class="btnPoint fa fa-refresh"></i>
+            </a>
+            <a href="javascript:void(0);" data-placement="top" title="Cộng điểm" class="cursor-pointer" style="font-size:16px;" onclick="ShowAddPoint(@cus.CustomerID)">
+                <i class="btnPoint fa fa-money"></i>
+            </a>
+            <a href="javascript:void(0);" onclick="GetCustomerDetail(@cus.CustomerID)" data-toggle="tooltip" data-placement="top" title="Chi tiết khách hàng." class="cursor-pointer">
+                <i class="btnEdit fa fa-eye"></i>
+            </a>
+            <a href="javascript:void(0);" data-toggle="tooltip" data-placement="top" title="Xóa yêu cầu." class="cursor-pointer" onclick="DeleteCus(@cus.CustomerID)">
+                <i class="btnDelete fa fa-trash-o"></i>
+            </a>
+        </td>
+    </tr>
+                    stt++;
+                }
+            }
+
+        }
+    </tbody>
+</table>
+
+@* Modal *@
+<!-- start modal -->
+
+
+<div class="col-md-12">
+    <div class="row float-right">
+        @*phân trang*@
+        @Html.PagedListPager(
+        Model,
+        page => Url.Action("Search", "Customer", new { Page = page, FromDate = ViewBag.FromDateCus, ToDate = ViewBag.ToDateCus, City = ViewBag.City, District = ViewBag.District, Phone = ViewBag.PhoneSearch, Role = ViewBag.Role }),
+        PagedListRenderOptions.EnableUnobtrusiveAjaxReplacing(new AjaxOptions() { HttpMethod = "GET", UpdateTargetId = "ListCustomer" })
+        )
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+
+        var strListPhone = "";
+        var strListID = "";
+        $("#checkAll").on('click', function () {
+            if ($(this).is(':checked', true)) {
+                $(".icheck").prop("checked", true);
+            }
+            else {
+                $(".icheck").prop("checked", false);
+            }
+        });
+
+
+
+    });
+
+
+    function ShowAddPoint(id) {
+        $.ajax({
+            url: '/Customer/Detail',
+            type: 'GET',
+            data: {
+                Id: id
+            }, success: function (res) {
+                $("#addpoint").html(res);
+                $("#mdAddPoint").modal("show");
+            }
+        })
+    }
+</script>

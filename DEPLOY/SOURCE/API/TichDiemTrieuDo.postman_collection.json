@@ -1,0 +1,1018 @@
+{
+	"id": "241038e3-b374-c6b3-b26c-d4dbdbf22b65",
+	"name": "TichDiemTrieuDo",
+	"description": "",
+	"order": [
+		"fa34ae76-7622-a36e-bb33-8e61cb346bfb",
+		"406c946d-27cb-c01c-d08a-16d1cd0bacbd",
+		"0081c420-9bf2-4cae-d434-584fcdd7ae41",
+		"555a2e1f-683f-f372-e722-708b600e7e89",
+		"9116abf7-47db-f319-720b-764cc910202c",
+		"ef7160ce-9cf8-2e34-700d-5b66f15fa566",
+		"0326b37d-35bb-05c8-f8e0-6183af3c72e0",
+		"aa511c3d-8083-a42f-a18f-a4239570f14b",
+		"70b68765-1266-42df-c2f7-58705056e257",
+		"10bda7f7-276c-3436-59ef-2a33f3e6638d",
+		"451b4ef9-f4cf-0ea5-dd1f-2dcfa677fcdc",
+		"3d9f36e2-7f3b-9745-399d-a37de113bcd9",
+		"102bc38b-3555-0e61-d0e9-86550f333864",
+		"71fe8b99-93b8-0b88-3690-3cbdd77f8aaa",
+		"8f69f1a8-238d-4b24-55b8-ddc17683e52c",
+		"aaca2931-5eee-7590-57bb-d5d590c51815",
+		"f4b3da85-bb6c-a8ea-e50d-a228822075c2",
+		"0abca4af-3b23-a03b-b84a-14c32fc518e0",
+		"20e518c1-d539-bb18-6039-5b232ac91033",
+		"42214e1d-eee6-b8f8-92a2-54fec89470b7",
+		"b5159f7f-07cb-781d-a27c-d428c3f9d2d0",
+		"8e7183e7-da17-1fca-0c2d-0b7983ea1540",
+		"046fac12-a153-019f-54f0-98f81103db34",
+		"731d9dea-a7d5-0c9a-b52f-29746c2847d0",
+		"0ae05eaf-29f2-05b9-9594-aefaedd510bd",
+		"c8cd1260-51df-416d-1d40-5d45de400b24",
+		"f846816f-abb4-434e-81b0-2b7ea11e0dd8",
+		"9e4b3b58-b169-1194-38aa-2e1b70424d87"
+	],
+	"folders": [],
+	"folders_order": [],
+	"timestamp": 1598673218362,
+	"owner": "9789799",
+	"public": false,
+	"requests": [
+		{
+			"id": "0081c420-9bf2-4cae-d434-584fcdd7ae41",
+			"headers": "Content-Type: application/json\n",
+			"headerData": [
+				{
+					"key": "Content-Type",
+					"value": "application/json",
+					"description": "",
+					"enabled": true
+				}
+			],
+			"url": "{{server}}api/Service/CheckLoginApp",
+			"queryParams": [],
+			"preRequestScript": null,
+			"pathVariables": {},
+			"pathVariableData": [],
+			"method": "POST",
+			"data": [],
+			"dataMode": "raw",
+			"version": 2,
+			"tests": "let response = pm.response.json()\r\nif (response.data && response.data.token) {\r\n    pm.environment.set('token', response.data.token);\r\n}",
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1600249005745,
+			"name": "Login",
+			"description": "",
+			"collectionId": "241038e3-b374-c6b3-b26c-d4dbdbf22b65",
+			"responses": [],
+			"rawModeData": "{\n\"Phone\":\"0334947012\",\n\"Password\":\"123456a@\",\n\"DeviceID\":\"abc\",\n\"Name\":\"ThanhBV\"\n\n}"
+		},
+		{
+			"id": "0326b37d-35bb-05c8-f8e0-6183af3c72e0",
+			"headers": "Content-Type: application/json\n",
+			"headerData": [
+				{
+					"key": "Content-Type",
+					"value": "application/json",
+					"description": "",
+					"enabled": true
+				}
+			],
+			"url": "{{server}}api/Service/Register",
+			"queryParams": [],
+			"preRequestScript": null,
+			"pathVariables": {},
+			"pathVariableData": [],
+			"method": "POST",
+			"data": [],
+			"dataMode": "raw",
+			"tests": null,
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1599816869470,
+			"name": "Register",
+			"description": "",
+			"collectionId": "241038e3-b374-c6b3-b26c-d4dbdbf22b65",
+			"responses": [],
+			"rawModeData": "{\n\"Phone\":\"0334947012\",\n\"Password\":\"123456a@\",\n\"DeviceID\":\"abc\",\n\"Name\":\"ThanhHB\"\n\n}"
+		},
+		{
+			"id": "046fac12-a153-019f-54f0-98f81103db34",
+			"headers": "token: {{token}}\n",
+			"headerData": [
+				{
+					"key": "token",
+					"value": "{{token}}",
+					"description": "",
+					"enabled": true
+				}
+			],
+			"url": "{{server}}api/Service/GetHomeScreen",
+			"queryParams": [],
+			"pathVariables": {},
+			"pathVariableData": [],
+			"preRequestScript": null,
+			"method": "GET",
+			"collectionId": "241038e3-b374-c6b3-b26c-d4dbdbf22b65",
+			"data": null,
+			"dataMode": "params",
+			"name": "GetHomeScreen",
+			"description": "",
+			"descriptionFormat": "html",
+			"time": 1599645983205,
+			"version": 2,
+			"responses": [],
+			"tests": null,
+			"currentHelper": "normal",
+			"helperAttributes": {}
+		},
+		{
+			"id": "0abca4af-3b23-a03b-b84a-14c32fc518e0",
+			"headers": "Content-Type: application/json\n",
+			"headerData": [
+				{
+					"key": "Content-Type",
+					"value": "application/json",
+					"description": "",
+					"enabled": true
+				}
+			],
+			"url": "{{server}}api/Service/forgotPassword",
+			"queryParams": [],
+			"preRequestScript": null,
+			"pathVariables": {},
+			"pathVariableData": [],
+			"method": "POST",
+			"data": [],
+			"dataMode": "raw",
+			"tests": null,
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1599619031654,
+			"name": "forgotPassword",
+			"description": "",
+			"collectionId": "241038e3-b374-c6b3-b26c-d4dbdbf22b65",
+			"responses": [],
+			"rawModeData": "{\n\t\"Phone\":\"0334947012\"\n}"
+		},
+		{
+			"id": "0ae05eaf-29f2-05b9-9594-aefaedd510bd",
+			"headers": "token: {{token}}\n",
+			"headerData": [
+				{
+					"key": "token",
+					"value": "{{token}}",
+					"description": "",
+					"enabled": true
+				}
+			],
+			"url": "{{server}}api/Service/GetHistyoriesDetail?ID=250",
+			"queryParams": [
+				{
+					"key": "ID",
+					"value": "250",
+					"equals": true,
+					"description": "",
+					"enabled": true
+				}
+			],
+			"preRequestScript": null,
+			"pathVariables": {},
+			"pathVariableData": [],
+			"method": "GET",
+			"data": null,
+			"dataMode": "params",
+			"tests": null,
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1600157554815,
+			"name": "GetHistyoriesDetail",
+			"description": "",
+			"collectionId": "241038e3-b374-c6b3-b26c-d4dbdbf22b65",
+			"responses": []
+		},
+		{
+			"id": "102bc38b-3555-0e61-d0e9-86550f333864",
+			"headers": "Content-Type: application/json\ntoken: 14236A971966ED49BEE47F1D8CBD68A9\n",
+			"headerData": [
+				{
+					"key": "Content-Type",
+					"value": "application/json",
+					"description": "",
+					"enabled": true
+				},
+				{
+					"key": "token",
+					"value": "14236A971966ED49BEE47F1D8CBD68A9",
+					"description": "",
+					"enabled": true
+				}
+			],
+			"url": "{{server}}api/Service/AddBankAccount",
+			"queryParams": [],
+			"preRequestScript": null,
+			"pathVariables": {},
+			"pathVariableData": [],
+			"method": "POST",
+			"data": [],
+			"dataMode": "raw",
+			"tests": null,
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1599493717373,
+			"name": "AddBankAccount",
+			"description": "",
+			"collectionId": "241038e3-b374-c6b3-b26c-d4dbdbf22b65",
+			"responses": [],
+			"rawModeData": "{\n\t\"ID\":3,\n\t\"CodeBankAccount\":\"0351001028056\",\n\t\"UserName\":\"Thanh HB\"\n}"
+		},
+		{
+			"id": "10bda7f7-276c-3436-59ef-2a33f3e6638d",
+			"headers": "",
+			"headerData": [],
+			"url": "{{server}}api/Service/GetListMember?searchKey=0334947012",
+			"queryParams": [
+				{
+					"key": "searchKey",
+					"value": "0334947012",
+					"equals": true,
+					"description": "",
+					"enabled": true
+				}
+			],
+			"preRequestScript": null,
+			"pathVariables": {},
+			"pathVariableData": [],
+			"method": "GET",
+			"data": null,
+			"dataMode": "params",
+			"tests": null,
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1599400720246,
+			"name": "GetListMember",
+			"description": "",
+			"collectionId": "241038e3-b374-c6b3-b26c-d4dbdbf22b65",
+			"responses": []
+		},
+		{
+			"id": "20e518c1-d539-bb18-6039-5b232ac91033",
+			"headers": "Content-Type: application/json\n",
+			"headerData": [
+				{
+					"key": "Content-Type",
+					"value": "application/json",
+					"description": "",
+					"enabled": true
+				}
+			],
+			"url": "{{server}}api/Service/UpdatePassword",
+			"queryParams": [],
+			"pathVariables": {},
+			"pathVariableData": [],
+			"preRequestScript": null,
+			"method": "POST",
+			"collectionId": "241038e3-b374-c6b3-b26c-d4dbdbf22b65",
+			"data": [],
+			"dataMode": "raw",
+			"name": "UpdatePassword",
+			"description": "",
+			"descriptionFormat": "html",
+			"time": 1599619129691,
+			"version": 2,
+			"responses": [],
+			"tests": null,
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"rawModeData": "{\n\t\"Phone\":\"0334947012\",\n\t\"Password\":\"123456\"\n}"
+		},
+		{
+			"id": "3d9f36e2-7f3b-9745-399d-a37de113bcd9",
+			"headers": "",
+			"headerData": [],
+			"url": "{{server}}api/Service/GetListBank",
+			"queryParams": [],
+			"pathVariables": {},
+			"pathVariableData": [],
+			"preRequestScript": null,
+			"method": "GET",
+			"collectionId": "241038e3-b374-c6b3-b26c-d4dbdbf22b65",
+			"data": null,
+			"dataMode": "params",
+			"name": "GetListBank",
+			"description": "",
+			"descriptionFormat": "html",
+			"time": 1599493339869,
+			"version": 2,
+			"responses": [],
+			"tests": null,
+			"currentHelper": "normal",
+			"helperAttributes": {}
+		},
+		{
+			"id": "406c946d-27cb-c01c-d08a-16d1cd0bacbd",
+			"headers": "",
+			"headerData": [],
+			"url": "http://localhost:11111/api/Service/getListCategory",
+			"queryParams": [],
+			"pathVariables": {},
+			"pathVariableData": [],
+			"preRequestScript": null,
+			"method": "GET",
+			"collectionId": "241038e3-b374-c6b3-b26c-d4dbdbf22b65",
+			"data": null,
+			"dataMode": "params",
+			"name": "GetListCategory",
+			"description": "",
+			"descriptionFormat": "html",
+			"time": 1598673834657,
+			"version": 2,
+			"responses": [],
+			"tests": null,
+			"currentHelper": "normal",
+			"helperAttributes": {}
+		},
+		{
+			"id": "42214e1d-eee6-b8f8-92a2-54fec89470b7",
+			"headers": "token: {{token}}\n",
+			"headerData": [
+				{
+					"key": "token",
+					"value": "{{token}}",
+					"description": "",
+					"enabled": true
+				}
+			],
+			"url": "{{server}}api/Service/ListHistoryPointMember?Type=2&page=1&limit=10&TypePoint=1",
+			"queryParams": [
+				{
+					"key": "Type",
+					"value": "2",
+					"equals": true,
+					"description": "",
+					"enabled": true
+				},
+				{
+					"key": "page",
+					"value": "1",
+					"equals": true,
+					"description": "",
+					"enabled": true
+				},
+				{
+					"key": "limit",
+					"value": "10",
+					"equals": true,
+					"description": "",
+					"enabled": true
+				},
+				{
+					"key": "TypePoint",
+					"value": "1",
+					"equals": true,
+					"description": "",
+					"enabled": true
+				}
+			],
+			"preRequestScript": null,
+			"pathVariables": {},
+			"pathVariableData": [],
+			"method": "GET",
+			"data": null,
+			"dataMode": "params",
+			"tests": null,
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1599649512387,
+			"name": "ListHistoryPointMember",
+			"description": "",
+			"collectionId": "241038e3-b374-c6b3-b26c-d4dbdbf22b65",
+			"responses": []
+		},
+		{
+			"id": "451b4ef9-f4cf-0ea5-dd1f-2dcfa677fcdc",
+			"headers": "token: {{token}}\nContent-Type: application/json\n",
+			"headerData": [
+				{
+					"key": "token",
+					"value": "{{token}}",
+					"description": "",
+					"enabled": true
+				},
+				{
+					"key": "Content-Type",
+					"value": "application/json",
+					"description": "",
+					"enabled": true
+				}
+			],
+			"url": "{{server}}api/Service/MovePoint",
+			"queryParams": [],
+			"preRequestScript": null,
+			"pathVariables": {},
+			"pathVariableData": [],
+			"method": "POST",
+			"data": [],
+			"dataMode": "raw",
+			"tests": null,
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1600081167157,
+			"name": "MovePoint",
+			"description": "",
+			"collectionId": "241038e3-b374-c6b3-b26c-d4dbdbf22b65",
+			"responses": [],
+			"rawModeData": "{\n\t\"phone\":\"0327764411\",\n\t\"point\":1000,\n\t\"note\":\"Chuyển tiền cho Link\"\n}"
+		},
+		{
+			"id": "555a2e1f-683f-f372-e722-708b600e7e89",
+			"headers": "",
+			"headerData": [],
+			"url": "http://localhost:11111/api/Service/GetHomeScreen",
+			"queryParams": [],
+			"pathVariables": {},
+			"pathVariableData": [],
+			"preRequestScript": null,
+			"method": "GET",
+			"collectionId": "241038e3-b374-c6b3-b26c-d4dbdbf22b65",
+			"data": null,
+			"dataMode": "params",
+			"name": "GetHomeScreen",
+			"description": "",
+			"descriptionFormat": "html",
+			"time": 1598673863989,
+			"version": 2,
+			"responses": [],
+			"tests": null,
+			"currentHelper": "normal",
+			"helperAttributes": {}
+		},
+		{
+			"id": "70b68765-1266-42df-c2f7-58705056e257",
+			"headers": "//point: 500\n//BankID: 3\ntoken: {{token}}\nContent-Type: application/json\n",
+			"headerData": [
+				{
+					"key": "point",
+					"value": "500",
+					"description": "",
+					"enabled": false
+				},
+				{
+					"key": "BankID",
+					"value": "3",
+					"description": "",
+					"enabled": false
+				},
+				{
+					"key": "token",
+					"value": "{{token}}",
+					"description": "",
+					"enabled": true
+				},
+				{
+					"key": "Content-Type",
+					"value": "application/json",
+					"description": "",
+					"enabled": true
+				}
+			],
+			"url": "{{server}}api/Service/DrawPoint",
+			"queryParams": [],
+			"preRequestScript": null,
+			"pathVariables": {},
+			"pathVariableData": [],
+			"method": "POST",
+			"data": [],
+			"dataMode": "raw",
+			"tests": null,
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1600076236843,
+			"name": "DrawPoint",
+			"description": "",
+			"collectionId": "241038e3-b374-c6b3-b26c-d4dbdbf22b65",
+			"responses": [],
+			"rawModeData": "{\n\t\"point\":350,\n\t\"BankID\":19\n}"
+		},
+		{
+			"id": "71fe8b99-93b8-0b88-3690-3cbdd77f8aaa",
+			"headers": "token: 14236A971966ED49BEE47F1D8CBD68A9\n",
+			"headerData": [
+				{
+					"key": "token",
+					"value": "14236A971966ED49BEE47F1D8CBD68A9",
+					"description": "",
+					"enabled": true
+				}
+			],
+			"url": "{{server}}api/Service/DelBankAccount?ID=4",
+			"queryParams": [
+				{
+					"key": "ID",
+					"value": "4",
+					"equals": true,
+					"description": "",
+					"enabled": true
+				}
+			],
+			"preRequestScript": null,
+			"pathVariables": {},
+			"pathVariableData": [],
+			"method": "GET",
+			"data": null,
+			"dataMode": "params",
+			"tests": null,
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1599494208920,
+			"name": "DelBankAccount",
+			"description": "",
+			"collectionId": "241038e3-b374-c6b3-b26c-d4dbdbf22b65",
+			"responses": []
+		},
+		{
+			"id": "731d9dea-a7d5-0c9a-b52f-29746c2847d0",
+			"headers": "token: {{token}}\n",
+			"headerData": [
+				{
+					"key": "token",
+					"value": "{{token}}",
+					"description": "",
+					"enabled": true
+				}
+			],
+			"url": "{{server}}api/Service/GetListBankOfCus",
+			"queryParams": [],
+			"pathVariables": {},
+			"pathVariableData": [],
+			"preRequestScript": null,
+			"method": "GET",
+			"collectionId": "241038e3-b374-c6b3-b26c-d4dbdbf22b65",
+			"data": null,
+			"dataMode": "params",
+			"name": "GetListBankOfCus",
+			"description": "",
+			"descriptionFormat": "html",
+			"time": 1599713607115,
+			"version": 2,
+			"responses": [],
+			"tests": null,
+			"currentHelper": "normal",
+			"helperAttributes": {}
+		},
+		{
+			"id": "8e7183e7-da17-1fca-0c2d-0b7983ea1540",
+			"headers": "token: {{token}}\n",
+			"headerData": [
+				{
+					"key": "token",
+					"value": "{{token}}",
+					"description": "",
+					"enabled": true
+				}
+			],
+			"url": "{{server}}api/Service/RequestDetail?ID=95",
+			"queryParams": [
+				{
+					"key": "ID",
+					"value": "95",
+					"equals": true,
+					"description": "",
+					"enabled": true
+				}
+			],
+			"pathVariables": {},
+			"pathVariableData": [],
+			"preRequestScript": null,
+			"method": "GET",
+			"collectionId": "241038e3-b374-c6b3-b26c-d4dbdbf22b65",
+			"data": null,
+			"dataMode": "params",
+			"name": "RequestDetail",
+			"description": "",
+			"descriptionFormat": "html",
+			"time": 1599636213193,
+			"version": 2,
+			"responses": [],
+			"tests": null,
+			"currentHelper": "normal",
+			"helperAttributes": {}
+		},
+		{
+			"id": "8f69f1a8-238d-4b24-55b8-ddc17683e52c",
+			"headers": "",
+			"headerData": [],
+			"url": "{{server}}api/Service/getListProduct?page=1&limit=10&text=&CateID",
+			"queryParams": [
+				{
+					"key": "page",
+					"value": "1",
+					"equals": true,
+					"description": "",
+					"enabled": true
+				},
+				{
+					"key": "limit",
+					"value": "10",
+					"equals": true,
+					"description": "",
+					"enabled": true
+				},
+				{
+					"key": "text",
+					"value": "",
+					"equals": true,
+					"description": "",
+					"enabled": true
+				},
+				{
+					"key": "CateID",
+					"value": "",
+					"equals": false,
+					"description": "",
+					"enabled": true
+				}
+			],
+			"preRequestScript": null,
+			"pathVariables": {},
+			"pathVariableData": [],
+			"method": "GET",
+			"data": null,
+			"dataMode": "params",
+			"tests": null,
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1599530727030,
+			"name": "getListProduct",
+			"description": "",
+			"collectionId": "241038e3-b374-c6b3-b26c-d4dbdbf22b65",
+			"responses": []
+		},
+		{
+			"id": "9116abf7-47db-f319-720b-764cc910202c",
+			"headers": "",
+			"headerData": [],
+			"url": "http://localhost:11111/api/Service/getListProduct",
+			"queryParams": [
+				{
+					"key": "page",
+					"value": "1",
+					"equals": true,
+					"description": "",
+					"enabled": false
+				},
+				{
+					"key": "limit",
+					"value": "4",
+					"equals": true,
+					"description": "",
+					"enabled": false
+				},
+				{
+					"key": "CateID",
+					"value": "",
+					"equals": false,
+					"description": "",
+					"enabled": false
+				},
+				{
+					"key": "text",
+					"value": "",
+					"equals": false,
+					"description": "",
+					"enabled": false
+				}
+			],
+			"preRequestScript": null,
+			"pathVariables": {},
+			"pathVariableData": [],
+			"method": "GET",
+			"data": null,
+			"dataMode": "params",
+			"tests": null,
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1599816873712,
+			"name": "getListProduct",
+			"description": "",
+			"collectionId": "241038e3-b374-c6b3-b26c-d4dbdbf22b65",
+			"responses": []
+		},
+		{
+			"id": "9e4b3b58-b169-1194-38aa-2e1b70424d87",
+			"headers": "token: {{token}}\nContent-Type: application/json\n",
+			"headerData": [
+				{
+					"key": "token",
+					"value": "{{token}}",
+					"description": "",
+					"enabled": true
+				},
+				{
+					"key": "Content-Type",
+					"value": "application/json",
+					"description": "",
+					"enabled": true
+				}
+			],
+			"url": "{{server}}api/Service/changePassword",
+			"queryParams": [],
+			"preRequestScript": null,
+			"pathVariables": {},
+			"pathVariableData": [],
+			"method": "POST",
+			"data": [],
+			"dataMode": "raw",
+			"tests": null,
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1600248988642,
+			"name": "changePassword",
+			"description": "",
+			"collectionId": "241038e3-b374-c6b3-b26c-d4dbdbf22b65",
+			"responses": [],
+			"rawModeData": "{\n\t\"Password\":\"123456\",\n\t\"newPassword\":\"123456a@\"\n}"
+		},
+		{
+			"id": "aa511c3d-8083-a42f-a18f-a4239570f14b",
+			"headers": "token: CA0F93DE1AE13C742C8726CF590E0E94\n",
+			"headerData": [
+				{
+					"key": "token",
+					"value": "CA0F93DE1AE13C742C8726CF590E0E94",
+					"description": "",
+					"enabled": true
+				}
+			],
+			"url": "{{server}}api/Service/WithdraPoints?point=0",
+			"queryParams": [
+				{
+					"key": "point",
+					"value": "0",
+					"equals": true,
+					"description": "",
+					"enabled": true
+				}
+			],
+			"preRequestScript": null,
+			"pathVariables": {},
+			"pathVariableData": [],
+			"method": "POST",
+			"data": null,
+			"dataMode": "params",
+			"tests": null,
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1599208470645,
+			"name": "WithdraPoints",
+			"description": "",
+			"collectionId": "241038e3-b374-c6b3-b26c-d4dbdbf22b65",
+			"responses": []
+		},
+		{
+			"id": "aaca2931-5eee-7590-57bb-d5d590c51815",
+			"headers": "token: {{token}}\nContent-Type: application/json\n",
+			"headerData": [
+				{
+					"key": "token",
+					"value": "{{token}}",
+					"description": "",
+					"enabled": true
+				},
+				{
+					"key": "Content-Type",
+					"value": "application/json",
+					"description": "",
+					"enabled": true
+				}
+			],
+			"url": "{{server}}AddToCart",
+			"queryParams": [],
+			"preRequestScript": null,
+			"pathVariables": {},
+			"pathVariableData": [],
+			"method": "POST",
+			"data": [],
+			"dataMode": "raw",
+			"version": 2,
+			"tests": null,
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1599536387178,
+			"name": "AddToCart",
+			"description": "",
+			"collectionId": "241038e3-b374-c6b3-b26c-d4dbdbf22b65",
+			"responses": [],
+			"rawModeData": "{\n\t\"ItemID\" : 67\n}"
+		},
+		{
+			"id": "b5159f7f-07cb-781d-a27c-d428c3f9d2d0",
+			"headers": "token: {{token}}\n",
+			"headerData": [
+				{
+					"key": "token",
+					"value": "{{token}}",
+					"description": "",
+					"enabled": true
+				}
+			],
+			"url": "{{server}}api/Service/GetListRequest?status=1",
+			"queryParams": [
+				{
+					"key": "status",
+					"value": "1",
+					"equals": true,
+					"description": "",
+					"enabled": true
+				}
+			],
+			"preRequestScript": null,
+			"pathVariables": {},
+			"pathVariableData": [],
+			"method": "GET",
+			"data": null,
+			"dataMode": "params",
+			"tests": null,
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1599635996392,
+			"name": "GetListRequest",
+			"description": "",
+			"collectionId": "241038e3-b374-c6b3-b26c-d4dbdbf22b65",
+			"responses": []
+		},
+		{
+			"id": "c8cd1260-51df-416d-1d40-5d45de400b24",
+			"headers": "token: {{token}}\n",
+			"headerData": [
+				{
+					"key": "token",
+					"value": "{{token}}",
+					"description": "",
+					"enabled": true
+				}
+			],
+			"url": "{{server}}api/Service/GetNotify",
+			"queryParams": [],
+			"pathVariables": {},
+			"pathVariableData": [],
+			"preRequestScript": null,
+			"method": "GET",
+			"collectionId": "241038e3-b374-c6b3-b26c-d4dbdbf22b65",
+			"data": null,
+			"dataMode": "params",
+			"name": "GetNotify",
+			"description": "",
+			"descriptionFormat": "html",
+			"time": 1600047545917,
+			"version": 2,
+			"responses": [],
+			"tests": null,
+			"currentHelper": "normal",
+			"helperAttributes": {}
+		},
+		{
+			"id": "ef7160ce-9cf8-2e34-700d-5b66f15fa566",
+			"headers": "Content-Type: application/json\n",
+			"headerData": [
+				{
+					"key": "Content-Type",
+					"value": "application/json",
+					"description": "",
+					"enabled": true
+				}
+			],
+			"url": "{{server}}api/Service/CheckOTP",
+			"queryParams": [],
+			"preRequestScript": null,
+			"pathVariables": {},
+			"pathVariableData": [],
+			"method": "POST",
+			"data": [],
+			"dataMode": "raw",
+			"tests": null,
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1599817009233,
+			"name": "CheckOtpCode",
+			"description": "",
+			"collectionId": "241038e3-b374-c6b3-b26c-d4dbdbf22b65",
+			"responses": [],
+			"rawModeData": "{\n\t\"phone\":\"0334947012\",\n\t\"otp\":\"1234\"\n}"
+		},
+		{
+			"id": "f4b3da85-bb6c-a8ea-e50d-a228822075c2",
+			"headers": "token: {{token}}\nContent-Type: application/json\n",
+			"headerData": [
+				{
+					"key": "token",
+					"value": "{{token}}",
+					"description": "",
+					"enabled": true
+				},
+				{
+					"key": "Content-Type",
+					"value": "application/json",
+					"description": "",
+					"enabled": true
+				}
+			],
+			"url": "{{server}}api/Service/CreateOrder",
+			"queryParams": [],
+			"preRequestScript": null,
+			"pathVariables": {},
+			"pathVariableData": [],
+			"method": "POST",
+			"data": [],
+			"dataMode": "raw",
+			"tests": null,
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1600045513960,
+			"name": "CreateOrder",
+			"description": "",
+			"collectionId": "241038e3-b374-c6b3-b26c-d4dbdbf22b65",
+			"responses": [],
+			"rawModeData": "{\"listOrderItem\":[{\"orderItemID\":8,\n\"itemID\":103,\n\"itemName\":\"Tỏi đen Yến sào Sâm Ngọc Linh\",\n\"itemPrice\":250000,\"sumPrice\":250000,\n\"qty\":1,\n\"warranty\":1,\n\"image\":\"http://18.141.218.97:81/Uploads/files/TOIDEN.jpg\",\n\"description\":\"<p>Máy tích hợp các chức năng chính sau:</p>\\n\\n<p>- Đo và kiểm tra huyết áp</p>\\n\\n<p>- Đốt nhiệt hồng ngoại</p>\\n\\n<p>- Thẩm thấu chườm thuốc</p>\\n\\n<p>- Dòng Galvanic ( Điều trị bằng điện di thuốc, điều trị bằng dòng điện 1 chiều đều )</p>\\n\\n<p>- Trị liệu điện xung ( thay cho điện châm, Xung sử dụng dòng xung vuông)</p>\",\"updateAt\":\"2020-09-10T08:15:48.927\"}],\n\"ProvinceID\":1,\n\"DistrictID\":1,\n\"BuyerName\":\"ThanhHB\",\n\"BuyerPhone\":\"0334947012\",\n\"address\":\"59A to huu\",\n\"note\":\"\",\n\"lastRefCode\":\"0383830963\"}"
+		},
+		{
+			"id": "f846816f-abb4-434e-81b0-2b7ea11e0dd8",
+			"headers": "token: {{token}}\n//orderID: 399\n",
+			"headerData": [
+				{
+					"key": "token",
+					"value": "{{token}}",
+					"description": "",
+					"enabled": true
+				},
+				{
+					"key": "orderID",
+					"value": "399",
+					"description": "",
+					"enabled": false
+				}
+			],
+			"url": "{{server}}api/Service/GetOrderDetail?orderID=399",
+			"queryParams": [
+				{
+					"key": "orderID",
+					"value": "399",
+					"equals": true,
+					"description": "",
+					"enabled": true
+				}
+			],
+			"preRequestScript": null,
+			"pathVariables": {},
+			"pathVariableData": [],
+			"method": "GET",
+			"data": null,
+			"dataMode": "params",
+			"tests": null,
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1600059815589,
+			"name": "GetOrderDetail",
+			"description": "",
+			"collectionId": "241038e3-b374-c6b3-b26c-d4dbdbf22b65",
+			"responses": []
+		},
+		{
+			"id": "fa34ae76-7622-a36e-bb33-8e61cb346bfb",
+			"headers": "Content-Type: application/json\n",
+			"headerData": [
+				{
+					"key": "",
+					"value": "",
+					"description": "",
+					"enabled": false
+				},
+				{
+					"key": "Content-Type",
+					"value": "application/json",
+					"description": "",
+					"enabled": true
+				}
+			],
+			"url": "{{server}}api/Service/CheckPhoneRegister",
+			"queryParams": [],
+			"preRequestScript": null,
+			"pathVariables": {},
+			"pathVariableData": [],
+			"method": "POST",
+			"data": [],
+			"dataMode": "raw",
+			"version": 2,
+			"tests": null,
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1599450924407,
+			"name": "CheckPhone",
+			"description": "",
+			"collectionId": "241038e3-b374-c6b3-b26c-d4dbdbf22b65",
+			"responses": [],
+			"rawModeData": "{\n\t\"Phone\":\"0334947014\"\n}"
+		}
+	]
+}

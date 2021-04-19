@@ -1,0 +1,125 @@
+﻿@using Data.DB;
+@model Customer
+
+<div class="modal fade" id="mdAddPoint" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Cộng điểm khách hàng</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="">
+
+                <div class="row pb-3">
+                    <div class="col-md-12 col-sm-12 col-12">
+                        <label>SĐT Khách hàng</label>
+                        <input type="text" class="form-control" name="phoneNum" id="txtPhoneNumber" value="@Model.Phone" disabled />
+                        <input type="hidden" class="form-control" name="" id="txtID" />
+                    </div>
+                </div>
+                <div class="row pb-3" id="point">
+                    <div class="col-md-12 col-sm-12 col-12">
+                        <label>Số điểm</label>
+                        <input type="text" class="form-control number" name="pointNum" id="txtPoint" placeholder="Nhập số điểm muốn thêm">
+                    </div>
+                </div>
+                <div class="row pb-3" id="note">
+                    <div class="col-md-12 col-sm-12 col-12">
+                        <label>Lý do</label>
+                        <textarea class="form-control" id="txtNote" name="Note" placeholder="Nhập lý do thêm điểm"></textarea>
+                    </div>
+                </div>
+                <div class="row pb-3 " id="reason">
+                    <div class=" col-md-12 text-center">
+                        <h4 class="text-danger text-bold"> Tài khoản dừng hoạt động nên không được cộng điểm</h4>
+                    </div>
+                </div>
+                <div class="modal-footer row">
+                    <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Đóng</button>
+                    <button type="button" id="btnSaveAdd" class="btn btn-primary">Lưu</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        $("#reason").hide();
+        if (@Model.Status == 0) {
+            $("#point").hide();
+            $("#note").hide();
+            $("#btnSaveAdd").hide();
+            $("#reason").show();
+            //$("#reason").text(");
+        }
+        $('.number').keyup(function () {
+            $val = cms_decode_currency_format($(this).val());
+            $(this).val(cms_encode_currency_format($val));
+        });
+    })
+    $("#btnSaveAdd").click(function () {
+        var listPhone = $("#txtPhoneNumber").val();
+        swal({
+            title: "Cộng điểm?",
+            text: "Bạn có muốn cộng điểm cho khách!",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+        })
+            .then((willConfirm) => {
+                if (willConfirm) {
+                    $('#mdAddPoint').modal("hide");
+                    $.ajax({
+                        url: "/Customer/addPointAll",
+                        data: {
+                            listID: "",
+                            listCusPhone: listPhone,
+                            Point: $('#txtPoint').val().trim().replace(/,/g, ""),
+                            Note: $('#txtNote').val().trim()
+                        },
+                        success: function (result) {
+
+                            if (result == 1) {
+                                swal({
+                                    title: "Thêm Điểm Thành Công",
+                                    text: "",
+                                    icon: "success"
+                                });
+                                //$('#mdAddPoint').modal("hide");
+                                searchCustomer();
+                            }
+                            else if (result == 3) {
+                                $('#mdAddPoint').modal("hide");
+                                swal({
+                                    title: "Không thành công",
+                                    text: "Vui lòng kiểm tra lại số điện thoại.",
+                                    icon: "warning"
+                                });
+                                searchCustomer();
+                                return;
+                            }
+                            else {
+                                //$('#mdAddPoint').modal("hide");
+                                swal({
+                                    title: "Thông Báo",
+                                    text: "Có lỗi.",
+                                    icon: "warning"
+                                });
+                                searchCustomer();
+                            }
+                        }
+                    });
+                } else {
+                    swal({
+                        title: "Hủy",
+                        text: "Hủy thành công!",
+                        icon: "warning"
+                    });
+                }
+            });
+       
+    })
+</script>

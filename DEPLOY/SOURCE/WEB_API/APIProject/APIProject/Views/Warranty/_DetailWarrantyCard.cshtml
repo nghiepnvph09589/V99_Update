@@ -1,0 +1,41 @@
+﻿<!-- The Modal -->
+<div class="modal fade" id="QrcodeDetail">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h5 class="modal-title"><i class="fa fa-info-circle"></i> Chi tiết khuyến mãi</h5>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <!-- Modal body -->
+            <div class="modal-body">
+                <div class="row">
+                    <label class="col-md-5">Mã khuyến mãi</label>
+                    <label class="col-md-7 text-center">Mã barcode</label>
+                </div>
+                <div class="row mt-3">
+                    <div class="col-md-5 text-bold text-primary">@String.Concat(ViewBag.WarrantyCodeCard, "2")</div>
+                    <input type="hidden" value="@ViewBag.ID" id="warrantyCardID" />
+                    <div class="col-md-7 text-center">
+                        <input class="@String.Concat(ViewBag.WarrantyCodeCard,"2")" type="hidden" value="@String.Concat(ViewBag.WarrantyCodeCard,"2")" />
+                       @*Thẻ chứa barcode*@
+                        <svg id="barcodeDT" ></svg>
+                        @*Js tạo barcode*@
+                        <script type="text/javascript">
+                                                JsBarcode("#barcodeDT", "@String.Concat(ViewBag.WarrantyCodeCard, "2")",{
+                                                    height: 40,
+                                                    displayValue: false,
+                                                });
+
+                        </script>
+                    </div>
+                </div>
+            </div>
+            <!-- Modal footer -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Đóng</button>
+                <button type="button" class="btn btn-success" onclick="window.location = 'PrintQRCodeWarranty?ID=@ViewBag.ID'">Xuất excel mã barcode</button>
+            </div>
+        </div>
+    </div>
+</div>

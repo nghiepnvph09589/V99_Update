@@ -1,0 +1,129 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="col-md-12 mt-5">
+    <div class="breadcrumb-holder">
+        <div class="row mb-3 mt-3">
+            <div class="col-md-10 col-sm-9 text-dark px-0 mt-3">
+                <h4><i class="fa fa-user-secret" aria-hidden="true"></i>Tài khoản</h4>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-6  col-sm-12 col-12 mt-2">
+        <input type="text" class="form-control" id="txtPhoneUser" onkeyup="searchUser();" placeholder="Nhập số điện thoại hoặc tên người dùng" />
+    </div>
+    <div class=" col-md-2 offset-md-2  col-sm-12 col-12 mt-2"">
+        <button class="btn btn-primary btn-block" onclick="searchUser()" id="searchUser"><i class="fa fa-search"></i> Tìm kiếm</button>
+    </div>
+    <div class="col-md-2  col-sm-12 col-12 mt-2"">
+        <button type="button" class="btn btn-success btn-block" data-toggle="modal" data-target="#createUser"><i class="fa fa-fw fa-plus"></i> Thêm mới</button>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12 col-sm-12 col-12 mt-2" id="tableUser">
+        @{
+            Html.RenderAction("Search", "User", new { Page = 1, Phone = "" });
+        }
+    </div>
+</div>
+
+
+<!-- Modal -->
+<div id="createUser" class="modal fade" role="dialog">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel"><i class="fa fa-user-secret" aria-hidden="false"></i> Thêm tài khoản</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12 col-sm-12 col-12">
+                        <label>Tên người dùng</label>
+                        <input class="form-control" id="txtNameCreateUser" placeholder="Nhập tên người dùng" />
+                    </div>
+                </div>
+                <div class="row mt-3">
+                    <div class="col-md-12 col-sm-12 col-12">
+                        <label>Số điện thoại</label>
+                        <input class="form-control" id="txtPhoneCreateUser" placeholder="Nhập số điện thoại" maxlength="10" />
+                    </div>
+                </div>
+                <div class="row mt-3">
+                    <div class="col-md-12 col-sm-12 col-12">
+                        <label>Mật khẩu</label>
+                        <div class="input-group" id="show_hide_password">
+                            <input class="form-control" type="password" id="txtPasswordCreateUser"/>
+                            <div class="input-group-addon">
+                                <a href=""><i class="fa fa-eye-slash btn btn-secondary" aria-hidden="true" style="font-size:24px"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                    
+                <div class="row mt-3">
+                    <div class="col-md-12 col-sm-12 col-12">
+                        <label>Xác nhận mật khẩu</label>
+                        <div class="input-group" id="confirmPassword">
+                            <input class="form-control" type="password" id="txtconfirmPasswordCreateUser"/>
+                            <div class="input-group-addon">
+                                <a href=""><i class="fa fa-eye-slash btn btn-secondary" aria-hidden="true" style="font-size:24px"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Đóng</button>
+                <button type="button" class="btn btn-primary px-3" onclick="createUser()">Lưu</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="divUserDetail"></div>
+<script>
+    $("#txtPhoneUser").keypress(function (e) {
+        var key = e.which;
+        if (key == 13) {
+            $("#searchUser").click();
+        }
+    });
+    $(document).ready(function () {
+        $("#show_hide_password a").on('click', function (event) {
+            event.preventDefault();
+            if ($('#show_hide_password input').attr("type") == "text") {
+                $('#show_hide_password input').attr('type', 'password');
+                $('#show_hide_password i').addClass("fa-eye-slash");
+                $('#show_hide_password i').removeClass("fa-eye");
+            } else if ($('#show_hide_password input').attr("type") == "password") {
+                $('#show_hide_password input').attr('type', 'text');
+                $('#show_hide_password i').removeClass("fa-eye-slash");
+                $('#show_hide_password i').addClass("fa-eye");
+            }
+        });
+    });
+</script>
+<script>
+    $(document).ready(function () {
+        $("#confirmPassword a").on('click', function (event) {
+            event.preventDefault();
+            if ($('#confirmPassword input').attr("type") == "text") {
+                $('#confirmPassword input').attr('type', 'password');
+                $('#confirmPassword i').addClass("fa-eye-slash");
+                $('#confirmPassword i').removeClass("fa-eye");
+            } else if ($('#confirmPassword input').attr("type") == "password") {
+                $('#confirmPassword input').attr('type', 'text');
+                $('#confirmPassword i').removeClass("fa-eye-slash");
+                $('#confirmPassword i').addClass("fa-eye");
+            }
+        });
+    });
+</script>

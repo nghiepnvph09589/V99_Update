@@ -1,0 +1,214 @@
+﻿@using Data.Model.APIWeb
+@using Data.Utils
+@model RequestDetailWebOutputModel
+<div class="" id="_CustomerDetail">
+    <div class="inti-customer">
+        @* Tiêu đề *@
+        <div class="col-md-12 mt-5">
+            <div class="breadcrumb-holder">
+                <div class="row mb-3 mt-3">
+                    <div class="col-md-10 col-sm-10 col-8 text-dark px-0">
+                        <h4> Chi tiết yêu cầu</h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        @* Nội dung *@
+        <form id="form_create_customer" name="form_create_customer" class="ml-3">
+            <div class="row mt-3">
+                <div class="col-md-10 col-sm-10 col-8 text-dark px-0">
+                    <h6 style="font-weight:bold; "> Yêu cầu rút điểm</h6>
+                </div>
+            </div>
+
+            <div class="row col-md-12">
+                <div class="col-md-6 col-sm-12">
+                    <table class="table table-borderless table-responsive-sm table-responsive-md mb-0">
+                        @{
+                            <tr>
+                                <td>Họ tên </td>
+                                <td>@Model.Name</td>
+                            </tr>
+                            <tr>
+                                <td>Số điện thoại</td>
+                                <td>@Model.Phone</td>
+                            </tr>
+                        }
+                    </table>
+                </div>
+                <div class="col-md-6 col-sm-12">
+                    <table class="table table-borderless table-responsive-sm table-responsive-md mb-0">
+                        <tr>
+                            <td>Ngày yêu cầu</td>
+                            <td>@Model.CreateDate</td>
+                        </tr>
+                        <tr>
+                            <td>Trạng thái</td>
+                            <td>
+                                @*<select class="form-control col-md-6">
+                                        <option onclick="document.getElementById('form-deny')">Chờ xác nhận</option>
+                                        <option onclick="document.getElementById('form-deny')">Từ chối</option>
+                                    </select>*@
+                                <select class="form-control col-md-6" id="myselection" value="@Model.Status">
+                                    <option value="@SystemParam.STATUS_ORDER_PENDING">Chờ xác Nhận</option>
+                                    <option value="@SystemParam.STATUS_ORDER_CONFIRM">Xác Nhận</option>
+                                    <option value="@SystemParam.STATUS_ORDER_REFUSE">Từ chối</option>
+                                </select>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <div class="row mt-3 col-md-12">
+
+                <table class="table table-borderless table-responsive-sm table-responsive-md mb-0">
+                    <tbody>
+                        <tr>
+                            <td><label>Tài khoản nhận tiền</label></td>
+                        </tr>
+                        <tr>
+                            <td class="row">
+                                <div class="col-md-6 col-sm-6 col-12">
+                                    <div class="card" style="width:400px">
+                                        <div class="card-body">
+                                            <table cellpadding="5">
+                                                <tr>
+                                                    <td><img src="@Model.ImageUrl" style="width:30px; height:30px;" /></td>
+                                                    <td>&nbsp;&nbsp;&nbsp;@Model.BankName</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>STK: </td>
+                                                    <td>&nbsp;&nbsp;&nbsp;@Model.BankOwner</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Tên: </td>
+                                                    <td>&nbsp;&nbsp;&nbsp;@Model.BankAccout</td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 col-sm-12 col-12">
+                                    <table class=" card-body" style="width:400px" cellpadding="2">
+                                        <tr>
+                                            <td>Số điểm muốn rút</td>
+                                            <td>&nbsp;&nbsp;&nbsp;@String.Format("{0:0,0.00}", @Model.Point) Điểm</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Số tiền sẽ nhận dc</td>
+                                            <td>
+                                                &nbsp;&nbsp;&nbsp;@String.Format("{0:0,0 VND}", @Model.TotalPoint) VND
+                                            </td>
+                                        </tr>
+                                    </table>
+
+                                    <div class="myDiv col-md-12 col-sm-12 col-12" id="show4" style="display:none">
+                                        <p>Lý do từ chối</p>
+                                        <textarea name="editor" class="form-control mb-3" id="editor" placeholder="@Model.Note"></textarea>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </form>
+    </div>
+    <div class="row my-3">
+        <div class="col-md-12 text-right">
+            <div class="ml-auto">
+                <button type="button" id="btn" class="btn btn-outline-secondary" data-dismiss="modal" onclick="backToIndexRequest()">Đóng</button>
+                <button type="submit" id="btnSave" class="btn btn-primary" onclick="updateRequest(@Model.ID)">Lưu</button>
+            </div>
+        </div>
+    </div>
+    @*<div class="row col-md-12 ">
+            <div class="col-md-1 offset-md-10">
+                <button type="button" id="btn" class="btn btn-outline-secondary" data-dismiss="modal" onclick="backToIndexRequest()">Đóng</button>
+            </div>
+            <div class="col-md-1">
+                <button type="submit" id="btnSave" class="btn btn-primary" onclick="updateRequest(@Model.ID)">Lưu</button>
+            </div>
+        </div>*@
+</div>
+
+
+
+<script>
+    $(document).ready(function () {
+        var valInit = $("#mdEdit #txtDiscount").val();
+        $("#mdEdit #trAddPoint").hide();
+        $('#mdEdit #myselection').val(@Model.Status);
+
+    });
+
+</script>
+
+
+<script>
+    function updateRequest(id) {
+        var select = $("#myselection").val();
+        var note = $("#editor").val();
+        $.ajax({
+            url: "/Request/UpdateRequest",
+            data: {Id:id, Select: select, Note: note },
+            success: function (result) {
+                if (result == 1) {
+                    swal({
+                        title: "Thông báo",
+                        text: "Lưu thông tin yêu cầu thành công",
+                        icon: "success"
+                    })
+                    backToIndexRequest();
+                }
+                else {
+                    swal({
+                        title: "Thông báo",
+                        text: "Có lỗi xảy ra trong quá trình cập nhật yêu cầu!",
+                        icon: "warning"
+                    })
+                }
+            }
+        })
+    }
+    $("#myselection").val(@Model.Status);
+    function SaveEditRM() {
+        const Toast = Swal.mixin({
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            onOpen: (toast) => {
+                toast.addEventListener('mouseenter', Swal.stopTimer)
+                toast.addEventListener('mouseleave', Swal.resumeTimer)
+            }
+        })
+
+        Toast.fire({
+            icon: 'success',
+            title: 'Signed in successfully'
+        })
+    }
+</script>
+
+<script>
+    $(document).ready(function () {
+        $('#myselection').on('change', function () {
+            var demovalue = $(this).val();
+            $("div.myDiv").hide();
+            $("#show" + demovalue).show();
+        });
+        if (@Model.Status == @SystemParam.STATUS_ORDER_CONFIRM) {
+            $("#_CustomerDetail #myselection").prop("disabled", true);
+            $("#_CustomerDetail #btnSave").hide();
+        }
+        if (@Model.Status == @SystemParam.STATUS_ORDER_REFUSE) {
+            $("#_CustomerDetail #myselection").prop("disabled", true);
+            $("#_CustomerDetail #btnSave").hide();
+            $("#show4").show();
+            $("#_CustomerDetail #editor").prop("readonly", true);
+        }
+    });
+</script>

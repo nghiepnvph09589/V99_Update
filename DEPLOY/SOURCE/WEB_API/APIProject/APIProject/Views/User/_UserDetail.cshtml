@@ -1,0 +1,71 @@
+﻿@using Data.Utils
+@model Data.Model.APIWeb.UserDetailOutputModel
+<div id="modalRole" class="modal fade" role="dialog">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel"><i class="fa fa-user-secret" aria-hidden="false"></i> Sửa tài khoản</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="form_update_user" name="form_update_user">
+                    <div class="row">
+                        <div class="col-md-12 col-sm-12 col-12">
+                            <label>Tên người dùng</label>
+                            <input type="text" class="form-control" id="UserEdit" name="UserName" placeholder="Nhập tên người dùng"  value="@Model.UserName"/>
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-md-12 col-sm-12 col-12">
+                            <label>Số điện thoại</label>
+                            <input minlength="10" type="text" class="form-control" id="PhoneEdit" name="Phone" maxlength="10"  placeholder="Nhập số điện thoại" value="@Model.Phone"/>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Đóng</button>
+                <button type="button" class="btn btn-primary px-3" onclick="editUser(@Model.UserID)">Lưu</button>
+            </div>
+        </div>
+    </div>
+</div>
+@*<script>
+        $(document).ready(function () {
+            $('input[name=roleOrder]:checked').val(@Model.Role);
+        })
+    </script>*@
+<script>
+    $(document).ready(function () {
+        $("#show_hide_password a").on('click', function (event) {
+            event.preventDefault();
+            if ($('#show_hide_password input').attr("type") == "text") {
+                $('#show_hide_password input').attr('type', 'password');
+                $('#show_hide_password i').addClass("fa-eye-slash");
+                $('#show_hide_password i').removeClass("fa-eye");
+            } else if ($('#show_hide_password input').attr("type") == "password") {
+                $('#show_hide_password input').attr('type', 'text');
+                $('#show_hide_password i').removeClass("fa-eye-slash");
+                $('#show_hide_password i').addClass("fa-eye");
+            }
+        });
+    });
+</script>
+<script>
+    $(document).ready(function () {
+        $("#confirmPassword a").on('click', function (event) {
+            event.preventDefault();
+            if ($('#confirmPassword input').attr("type") == "text") {
+                $('#confirmPassword input').attr('type', 'password');
+                $('#confirmPassword i').addClass("fa-eye-slash");
+                $('#confirmPassword i').removeClass("fa-eye");
+            } else if ($('#confirmPassword input').attr("type") == "password") {
+                $('#confirmPassword input').attr('type', 'text');
+                $('#confirmPassword i').removeClass("fa-eye-slash");
+                $('#confirmPassword i').addClass("fa-eye");
+            }
+        });
+    });
+</script>

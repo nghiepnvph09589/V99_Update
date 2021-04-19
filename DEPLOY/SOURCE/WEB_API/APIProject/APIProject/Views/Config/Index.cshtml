@@ -1,0 +1,136 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@using Data.Utils
+<div class="col-md-12 mt-5">
+    <div class="breadcrumb-holder">
+        <div class="row mb-3 mt-3">
+            <div class="col-md-10 col-sm-10 col-9 text-dark px-0 mt-3">
+                <h4><i class="fa fa-cogs"></i> Thiết lập</h4>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Nav tabs -->
+<ul class="nav nav-tabs ml-4" id="myTab" role="tablist">
+    <li class="nav-item">
+        <a class="nav-link active" data-toggle="tab" href="#get_point" role="tab" >Thiết lập rút điểm</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" data-toggle="tab" href="#plus_point" role="tab">Thiết lập cộng điểm</a>
+    </li>
+</ul>
+
+<!-- Tab panes -->
+<div class="tab-content border" style="background-color:antiquewhite" id="myTabContent">
+    <div class="tab-pane fade show active" id="get_point" role="tabpanel">
+        <div class="row mt-5 mb-5">
+            <div class="col-md-6 text-center mt-2">
+                <label>Số điểm tối thiểu được rút</label>
+            </div>
+            <div class="col-md-4">
+                @{ foreach (var c in ViewBag.MinPoint)
+                    {
+                        <input type="text" class="form-control number text-center" id="minPoint" placeholder="Nhập số điểm..." value="@String.Format("{0:n0}", Convert.ToInt32(c.Value))" />
+                    }
+                }
+                
+            </div>
+        </div>
+    </div>
+    
+    <div class="tab-pane fade" id="plus_point" role="tabpanel">
+        <div class="row mt-5 mb-5">
+            <div class="col-md-6 text-center mt-2">
+                <label>Số phần trăm điểm được cộng từ mã giới thiệu</label>
+            </div>
+            <div class="col-md-4">
+                @{
+                    foreach (var c in ViewBag.AddPoint)
+                    {
+                        <input type="text" maxlength="2" class="form-control number text-center" id="addPoint" placeholder="Nhập số điểm..." value="@String.Format("{0:n0}", Convert.ToInt32(c.Value))" />
+                    }
+                }
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container mt-3">
+    <div class="col-md-2 offset-md-11">
+        <button type="button" class="btn btn-primary" onclick="saveChangePoint()">Lưu</button>
+    </div>
+</div>
+<!-- end modal -->
+<!-- modal Thêm thiết lập đổi điểm lấy thẻ-->
+
+<!-- end modal -->
+<!-- modal Sửa thiết lập đổi điểm lấy thẻ-->
+
+<!-- end modal -->
+
+<script type="text/javascript">
+    $(document).ready(function () {
+            
+    });
+    $('.showModal').click(function () {
+        $('#updateConfigCard').modal('show');
+    });
+
+    $("#addImg").off('click').on('click', function (e) {
+        e.preventDefault();
+        var fider = new CKFinder();
+
+        fider.selectActionFunction = function (fileUrl) {
+            $("#tagImg ").remove();
+            $("#divAddImg").append('<img id="tagImg" src="' + fileUrl + '" class="col-md-12 px-0 contentImg" alt="your image" />');
+        }
+        fider.popup();
+    });
+    function saveChangePoint() {
+        
+        var minpoint = $('#get_point #minPoint').val();
+        var addpoint = $('#plus_point #addPoint').val();
+        //if (!isNumeric(getpoint)) {
+        //    console.log(0);
+        //}
+        if (minpoint == "" || addpoint == "") {
+            swal({
+                title: "Thông báo",
+                text: "Vui lòng nhập đầy đủ thông tin",
+                icon: "warning"
+            })
+        }
+        
+        else {
+            
+            $.ajax({
+                url: '/Config/UpdatePoint',
+                data: {
+                    MinPoint: minpoint,
+                    AddPoint: addpoint
+                },
+                type: 'POST',
+                success: function (response) {
+                    if (response == SUCCESS) {
+                        swal({
+                            title: "Sửa điểm thành công!",
+                            text: "",
+                            icon: "success"
+                        })
+                    }
+                    else {
+                        swal({
+                            title: "Sửa điểm không thành công!",
+                            text: "",
+                            icon: "warning"
+                        })
+                    }
+                }
+            })
+        }
+    }
+</script>
+
+

@@ -1,0 +1,133 @@
+﻿@using Data.Utils
+@using Data.Model.APIWeb
+@model ListCategoryOutputModel
+
+<div class="modal fade" id="ModalEditCategory" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel"><i class="fa fa-fw fa-shopping-cart"></i>Sửa Danh Mục</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <div class="modal-body">
+                <form id="form_update_category" name="form_update_category">
+                    <input id="txtID" name="ID" value="@Model.ID" type="hidden" class="form-control" />
+                    <div class="row pb-3">
+
+                        <div class="col-md-12 col-sm-12 col-12">
+                            <p class="mb-0 color-require"><label class="text-dark">Tên Danh Mục</label> *</p>
+                            <input type="text" class="form-control" id="txtEditName" name="Name" placeholder="Nhập tên danh mục..." value="@Model.Name" />
+                        </div>
+                    </div>
+
+                    <div class="row pb-3">
+                        <div class="col-md-12 col-sm-12 col-12">
+                            <p class="mb-0 color-require"><label class="text-dark">Trạng thái hoạt động</label> *</p>
+                            <select class="form-control" id="txtEditParentName" name="ParentId" value="@Model.Status">
+                                <option value="1">Hoạt động</option>
+                                <option value="0">Không hoạt động</option>
+                            </select>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Đóng</button>
+                <button type="button" class="btn btn-primary px-3" onclick="SaveEditCategory();">Lưu</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#txtEditParentName').val(@Model.Status);
+        $('.number').keyup(function () {
+            $val = cms_decode_currency_format($(this).val());
+            $(this).val(cms_encode_currency_format($val));
+        });
+
+        $('#form_update_item #cmbCategoryUpdate').val(@Model.ID);
+
+    });
+
+    $("#addImage").off('click').on('click', function (e) {
+        e.preventDefault();
+        var fider = new CKFinder();
+
+        fider.selectActionFunction = function (fileUrl) {
+            $("#tagImgDiv ").remove();
+            $("#AddImage").append('<div id="tagImgDiv" style="box-sizing:border-box;display:inline-block;margin-top:10px;"><img width="100%" height="100%" id="imgTag" src="' + fileUrl + '" alt="your image" /></div>');
+            $("#txt-url-image").val(fileUrl);
+        }
+        fider.popup();
+    });
+
+    //Format money in textbox
+    function cms_encode_currency_format(num) {
+        return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,');
+    }
+
+    function cms_decode_currency_format(obs) {
+        if (obs == '')
+            return 0;
+        else
+            return parseInt(obs.replace(/,/g, ''));
+    }
+    function SaveEditCategory() {
+        var name = $.trim($('#txtEditName').val());
+        var parent = $.trim($('#txtEditParentName').val());
+        //var url = $(".imgEditCategory").val();
+        //var description = $.trim($("#description").val());
+        if (name == "") {
+            swal({
+                title: "Thông báo",
+                text: "Mời bạn nhập vao tên danh mục",
+                icon: "warning"
+            });
+            return;
+        }
+        else if (parent == "") {
+            swal({
+                title: "Thông báo",
+                text: "Mời bạn nhập vào trạng thái hoạt động",
+                icon: "warning"
+            });
+            return;
+        }
+
+        //else if (url == null) {
+        //    swal({
+        //        title: "Thông báo",
+        //        text: "Mời bạn nhập vào địa chỉ",
+        //        icon: "warning"
+        //    });
+        //    return;
+        //}
+        else {
+            $.ajax({
+                url: '/Category/EditCategory',
+                data: $('#form_update_category').serialize(),
+                type: "POST",
+                success: function (response) {
+                    if (response == EXISTING) {
+                        swal("Không thể sửa danh mục sản phẩm", "Danh mục đã tồn tại!!!", "warning")
+                    }else
+                    if (response == SUCCESS) {
+                        swal("Sửa danh mục thành công", "", "success");
+                        SearchCategory();
+                        //$("#ModalEditCategory").hide();
+                        $("#ModalEditCategory").modal('toggle');
+                    }
+                    else {
+                        swal("có lỗi xảy ra", "không thể sửa danh mục", "warning");
+                    }
+                }
+            });
+        }
+
+    }
+</script>

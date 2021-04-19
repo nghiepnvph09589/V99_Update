@@ -1,0 +1,380 @@
+﻿@using Data.Utils;
+@using Data.Model.APIWeb;
+@model CreateItemInputModel
+<!-- begin modal edit Item -->
+@*<div class="modal fade" id="EditItem" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel"><i class="fa fa-fw fa-shopping-cart"></i>Sửa sản phẩm</h5>
+                <button type="button" class="close text-danger" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">*@
+<div class="col-md-12 mt-5">
+    <div class="breadcrumb-holder">
+        <div class="row mb-3 mt-3">
+            <div class="col-md-10 col-sm-10 col-9 text-dark px-0 mt-3">
+                <h4><i class="fa fa-edit"></i> Sửa sản phẩm </h4>
+            </div>
+        </div>
+    </div>
+</div>
+<form id="form_update_item" name="form_update_item">
+    <div class="row">
+        <div class="col-md-6">
+            <div class="row">
+                <div class="col-md-4 col-sm-12 ">
+                    <p class="color-require mt-2 mb-0"><label class="text-dark">Mã sản phẩm</label> *</p>
+                </div>
+                <div class="col-md-8 col-sm-12 mb-md-2 mb-sm-2 mt-2">
+                    <input type="text" readonly class="form-control" id="CodeEdit" name="Code" placeholder="Nhập mã sản phẩm..." value="@Model.Code">
+                    <input type="hidden" name="ID" id="ID" value="@Model.ID" />
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4 col-sm-12">
+                    <p class="mb-0 color-require mt-2"><label class="text-dark">Tên sản phẩm</label> *</p>
+                </div>
+                <div class="col-md-8 col-sm-12 mb-md-2 mb-sm-2">
+                    <input type="text" class="form-control" id="NameEdit" name="Name" placeholder="Nhập tên sản phẩm..." value="@Model.Name" />
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4 col-sm-12 mt-2">
+                    <p class="color-require mb-0"><label class="text-dark">Danh mục</label> *</p>
+                </div>
+                <div class="col-md-8 col-sm-12 mb-md-2 mb-sm-2 mt-0">
+                    <select class="form-control" id="cbbCategoryUpdate" name="CategoryID" value="@Model.CategoryID">
+                        @{
+                            foreach (var p in ViewBag.listCategory)
+                            {
+                                <option value="@p.CategoryID" @(Model.CategoryID == @p.CategoryID ? Html.Raw("selected") : Html.Raw(""))>@p.Name</option>
+                            }
+                        }
+                    </select>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-4 col-sm-12 mt-2">
+                    <p class="mb-0 color-require"><label class="text-dark">Giá tiền</label> *</p>
+                </div>
+                <div class="col-md-8 col-sm-12 mb-md-2 mb-sm-2">
+                    <input type="text" class="form-control number" id="PriceEdit" name="Price" placeholder="Nhập giá tiền..." value="@String.Format("{0:n0}", Convert.ToInt32(Model.Price))" />
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4 col-sm-12 mt-2">
+                    <p class="mb-0 color-require"><label class="text-dark">Trạng thái hoạt động</label> *</p>
+                </div>
+                <div class="col-md-8 col-sm-12 mb-md-2 mb-sm-2">
+                    <select id="StatusCreate" name="Status" class="form-control">
+                        <option value="@SystemParam.ACTIVE_FALSE" @(Model.Status.Equals(SystemParam.ACTIVE_FALSE) ? Html.Raw("selected") : Html.Raw(""))>Ngừng hoạt động</option>
+                        <option value="@SystemParam.ACTIVE" @(Model.Status.Equals(SystemParam.ACTIVE) ? Html.Raw("selected") : Html.Raw(""))>Đang hoạt động</option>
+                    </select>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4 col-sm-12 mt-2">
+                    <p class="mb-0 color-require"><label class="text-dark">Trạng thái hàng</label> *</p>
+                </div>
+                <div class="col-md-8 col-sm-12 mb-md-2 mb-sm-2">
+                    <select id="StockStatusCreate" name="StockStatus" class="form-control">
+                        <option value="@SystemParam.OUT_OF_STOCK" @(Model.StockStatus.Equals(SystemParam.OUT_OF_STOCK) ? Html.Raw("selected") : Html.Raw(""))>Hết hàng</option>
+                        <option value="@SystemParam.IN_STOCK" @(Model.StockStatus.Equals(SystemParam.IN_STOCK) ? Html.Raw("selected") : Html.Raw(""))>Còn hàng</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="row">
+                @*<div class="col-md-4 col-sm-12 mt-2">
+                        <p class="mb-0 color-require"><label class="text-dark">Ảnh sản phẩm</label> *</p>
+                    </div>
+                    <div class="col-md-8 col-sm-12 mb-md-2 mb-sm-2" id="addImage">
+                        <a href="" class="text-bold mb-3" style="width:100%;height:100%; color: #5A5A5A;">
+                            <img id="Imgtag" src="https://cdn4.iconfinder.com/data/icons/social-communication/142/add_photo-512.png" class="col-ml-2 col-md-2 px-0" alt="Chọn" />
+                        </a>
+                        <div class="items cursor-pointer pl-0">
+                            <div class="article" id="AddImage">
+                                <div id="tagImgDiv" style="box-sizing:border-box;display:inline-block;margin-top:10px;"><img width="100%" height="100%" id="imgTag" src="@Model.ImageUrl" alt="your image" /></div>
+                                <input value="@Model.ImageUrl" type="hidden" id="txt-url-image" name="ImageUrl" />
+                            </div>
+                        </div>
+                    </div>*@
+
+                <div class="col-md-4 col-sm-12 mt-2 text-center"><p class="mb-0 color-require"><label class="text-dark" style="margin-left:20px;">Ảnh</label> *</p></div>
+                <div class="col-md-8 col-sm-12 mb-md-2 mb-sm-2">
+                    <a href="" class="text-bold mb-3" style="width:100%;height:100%; color: #5A5A5A;" id="_addImg">
+                        <img id="Imgtag" src="https://cdn4.iconfinder.com/data/icons/social-communication/142/add_photo-512.png" class="col-ml-2 col-md-2 px-0" alt="Chọn" />
+                    </a>
+                </div>
+                <div class="article row mt-2" id="_divAddImg">
+                    @{
+                        int I = 0;
+                        var lstImgUrl = Model.ImageUrl != null && Model.ImageUrl.Length > 0 && Model.ImageUrl.Contains(',') ? Model.ImageUrl.Split(',').ToList() : new List<string> { Model.ImageUrl };
+                        foreach (var imgUrl in lstImgUrl)
+                        {
+
+                            <div class="col-md-6 Imgs " id="img-@I" style="box-sizing:border-box;display:inline-block;margin-top:10px;"><img class="_lstImage" src="@imgUrl" onclick="ChangeImage($(this));" style="height:auto; width: 100%; margin-right:-15px;" /><i title="Xóa" onclick="DeleteImage(event);" src="@imgUrl" class="fa fa-2x fa-remove icon-remove display-none" data="img-@I" style="position:absolute;color: #ff0000;"></i></div>
+                            I++;
+                        }
+
+                    }
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="row ">
+        <div class="col-md-12 mt-2">
+            <p class="mb-0 color-require "><label class="text-dark">Mô tả</label> *</p>
+        </div>
+        <div class="col-md-12 mb-md-2 mb-sm-2">
+            <textarea class="form-control" placeholder="Thêm ghi chú..." id="NoteEdit" name="Note"> @Model.Note</textarea>
+        </div>
+    </div>
+
+
+    <div class="row mt-3 collapse">
+        <div class="col-md-4">
+            <p class="mb-0 color-require"><label class="text-dark">Bảo hành</label> *</p>
+        </div>
+        <div class="col-md-8">
+            <input type="number" class="form-control" id="warrantyEdit" name="Warranty" placeholder="Nhập số tháng bảo hành" value="@Model.Warranty" />
+        </div>
+    </div>
+
+
+    <div class="col-md-6 collapse">
+        <p class="mb-0 color-require"><label class="text-dark">Thông số kỹ thuật</label> *</p>
+        <textarea class="form-control mt-2" placeholder="Thêm thông số kỹ thuật" id="technicalEdit" name="Technical"> @Model.Technical</textarea>
+    </div>
+
+</form>
+<div class="row">
+    <div class="col-md-2 col-sm-2 mt-2 offset-md-8 offset-sm-8 mb-2">
+        <button type="button" class="btn btn-outline-secondary btn-block" onclick="window.location='/Item/Index'">Đóng</button>
+    </div>
+    <div class="col-md-2 col-sm-2 mt-2">
+        <button type="button" class="btn btn-primary btn-block" onclick="SaveEditItem();">Lưu</button>
+
+    </div>
+</div>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('.number').keyup(function () {
+            $val = cms_decode_currency_format($(this).val());
+            $(this).val(cms_encode_currency_format($val));
+        });
+
+        $('#form_update_item #cmbCategoryUpdate').val(@Model.CategoryID);
+
+    });
+
+    //$("#addImage").off('click').on('click', function (e) {
+    //    e.preventDefault();
+    //    var fider = new CKFinder();
+
+    //    fider.selectActionFunction = function (fileUrl) {
+    //        $("#tagImgDiv ").remove();
+    //        $("#AddImage").append('<div id="tagImgDiv" style="box-sizing:border-box;display:inline-block;margin-top:10px;"><img width="100%" height="100%" id="imgTag" src="' + fileUrl + '" alt="your image" /></div>');
+    //        $("#txt-url-image").val(fileUrl);
+    //    }
+    //    fider.popup();
+    //});
+
+    //Format money in textbox
+    function cms_encode_currency_format(num) {
+        return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,');
+    }
+
+    function cms_decode_currency_format(obs) {
+        if (obs == '')
+            return 0;
+        else
+            return parseInt(obs.replace(/,/g, ''));
+    }
+</script>
+@*<script type="text/javascript">
+        function DeleteImg() {
+            $("#tagImgDiv ").remove();
+            $("#txt-url-image").val("");
+        }
+    </script>*@
+
+<script>
+
+    $(document).ready(function () {
+
+        CKEDITOR.replace('technicalEdit', {
+            height: 300,
+            disableObjectResizing: true
+        });
+        CKEDITOR.replace('NoteEdit', {
+            height: 300,
+            disableObjectResizing: true
+        });
+
+        //CKEDITOR.on('dialogDefinition', function (ev) {
+        //    var dialogName = ev.data.name;
+        //    var dialogDefinition = ev.data.definition;
+        //    //var editorO = ev.data.definition.dialog.getParentEditor();
+
+        //    if (dialogName == 'image' || dialogName == 'image2') {
+        //        var infoTab = dialogDefinition.getContents('info');
+
+        //        if (dialogName == 'image') {
+        //            infoTab.remove('txtHeight');
+        //            infoTab.remove('txtWidth');
+        //            infoTab.remove('ratioLock');
+        //        }
+        //        else {
+        //            infoTab.remove('height');
+        //            infoTab.remove('width');
+        //            infoTab.remove('lock');
+        //        }
+        //    }
+        //});
+
+    });
+
+    //$("#add_logo_place").off('click').on('click', function (e) {
+    //    e.preventDefault();
+    //    var fider = new CKFinder();
+
+    //    fider.selectActionFunction = function (fileUrl) {
+    //        $("#AddImgLogoPlace ").remove();
+    //        $("#AddLogoPlace").append('<img id="AddImgLogoPlace" src="' + fileUrl + '" class="col-md-12 px-0 border-dekko contentImg" alt="your image" />');
+    //        var url = window.location.origin + fileUrl;
+    //        $('#txtAddLogoPlace').val(url);
+    //    }
+    //    fider.popup();
+    //});
+
+</script>
+
+
+
+@*fix*@
+
+
+
+
+<script>
+
+    $(document).ready(function () {
+        $(".Imgs").mouseover(function () {
+            $(this).find(".icon-remove").removeClass("display-none");
+        });
+        $(".Imgs").mouseout(function () {
+            $(this).find(".icon-remove").addClass("display-none");
+        });
+
+        CKEDITOR.on('dialogDefinition', function (ev) {
+            var dialogName = ev.data.name;
+            var dialogDefinition = ev.data.definition;
+            //var editorO = ev.data.definition.dialog.getParentEditor();
+
+            if (dialogName == 'image' || dialogName == 'image2') {
+                var infoTab = dialogDefinition.getContents('info');
+
+                if (dialogName == 'image') {
+                    infoTab.remove('txtHeight');
+                    infoTab.remove('txtWidth');
+                    infoTab.remove('ratioLock');
+                }
+                else {
+                    infoTab.remove('height');
+                    infoTab.remove('width');
+                    infoTab.remove('lock');
+                }
+            }
+        });
+
+    });
+
+
+
+    $("#add_logo_place").off('click').on('click', function (e) {
+        e.preventDefault();
+        var fider = new CKFinder();
+
+        fider.selectActionFunction = function (fileUrl) {
+            $("#AddImgLogoPlace ").remove();
+            $("#AddLogoPlace").append('<img id="AddImgLogoPlace" src="' + fileUrl + '" class="col-md-12 px-0 border-dekko contentImg" alt="your image" />');
+            var url = window.location.origin + fileUrl;
+            $('#txtAddLogoPlace').val(url);
+        }
+        fider.popup();
+    });
+</script>
+
+<script type="text/javascript">
+    $('#myModal').on('show.bs.modal', function (e) {
+        $("#txtNameDetail").val("");
+        $("#txtDescriptions").val("");
+        $("#typeDetail").val($("#typeDetail option:first").val());
+    })
+
+    var count = 0;
+    $("#_addImg").off('click').on('click', function (e) {
+        e.preventDefault();
+        count++;
+        var fider = new CKFinder();
+        fider.selectActionFunction = function (fileUrl) {
+            $("#_divAddImg").append('<div class="Imgs col-md-6" id="img' + count + '" style ="box-sizing:border-box;display:inline-block;margin-top:10px;"><img class="_lstImage" src="' + fileUrl + '" onclick="ChangeImage($(this));" style="height:auto; width: 100%; max-height:600px; margin-right:-15px;"/><i  title ="Xóa" onclick="DeleteImage(event);" src="' + fileUrl + '" class="fa fa-2x fa-remove icon-remove display-none " data="img' + count + '" style="position:absolute;color: #ff0000;"></i></div>');
+            var listUrl = $("#_txturlImage").val();
+            if (listUrl == "") {
+                listUrl = fileUrl;
+                $("#_txturlImage").val(listUrl);
+            }
+            else {
+                var url = listUrl + "," + fileUrl;
+                $("#_txturlImage").val(url);
+            }
+            $(".Imgs").mouseover(function () {
+                $(this).find(".icon-remove").removeClass("display-none");
+            });
+            $(".Imgs").mouseout(function () {
+                $(this).find(".icon-remove").addClass("display-none");
+            });
+        }
+        fider.popup();
+    });
+</script>
+
+<script type="text/javascript">
+    function ChangeImage($url) {
+        var fider = new CKFinder();
+        fider.selectActionFunction = function (fileUrl) {
+            var url_old = $url.attr('src');
+            $url.attr('src', fileUrl);
+            if (fileUrl != url_old) {
+                var str = $('#_txturlImage').val();
+                $('#_txturlImage').val(str.replace(url_old, fileUrl));
+            }
+        }
+        fider.popup();
+    }
+</script>
+
+<script type="text/javascript">
+    //function DeleteImage(obj) {
+    //    var temp = obj.attr('data');
+    //    var url = obj.attr('src');
+    //    var str = $('#_txturlImage').val();
+    //    $('#_txturlImage').val(str.replace(url, ""));
+    //    $('#' + temp + '').remove();
+    //}
+    function DeleteImage(event) {
+        $(event.target).closest("div").remove();
+    }
+    $('#add-info').click(function () {
+        $('#txtNameDetail').val("");
+        $('#txtDescriptions').val("");
+    })
+</script>

@@ -1,0 +1,93 @@
+﻿@using Data.DB;
+@using Data.Model.APIWeb
+@using Data.Utils
+@using PagedList.Mvc
+@model PagedList.IPagedList<ListItemOutputModel>
+
+
+<div class="row">
+    <div class="col-md-12 col-sm-12 col-12">
+        <table class="table table-light table-bordered table-hover table-responsive-sm table-responsive-md">
+            <thead class="text-center">
+                <tr>
+                    <th>STT</th>
+                    <th>Mã sản phẩm</th>
+                    <th>Tên sản phẩm</th>
+                    <th>Danh mục</th>
+                    <th>Giá gốc</th>
+                    <th>Trạng thái</th>
+                    <th>Trạng thái hoạt động</th>
+                    <th>Ngày tạo</th>
+                    <th>Chức năng</th>
+                </tr>
+            </thead>
+            <tbody class="text-center">
+                @{
+                    if (Model.Count <= 0)
+                    {
+                        <tr>
+                            <td colspan="10">Không có dữ liệu.</td>
+                        </tr>
+                    }
+                    else
+                    {
+
+                        int stt = ((Model.PageNumber - 1) * Model.PageSize) + 1;
+                        foreach (var data in Model)
+                        {
+                            <!-- begin item table-->
+                            <tr>
+                                <td>@stt</td>
+                                <td>@data.ItemCode</td>
+                                <td>@data.ItemName</td>
+                                <td>@data.Category</td>
+                                <td>@String.Format("{0:n0}", data.Price)</td>
+                                <td>@data.GetStockStatus</td>
+                                <td>@data.GetNameStatus</td>
+                                <td>@data.GetStringCreateDate</td>
+                                <td>
+                                    <i class="btnEdit fa fa-edit text-success cursor-pointer" title="Sửa sản phẩm" @*data-toggle="modal" data-target="#md-edit-Item"*@ onclick="LoadItem(@data.ID)"></i>
+                                    <i class="btnDelete fa fa-trash text-danger cursor-pointer" title="Xóa sản phẩm" onclick="DeleteItem(@data.ID)"></i>
+                                </td>
+                            </tr>
+
+
+                            <!-- start modal edit Item -->
+                            @*<tr>
+                                    <td>@stt</td>
+                                    <td>@data.ItemCode </td>
+                                    <td style="width:200px;">@data.ItemName</td>
+                                    <td>@data.Category</td>
+                                    <td>@String.Format("{0:n0}", data.Price)</td>
+                                    <td>@data.GetNameStatus</td>0
+                                    <td>@data.GetStringCreateDate</td>
+                                    <td class="width2btn">
+                                        <a data-toggle="tooltip" data-placement="top" title="Sửa sản phẩm" class="cursor-pointer" onclick="LoadItem(@data.ID)">
+                                            <i class="btnEdit fa fa-fw fa-edit"></i>
+                                        </a>
+                                        <a data-toggle="tooltip" data-placement="top" title="Xóa sản phẩm." class="cursor-pointer" onclick="DeleteItem(@data.ID)">
+                                            <i class="btnDelete fa fa-fw fa-trash-o"></i>
+                                        </a>
+                                    </td>
+                                </tr>*@
+                            stt++;
+                        }
+                    }
+                }
+            </tbody>
+        </table>
+
+        <div class="col-md-12">
+            <div class="row float-right">
+                @*phân trang*@
+                @Html.PagedListPager(Model, Page => Url.Action("Search", new { Page, fromDate = ViewBag.fromDate, toDate = ViewBag.toDate, ItemName = ViewBag.ItemName, Status = ViewBag.Status, category = ViewBag.Category, StockStatus= ViewBag.StockStatus }),
+             PagedListRenderOptions.EnableUnobtrusiveAjaxReplacing(new AjaxOptions()
+             {
+                 HttpMethod = "GET",
+                 UpdateTargetId = "tableItem"
+             })
+             )
+            </div>
+        </div>
+    </div>
+</div>

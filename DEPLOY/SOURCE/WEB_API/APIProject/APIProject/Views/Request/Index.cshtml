@@ -1,0 +1,106 @@
+﻿@using Data.Model.APIWeb
+@using Data.Utils
+@using PagedList.Mvc
+@using APIProject.Controllers
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div id="View">
+    <h2 class="my-5"><i class="fa fa-fw fa-refresh"></i>Yêu cầu rút điểm</h2>
+
+    <div class="row ">
+        <div class="col-md-3 col-sm-12 col-12 mt-2 mt-2">
+            <input type="text" class="form-control" id="txt-search" onkeyup="searchRequest();" placeholder="Nhập tên hoặc sdt khách hàng" />
+        </div>
+        <div class="col-md-3  col-sm-12 mt-2 mt-2">
+            <select id="cbbStatus" class="form-control">
+                <option>Tất cả trạng thái</option>
+                <option value="@SystemParam.STATUS_ORDER_PENDING">Chớ xác nhận</option>
+                <option value="@SystemParam.STATUS_ORDER_CONFIRM">Đã xác nhận</option>
+                <option value="@SystemParam.STATUS_ORDER_REFUSE">Từ chối</option>
+            </select>
+        </div>
+        <div class="col-md-2 col-sm-12 col-12 mt-2 mt-2">
+            <input type="text" class="form-control relative-icon-calendar date" id="txtFromDate" placeholder="Từ ngày" />
+            <i class="fa fa-calendar absolute-icon-calendar"></i>
+        </div>
+        <div class="col-md-2 col-sm-12 col-12 mt-2 mt-2">
+            <input type="text" class="form-control relative-icon-calendar date" placeholder="Đến ngày" id="txtToDate" />
+            <i class="fa fa-calendar absolute-icon-calendar"></i>
+        </div>
+        <div class="col-md-2 col-sm-12 col-12 mt-2 mt-2">
+            <button class="btn btn-primary btn-block" onclick="searchRequest()" id="searchRequest"><i class="fa fa-fw fa-search"></i> Tìm kiếm</button>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6 col-12 mt-2">
+            <p class="text-danger text-bold" style="font-size:18px">Yêu cầu xác nhận: @String.Format("{0:0,0.00 Point}", @ViewBag.RevenueAccepted) </p>
+        </div>
+        <div class="col-md-6 col-12 mt-2">
+            <p class="text-danger text-bold" style="font-size:18px">Yêu cầu chờ: @String.Format("{0:0,0.00 Point}", @ViewBag.RevenuePending) </p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6 col-12 mt-2">
+            <p class="text-danger text-bold" style="font-size:18px">Yêu cầu từ chối: @String.Format("{0:0,0.00 Point}", @ViewBag.RevenueRefuse) </p>
+        </div>
+    </div>
+    
+    <div class="row">
+        <div class="col-md-12 col-12 mt-2" id="tableRequest">
+            @{
+                Html.RenderAction("NameSearch", "Request", new { Page = 1, Name = ViewBag.Name, FromDate = ViewBag.FromDate, ToDate = ViewBag.ToDate, StatusR = ViewBag.Status });
+            }
+        </div>
+    </div>
+</div>
+
+
+
+<!-- start modal request detail -->
+<div id="divRequestDetail">
+
+</div>
+<!-- end modal -->
+
+<script>
+    $("#txt-search").keypress(function (e) {
+        var key = e.which;
+        if (key == 13) {
+            $("#searchRequest").click();
+        }
+    });
+    $('.showModalRequest').click(function () {
+
+    });
+    $('#cbbStatus').on('change', function () {
+        searchRequest();
+    });
+    $('#txtFromDate').on('change', function () {
+        searchRequest();
+    });
+    $('#txtToDate').on('change', function () {
+        searchRequest();
+    });
+    function exportExcel() {
+        var fromDate = $("#txtRequestFromDate").val();
+        var toDate = $("#txtRequestToDate").val();
+        var status = $("#cbbStatus").val();
+        var type = $("#cbbType").val();
+        var codeOrName = $("#txtRequestCodeSearch").val();
+        window.location.href = "/Request/ExportRequest?fromDate=" + fromDate + "&toDate=" + toDate + "&status=" + status + "&typeRequest=" + type + "&codeOrCusName=" + codeOrName;
+    }
+    function searchRequest() {
+        var name = $("#txt-search").val();
+        var fromdate = $("#txtFromDate").val();
+        var todate = $("#txtToDate").val();
+        var status = $("#cbbStatus").val();
+        $.ajax({
+            url: "/Request/NameSearch",
+            data: { Page: 1, Name: name, FromDate: fromdate, ToDate: todate, StatusR: status },
+            success: function (result) {
+                $("#tableRequest").html(result);
+            }
+        })
+    }
+</script>
