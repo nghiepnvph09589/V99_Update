@@ -1,0 +1,3 @@
+## Lưu lại chứng cứ, tài liệu chốt lại với khách hàng về hợp đồng và nghiệp vụ vó thể là email,...
+
+
