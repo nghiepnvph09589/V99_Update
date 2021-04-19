@@ -7,8 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		00E356F31AD99517003FC87E /* TDTrieuDoTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* TDTrieuDoTests.m */; };
-		0B382415F77BA57408E52BA8 /* libPods-TDTrieuDo-tvOSTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9D8F3772F903255FCEC6D3FD /* libPods-TDTrieuDo-tvOSTests.a */; };
+		00E356F31AD99517003FC87E /* TICHDIEMV99Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* TICHDIEMV99Tests.m */; };
+		0B382415F77BA57408E52BA8 /* libPods-TICHDIEMV99-tvOSTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9D8F3772F903255FCEC6D3FD /* libPods-TICHDIEMV99-tvOSTests.a */; };
 		0F9B3C9E235A0039008C6EA5 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0F9B3C9D235A0039008C6EA5 /* GoogleService-Info.plist */; };
 		0FCE9089236D34CF008A3E74 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0FCE9088236D34CF008A3E74 /* StoreKit.framework */; };
 		13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
@@ -22,18 +22,18 @@
 		2D02E4BC1E0B4A80006451C7 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
 		2D02E4BD1E0B4A84006451C7 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		2D02E4BF1E0B4AB3006451C7 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
-		2DCD954D1E0B4F2C00145EB5 /* TDTrieuDoTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* TDTrieuDoTests.m */; };
+		2DCD954D1E0B4F2C00145EB5 /* TICHDIEMV99Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* TICHDIEMV99Tests.m */; };
 		304EB0FDD33047DAA1327298 /* SourceSansPro-Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 183FCC13E39B4A64A8A112C0 /* SourceSansPro-Black.ttf */; };
 		3F5DB20ED728461FB51511F0 /* Roboto-ThinItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = BA36CB479A87411A9E7AB3F0 /* Roboto-ThinItalic.ttf */; };
 		5C23BEA5164742889495F980 /* SourceSansPro-ExtraLight.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9A4ADBF31FA840148F00A97B /* SourceSansPro-ExtraLight.ttf */; };
-		663C0359FE5CBE8F63B90523 /* libPods-TDTrieuDo-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1B1B9FAFE8191BBB780188BD /* libPods-TDTrieuDo-tvOS.a */; };
-		67BE55D1FDB84D68F3D7FB15 /* libPods-TDTrieuDoTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8CC268B64B09317A8C7D1435 /* libPods-TDTrieuDoTests.a */; };
+		663C0359FE5CBE8F63B90523 /* libPods-TICHDIEMV99-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1B1B9FAFE8191BBB780188BD /* libPods-TICHDIEMV99-tvOS.a */; };
+		67BE55D1FDB84D68F3D7FB15 /* libPods-TICHDIEMV99Tests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8CC268B64B09317A8C7D1435 /* libPods-TICHDIEMV99Tests.a */; };
 		6AF988758736489C8E8E0AD3 /* SourceSansPro-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6E17FC802E6A476AAAB8FCD3 /* SourceSansPro-Light.ttf */; };
 		744F0945664E495DB5917E00 /* SourceSansPro-SemiBoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C1E39637277A4C7CB86A8A8A /* SourceSansPro-SemiBoldItalic.ttf */; };
 		769D3426F99E44019F38ECE1 /* Roboto-BlackItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5531C09A36F048F7AA3E56BA /* Roboto-BlackItalic.ttf */; };
 		77035BD7D16B45159FFBA68E /* Roboto-Italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = EF08526C7D834BD9A75E9DC5 /* Roboto-Italic.ttf */; };
 		7EB24BA297F741ADBD0C8FDB /* SourceSansPro-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FCCAE0859F984DB69F8E24AE /* SourceSansPro-SemiBold.ttf */; };
-		80903DC324FC48D07617D876 /* libPods-TDTrieuDo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3D93656119D6281D7C9018FA /* libPods-TDTrieuDo.a */; };
+		80903DC324FC48D07617D876 /* libPods-TICHDIEMV99.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3D93656119D6281D7C9018FA /* libPods-TICHDIEMV99.a */; };
 		878F5482A4AF4958912EA061 /* Roboto-MediumItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AD4EE228B37B4D97BE3DF7BD /* Roboto-MediumItalic.ttf */; };
 		9A27780880654A69BD9DC181 /* Roboto-BoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 607F5C3CD22B4990A489463A /* Roboto-BoldItalic.ttf */; };
 		A6776B17E19E419489B2D9F0 /* Roboto-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 57CBBBF477E545B79523D08F /* Roboto-Light.ttf */; };
@@ -54,67 +54,67 @@
 			containerPortal = 83CBB9F71A601CBA00E9B192 /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = 13B07F861A680F5B00A75B9A;
-			remoteInfo = TDTrieuDo;
+			remoteInfo = TICHDIEMV99;
 		};
 		2D02E4911E0B4A5D006451C7 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 83CBB9F71A601CBA00E9B192 /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = 2D02E47A1E0B4A5D006451C7;
-			remoteInfo = "TDTrieuDo-tvOS";
+			remoteInfo = "TICHDIEMV99-tvOS";
 		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		008F07F21AC5B25A0029DE68 /* main.jsbundle */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = main.jsbundle; sourceTree = "<group>"; };
-		00E356EE1AD99517003FC87E /* TDTrieuDoTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TDTrieuDoTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		00E356EE1AD99517003FC87E /* TICHDIEMV99Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TICHDIEMV99Tests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		00E356F11AD99517003FC87E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		00E356F21AD99517003FC87E /* TDTrieuDoTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TDTrieuDoTests.m; sourceTree = "<group>"; };
+		00E356F21AD99517003FC87E /* TICHDIEMV99Tests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TICHDIEMV99Tests.m; sourceTree = "<group>"; };
 		0944DAAAF8F445D682412595 /* FontAwesome5_Brands.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome5_Brands.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Brands.ttf"; sourceTree = "<group>"; };
 		0B8684AFF8A041688AEDA9C0 /* Roboto-LightItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Roboto-LightItalic.ttf"; path = "../app/assets/fonts/Roboto-LightItalic.ttf"; sourceTree = "<group>"; };
 		0D4549E8291F45AD84C8094E /* MaterialCommunityIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = MaterialCommunityIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/MaterialCommunityIcons.ttf"; sourceTree = "<group>"; };
 		0EB797404F3C47E3BA4E8278 /* SourceSansPro-LightItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "SourceSansPro-LightItalic.ttf"; path = "../app/assets/fonts/SourceSansPro-LightItalic.ttf"; sourceTree = "<group>"; };
 		0EC2804BD5F5470BA6599836 /* Zocial.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Zocial.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Zocial.ttf"; sourceTree = "<group>"; };
 		0F5CCC432358526B00404296 /* vi-VN */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "vi-VN"; path = "vi-VN.lproj/LaunchScreen.strings"; sourceTree = "<group>"; };
-		0F7A0A45235DB5FD0021FFCF /* TDTrieuDo.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = TDTrieuDo.entitlements; path = TDTrieuDo/TDTrieuDo.entitlements; sourceTree = "<group>"; };
+		0F7A0A45235DB5FD0021FFCF /* TICHDIEMV99.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = TICHDIEMV99.entitlements; path = TICHDIEMV99/TICHDIEMV99.entitlements; sourceTree = "<group>"; };
 		0F9B3C9D235A0039008C6EA5 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		0FCE9088236D34CF008A3E74 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
-		11779F9B7F7320692F9FAC5D /* Pods-TDTrieuDo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TDTrieuDo.release.xcconfig"; path = "Target Support Files/Pods-TDTrieuDo/Pods-TDTrieuDo.release.xcconfig"; sourceTree = "<group>"; };
+		11779F9B7F7320692F9FAC5D /* Pods-TICHDIEMV99.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TICHDIEMV99.release.xcconfig"; path = "Target Support Files/Pods-TICHDIEMV99/Pods-TICHDIEMV99.release.xcconfig"; sourceTree = "<group>"; };
 		13B07F961A680F5B00A75B9A /* Trà Tiên Thảo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Trà Tiên Thảo.app"; sourceTree = BUILT_PRODUCTS_DIR; };
-		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = TDTrieuDo/AppDelegate.h; sourceTree = "<group>"; };
-		13B07FB01A68108700A75B9A /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppDelegate.m; path = TDTrieuDo/AppDelegate.m; sourceTree = "<group>"; };
+		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = TICHDIEMV99/AppDelegate.h; sourceTree = "<group>"; };
+		13B07FB01A68108700A75B9A /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppDelegate.m; path = TICHDIEMV99/AppDelegate.m; sourceTree = "<group>"; };
 		13B07FB21A68108700A75B9A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
-		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = TDTrieuDo/Images.xcassets; sourceTree = "<group>"; };
-		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = TDTrieuDo/Info.plist; sourceTree = "<group>"; };
-		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = TDTrieuDo/main.m; sourceTree = "<group>"; };
+		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = TICHDIEMV99/Images.xcassets; sourceTree = "<group>"; };
+		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = TICHDIEMV99/Info.plist; sourceTree = "<group>"; };
+		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = TICHDIEMV99/main.m; sourceTree = "<group>"; };
 		183FCC13E39B4A64A8A112C0 /* SourceSansPro-Black.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "SourceSansPro-Black.ttf"; path = "../app/assets/fonts/SourceSansPro-Black.ttf"; sourceTree = "<group>"; };
-		1B1B9FAFE8191BBB780188BD /* libPods-TDTrieuDo-tvOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-TDTrieuDo-tvOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		1B1B9FAFE8191BBB780188BD /* libPods-TICHDIEMV99-tvOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-TICHDIEMV99-tvOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		1D4AE4920FB047C3AF383156 /* FontAwesome5_Solid.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome5_Solid.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Solid.ttf"; sourceTree = "<group>"; };
 		1E0EB8079C7F44BFAD2477B9 /* Roboto-Black.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Roboto-Black.ttf"; path = "../app/assets/fonts/Roboto-Black.ttf"; sourceTree = "<group>"; };
 		1E4EC3ECC5AB4EA0B11993EC /* FontAwesome5_Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome5_Regular.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Regular.ttf"; sourceTree = "<group>"; };
 		2200E0110EA645F193475B59 /* SourceSansPro-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "SourceSansPro-Regular.ttf"; path = "../assets/fonts/SourceSansPro-Regular.ttf"; sourceTree = "<group>"; };
 		22CC1FEBF37D46289CC9E445 /* Roboto-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Roboto-Regular.ttf"; path = "../assets/fonts/Roboto-Regular.ttf"; sourceTree = "<group>"; };
 		2AC541BFBF504BF3B55DCD61 /* Roboto-Black.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Roboto-Black.ttf"; path = "../assets/fonts/Roboto-Black.ttf"; sourceTree = "<group>"; };
-		2D02E47B1E0B4A5D006451C7 /* TDTrieuDo-tvOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "TDTrieuDo-tvOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
-		2D02E4901E0B4A5D006451C7 /* TDTrieuDo-tvOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "TDTrieuDo-tvOSTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
-		2DD337C478EA1894C0DC3B44 /* Pods-TDTrieuDo-tvOSTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TDTrieuDo-tvOSTests.debug.xcconfig"; path = "Target Support Files/Pods-TDTrieuDo-tvOSTests/Pods-TDTrieuDo-tvOSTests.debug.xcconfig"; sourceTree = "<group>"; };
+		2D02E47B1E0B4A5D006451C7 /* TICHDIEMV99-tvOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "TICHDIEMV99-tvOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		2D02E4901E0B4A5D006451C7 /* TICHDIEMV99-tvOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "TICHDIEMV99-tvOSTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		2DD337C478EA1894C0DC3B44 /* Pods-TICHDIEMV99-tvOSTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TICHDIEMV99-tvOSTests.debug.xcconfig"; path = "Target Support Files/Pods-TICHDIEMV99-tvOSTests/Pods-TICHDIEMV99-tvOSTests.debug.xcconfig"; sourceTree = "<group>"; };
 		33D0566C4FDA4AE9821D88C8 /* SourceSansPro-SemiBoldItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "SourceSansPro-SemiBoldItalic.ttf"; path = "../assets/fonts/SourceSansPro-SemiBoldItalic.ttf"; sourceTree = "<group>"; };
 		349342B2D8C24F9A86597F8C /* Roboto-Medium.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Roboto-Medium.ttf"; path = "../assets/fonts/Roboto-Medium.ttf"; sourceTree = "<group>"; };
 		3882AE3BEE2A42CC9E3D6BEE /* SourceSansPro-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "SourceSansPro-Regular.ttf"; path = "../app/assets/fonts/SourceSansPro-Regular.ttf"; sourceTree = "<group>"; };
 		3C0DD4D018A94D5EBC342426 /* Roboto-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Roboto-Regular.ttf"; path = "../app/assets/fonts/Roboto-Regular.ttf"; sourceTree = "<group>"; };
-		3D93656119D6281D7C9018FA /* libPods-TDTrieuDo.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-TDTrieuDo.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		3D93656119D6281D7C9018FA /* libPods-TICHDIEMV99.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-TICHDIEMV99.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		3EA787AE8C3648D3B4D915EF /* Roboto-Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Roboto-Bold.ttf"; path = "../app/assets/fonts/Roboto-Bold.ttf"; sourceTree = "<group>"; };
 		4030A2C302D74C9EB20E4292 /* FontAwesome.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome.ttf"; sourceTree = "<group>"; };
-		429A036D270648CAE1D281DA /* Pods-TDTrieuDoTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TDTrieuDoTests.debug.xcconfig"; path = "Target Support Files/Pods-TDTrieuDoTests/Pods-TDTrieuDoTests.debug.xcconfig"; sourceTree = "<group>"; };
+		429A036D270648CAE1D281DA /* Pods-TICHDIEMV99Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TICHDIEMV99Tests.debug.xcconfig"; path = "Target Support Files/Pods-TICHDIEMV99Tests/Pods-TICHDIEMV99Tests.debug.xcconfig"; sourceTree = "<group>"; };
 		4328E95D1B7941FBA5BB872A /* SourceSansPro-BlackItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "SourceSansPro-BlackItalic.ttf"; path = "../app/assets/fonts/SourceSansPro-BlackItalic.ttf"; sourceTree = "<group>"; };
-		4BE7013CFBA4F2D38B343C44 /* Pods-TDTrieuDo-tvOSTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TDTrieuDo-tvOSTests.release.xcconfig"; path = "Target Support Files/Pods-TDTrieuDo-tvOSTests/Pods-TDTrieuDo-tvOSTests.release.xcconfig"; sourceTree = "<group>"; };
+		4BE7013CFBA4F2D38B343C44 /* Pods-TICHDIEMV99-tvOSTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TICHDIEMV99-tvOSTests.release.xcconfig"; path = "Target Support Files/Pods-TICHDIEMV99-tvOSTests/Pods-TICHDIEMV99-tvOSTests.release.xcconfig"; sourceTree = "<group>"; };
 		4FDBC33669384178B076A35D /* SourceSansPro-ExtraLight.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "SourceSansPro-ExtraLight.ttf"; path = "../assets/fonts/SourceSansPro-ExtraLight.ttf"; sourceTree = "<group>"; };
 		5004A93FAE174CD79DB275EB /* Roboto-ThinItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Roboto-ThinItalic.ttf"; path = "../assets/fonts/Roboto-ThinItalic.ttf"; sourceTree = "<group>"; };
 		5531C09A36F048F7AA3E56BA /* Roboto-BlackItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Roboto-BlackItalic.ttf"; path = "../app/assets/fonts/Roboto-BlackItalic.ttf"; sourceTree = "<group>"; };
 		57CBBBF477E545B79523D08F /* Roboto-Light.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Roboto-Light.ttf"; path = "../app/assets/fonts/Roboto-Light.ttf"; sourceTree = "<group>"; };
 		5843707B856D4E50B83EDD14 /* SourceSansPro-Black.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "SourceSansPro-Black.ttf"; path = "../assets/fonts/SourceSansPro-Black.ttf"; sourceTree = "<group>"; };
 		59D7E7DBD5274CA9A1CC30B6 /* SourceSansPro-Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "SourceSansPro-Bold.ttf"; path = "../assets/fonts/SourceSansPro-Bold.ttf"; sourceTree = "<group>"; };
-		5ADE38FDE4488CE788208067 /* Pods-TDTrieuDo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TDTrieuDo.debug.xcconfig"; path = "Target Support Files/Pods-TDTrieuDo/Pods-TDTrieuDo.debug.xcconfig"; sourceTree = "<group>"; };
+		5ADE38FDE4488CE788208067 /* Pods-TICHDIEMV99.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TICHDIEMV99.debug.xcconfig"; path = "Target Support Files/Pods-TICHDIEMV99/Pods-TICHDIEMV99.debug.xcconfig"; sourceTree = "<group>"; };
 		5F0E7A1A88A048CEB8B64D83 /* Roboto-BoldItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Roboto-BoldItalic.ttf"; path = "../assets/fonts/Roboto-BoldItalic.ttf"; sourceTree = "<group>"; };
 		607F5C3CD22B4990A489463A /* Roboto-BoldItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Roboto-BoldItalic.ttf"; path = "../app/assets/fonts/Roboto-BoldItalic.ttf"; sourceTree = "<group>"; };
 		6CA823562A924133AC16F5E0 /* Feather.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Feather.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Feather.ttf"; sourceTree = "<group>"; };
@@ -125,18 +125,18 @@
 		7B2A458F35D440F59FC057EE /* Octicons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Octicons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Octicons.ttf"; sourceTree = "<group>"; };
 		868D063A7E9A47B78AC85FF1 /* EvilIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = EvilIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/EvilIcons.ttf"; sourceTree = "<group>"; };
 		8B2FBB047DA947A484086D16 /* SourceSansPro-Italic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "SourceSansPro-Italic.ttf"; path = "../app/assets/fonts/SourceSansPro-Italic.ttf"; sourceTree = "<group>"; };
-		8CC268B64B09317A8C7D1435 /* libPods-TDTrieuDoTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-TDTrieuDoTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		8CC268B64B09317A8C7D1435 /* libPods-TICHDIEMV99Tests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-TICHDIEMV99Tests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		8E34B81CAF94487880CCC4CA /* AntDesign.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = AntDesign.ttf; path = "../node_modules/react-native-vector-icons/Fonts/AntDesign.ttf"; sourceTree = "<group>"; };
 		8F08C978B1B94B50B329C162 /* Roboto-MediumItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Roboto-MediumItalic.ttf"; path = "../assets/fonts/Roboto-MediumItalic.ttf"; sourceTree = "<group>"; };
 		9428AEB9F7DD4D9AADA0A904 /* SimpleLineIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = SimpleLineIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/SimpleLineIcons.ttf"; sourceTree = "<group>"; };
 		9A4ADBF31FA840148F00A97B /* SourceSansPro-ExtraLight.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "SourceSansPro-ExtraLight.ttf"; path = "../app/assets/fonts/SourceSansPro-ExtraLight.ttf"; sourceTree = "<group>"; };
-		9D8F3772F903255FCEC6D3FD /* libPods-TDTrieuDo-tvOSTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-TDTrieuDo-tvOSTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		9E88D1E0FB74E8E709D02C06 /* Pods-TDTrieuDoTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TDTrieuDoTests.release.xcconfig"; path = "Target Support Files/Pods-TDTrieuDoTests/Pods-TDTrieuDoTests.release.xcconfig"; sourceTree = "<group>"; };
+		9D8F3772F903255FCEC6D3FD /* libPods-TICHDIEMV99-tvOSTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-TICHDIEMV99-tvOSTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		9E88D1E0FB74E8E709D02C06 /* Pods-TICHDIEMV99Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TICHDIEMV99Tests.release.xcconfig"; path = "Target Support Files/Pods-TICHDIEMV99Tests/Pods-TICHDIEMV99Tests.release.xcconfig"; sourceTree = "<group>"; };
 		A99E9CEB7FDB427491FA7B9F /* Fontisto.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Fontisto.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Fontisto.ttf"; sourceTree = "<group>"; };
 		AABD0410D94142C0833ADA79 /* SourceSansPro-BlackItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "SourceSansPro-BlackItalic.ttf"; path = "../assets/fonts/SourceSansPro-BlackItalic.ttf"; sourceTree = "<group>"; };
 		AD456596B54F4881B43648B3 /* SourceSansPro-ExtraLightItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "SourceSansPro-ExtraLightItalic.ttf"; path = "../app/assets/fonts/SourceSansPro-ExtraLightItalic.ttf"; sourceTree = "<group>"; };
 		AD4EE228B37B4D97BE3DF7BD /* Roboto-MediumItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Roboto-MediumItalic.ttf"; path = "../app/assets/fonts/Roboto-MediumItalic.ttf"; sourceTree = "<group>"; };
-		AE64ED939FD02E76A0EB0678 /* Pods-TDTrieuDo-tvOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TDTrieuDo-tvOS.debug.xcconfig"; path = "Target Support Files/Pods-TDTrieuDo-tvOS/Pods-TDTrieuDo-tvOS.debug.xcconfig"; sourceTree = "<group>"; };
+		AE64ED939FD02E76A0EB0678 /* Pods-TICHDIEMV99-tvOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TICHDIEMV99-tvOS.debug.xcconfig"; path = "Target Support Files/Pods-TICHDIEMV99-tvOS/Pods-TICHDIEMV99-tvOS.debug.xcconfig"; sourceTree = "<group>"; };
 		AEAABD6774FC41D29D431DB0 /* Roboto-Thin.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Roboto-Thin.ttf"; path = "../assets/fonts/Roboto-Thin.ttf"; sourceTree = "<group>"; };
 		B1B1FE6DD1694AEFADA931F0 /* SourceSansPro-BoldItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "SourceSansPro-BoldItalic.ttf"; path = "../app/assets/fonts/SourceSansPro-BoldItalic.ttf"; sourceTree = "<group>"; };
 		B50C89B3180F4643917B8DE7 /* SourceSansPro-Light.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "SourceSansPro-Light.ttf"; path = "../assets/fonts/SourceSansPro-Light.ttf"; sourceTree = "<group>"; };
@@ -145,7 +145,7 @@
 		C0A2AE0992B34C76A8FB00C3 /* Roboto-Light.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Roboto-Light.ttf"; path = "../assets/fonts/Roboto-Light.ttf"; sourceTree = "<group>"; };
 		C1E39637277A4C7CB86A8A8A /* SourceSansPro-SemiBoldItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "SourceSansPro-SemiBoldItalic.ttf"; path = "../app/assets/fonts/SourceSansPro-SemiBoldItalic.ttf"; sourceTree = "<group>"; };
 		C4EFB3D17ECB4B85AB874868 /* Entypo.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Entypo.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Entypo.ttf"; sourceTree = "<group>"; };
-		C5116CE3F506DAD85E314A66 /* Pods-TDTrieuDo-tvOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TDTrieuDo-tvOS.release.xcconfig"; path = "Target Support Files/Pods-TDTrieuDo-tvOS/Pods-TDTrieuDo-tvOS.release.xcconfig"; sourceTree = "<group>"; };
+		C5116CE3F506DAD85E314A66 /* Pods-TICHDIEMV99-tvOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TICHDIEMV99-tvOS.release.xcconfig"; path = "Target Support Files/Pods-TICHDIEMV99-tvOS/Pods-TICHDIEMV99-tvOS.release.xcconfig"; sourceTree = "<group>"; };
 		C82575E8119A430AA376A35A /* Ionicons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Ionicons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Ionicons.ttf"; sourceTree = "<group>"; };
 		C9712F7C502D4714B2B82046 /* SourceSansPro-Italic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "SourceSansPro-Italic.ttf"; path = "../assets/fonts/SourceSansPro-Italic.ttf"; sourceTree = "<group>"; };
 		CDE96F07523D4422B8281C14 /* Roboto-Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Roboto-Bold.ttf"; path = "../assets/fonts/Roboto-Bold.ttf"; sourceTree = "<group>"; };
@@ -168,7 +168,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				67BE55D1FDB84D68F3D7FB15 /* libPods-TDTrieuDoTests.a in Frameworks */,
+				67BE55D1FDB84D68F3D7FB15 /* libPods-TICHDIEMV99Tests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -176,7 +176,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				80903DC324FC48D07617D876 /* libPods-TDTrieuDo.a in Frameworks */,
+				80903DC324FC48D07617D876 /* libPods-TICHDIEMV99.a in Frameworks */,
 				0FCE9089236D34CF008A3E74 /* StoreKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -185,7 +185,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				663C0359FE5CBE8F63B90523 /* libPods-TDTrieuDo-tvOS.a in Frameworks */,
+				663C0359FE5CBE8F63B90523 /* libPods-TICHDIEMV99-tvOS.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -193,20 +193,20 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0B382415F77BA57408E52BA8 /* libPods-TDTrieuDo-tvOSTests.a in Frameworks */,
+				0B382415F77BA57408E52BA8 /* libPods-TICHDIEMV99-tvOSTests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		00E356EF1AD99517003FC87E /* TDTrieuDoTests */ = {
+		00E356EF1AD99517003FC87E /* TICHDIEMV99Tests */ = {
 			isa = PBXGroup;
 			children = (
-				00E356F21AD99517003FC87E /* TDTrieuDoTests.m */,
+				00E356F21AD99517003FC87E /* TICHDIEMV99Tests.m */,
 				00E356F01AD99517003FC87E /* Supporting Files */,
 			);
-			path = TDTrieuDoTests;
+			path = TICHDIEMV99Tests;
 			sourceTree = "<group>";
 		};
 		00E356F01AD99517003FC87E /* Supporting Files */ = {
@@ -217,10 +217,10 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		13B07FAE1A68108700A75B9A /* TDTrieuDo */ = {
+		13B07FAE1A68108700A75B9A /* TICHDIEMV99 */ = {
 			isa = PBXGroup;
 			children = (
-				0F7A0A45235DB5FD0021FFCF /* TDTrieuDo.entitlements */,
+				0F7A0A45235DB5FD0021FFCF /* TICHDIEMV99.entitlements */,
 				0F9B3C9D235A0039008C6EA5 /* GoogleService-Info.plist */,
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
@@ -230,7 +230,7 @@
 				13B07FB11A68108700A75B9A /* LaunchScreen.xib */,
 				13B07FB71A68108700A75B9A /* main.m */,
 			);
-			name = TDTrieuDo;
+			name = TICHDIEMV99;
 			sourceTree = "<group>";
 		};
 		2D16E6871FA4F8E400B85C8A /* Frameworks */ = {
@@ -239,10 +239,10 @@
 				0FCE9088236D34CF008A3E74 /* StoreKit.framework */,
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
 				ED2971642150620600B7C4FE /* JavaScriptCore.framework */,
-				3D93656119D6281D7C9018FA /* libPods-TDTrieuDo.a */,
-				1B1B9FAFE8191BBB780188BD /* libPods-TDTrieuDo-tvOS.a */,
-				9D8F3772F903255FCEC6D3FD /* libPods-TDTrieuDo-tvOSTests.a */,
-				8CC268B64B09317A8C7D1435 /* libPods-TDTrieuDoTests.a */,
+				3D93656119D6281D7C9018FA /* libPods-TICHDIEMV99.a */,
+				1B1B9FAFE8191BBB780188BD /* libPods-TICHDIEMV99-tvOS.a */,
+				9D8F3772F903255FCEC6D3FD /* libPods-TICHDIEMV99-tvOSTests.a */,
+				8CC268B64B09317A8C7D1435 /* libPods-TICHDIEMV99Tests.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -250,14 +250,14 @@
 		5BF471CFFFFD4B188A484C0E /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				5ADE38FDE4488CE788208067 /* Pods-TDTrieuDo.debug.xcconfig */,
-				11779F9B7F7320692F9FAC5D /* Pods-TDTrieuDo.release.xcconfig */,
-				AE64ED939FD02E76A0EB0678 /* Pods-TDTrieuDo-tvOS.debug.xcconfig */,
-				C5116CE3F506DAD85E314A66 /* Pods-TDTrieuDo-tvOS.release.xcconfig */,
-				2DD337C478EA1894C0DC3B44 /* Pods-TDTrieuDo-tvOSTests.debug.xcconfig */,
-				4BE7013CFBA4F2D38B343C44 /* Pods-TDTrieuDo-tvOSTests.release.xcconfig */,
-				429A036D270648CAE1D281DA /* Pods-TDTrieuDoTests.debug.xcconfig */,
-				9E88D1E0FB74E8E709D02C06 /* Pods-TDTrieuDoTests.release.xcconfig */,
+				5ADE38FDE4488CE788208067 /* Pods-TICHDIEMV99.debug.xcconfig */,
+				11779F9B7F7320692F9FAC5D /* Pods-TICHDIEMV99.release.xcconfig */,
+				AE64ED939FD02E76A0EB0678 /* Pods-TICHDIEMV99-tvOS.debug.xcconfig */,
+				C5116CE3F506DAD85E314A66 /* Pods-TICHDIEMV99-tvOS.release.xcconfig */,
+				2DD337C478EA1894C0DC3B44 /* Pods-TICHDIEMV99-tvOSTests.debug.xcconfig */,
+				4BE7013CFBA4F2D38B343C44 /* Pods-TICHDIEMV99-tvOSTests.release.xcconfig */,
+				429A036D270648CAE1D281DA /* Pods-TICHDIEMV99Tests.debug.xcconfig */,
+				9E88D1E0FB74E8E709D02C06 /* Pods-TICHDIEMV99Tests.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -272,9 +272,9 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
-				13B07FAE1A68108700A75B9A /* TDTrieuDo */,
+				13B07FAE1A68108700A75B9A /* TICHDIEMV99 */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
-				00E356EF1AD99517003FC87E /* TDTrieuDoTests */,
+				00E356EF1AD99517003FC87E /* TICHDIEMV99Tests */,
 				83CBBA001A601CBA00E9B192 /* Products */,
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
 				5BF471CFFFFD4B188A484C0E /* Pods */,
@@ -289,9 +289,9 @@
 			isa = PBXGroup;
 			children = (
 				13B07F961A680F5B00A75B9A /* Trà Tiên Thảo.app */,
-				00E356EE1AD99517003FC87E /* TDTrieuDoTests.xctest */,
-				2D02E47B1E0B4A5D006451C7 /* TDTrieuDo-tvOS.app */,
-				2D02E4901E0B4A5D006451C7 /* TDTrieuDo-tvOSTests.xctest */,
+				00E356EE1AD99517003FC87E /* TICHDIEMV99Tests.xctest */,
+				2D02E47B1E0B4A5D006451C7 /* TICHDIEMV99-tvOS.app */,
+				2D02E4901E0B4A5D006451C7 /* TICHDIEMV99-tvOSTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -370,9 +370,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		00E356ED1AD99517003FC87E /* TDTrieuDoTests */ = {
+		00E356ED1AD99517003FC87E /* TICHDIEMV99Tests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 00E357021AD99517003FC87E /* Build configuration list for PBXNativeTarget "TDTrieuDoTests" */;
+			buildConfigurationList = 00E357021AD99517003FC87E /* Build configuration list for PBXNativeTarget "TICHDIEMV99Tests" */;
 			buildPhases = (
 				BF50E6D591EC8D0E9B588F06 /* [CP] Check Pods Manifest.lock */,
 				00E356EA1AD99517003FC87E /* Sources */,
@@ -384,14 +384,14 @@
 			dependencies = (
 				00E356F51AD99517003FC87E /* PBXTargetDependency */,
 			);
-			name = TDTrieuDoTests;
-			productName = TDTrieuDoTests;
-			productReference = 00E356EE1AD99517003FC87E /* TDTrieuDoTests.xctest */;
+			name = TICHDIEMV99Tests;
+			productName = TICHDIEMV99Tests;
+			productReference = 00E356EE1AD99517003FC87E /* TICHDIEMV99Tests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
-		13B07F861A680F5B00A75B9A /* TDTrieuDo */ = {
+		13B07F861A680F5B00A75B9A /* TICHDIEMV99 */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "TDTrieuDo" */;
+			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "TICHDIEMV99" */;
 			buildPhases = (
 				77625CA9D6952E6A8E3664CD /* [CP] Check Pods Manifest.lock */,
 				FD10A7F022414F080027D42C /* Start Packager */,
@@ -405,14 +405,14 @@
 			);
 			dependencies = (
 			);
-			name = TDTrieuDo;
-			productName = TDTrieuDo;
+			name = TICHDIEMV99;
+			productName = TICHDIEMV99;
 			productReference = 13B07F961A680F5B00A75B9A /* Trà Tiên Thảo.app */;
 			productType = "com.apple.product-type.application";
 		};
-		2D02E47A1E0B4A5D006451C7 /* TDTrieuDo-tvOS */ = {
+		2D02E47A1E0B4A5D006451C7 /* TICHDIEMV99-tvOS */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 2D02E4BA1E0B4A5E006451C7 /* Build configuration list for PBXNativeTarget "TDTrieuDo-tvOS" */;
+			buildConfigurationList = 2D02E4BA1E0B4A5E006451C7 /* Build configuration list for PBXNativeTarget "TICHDIEMV99-tvOS" */;
 			buildPhases = (
 				3AF49687FDE8CDA9468261FD /* [CP] Check Pods Manifest.lock */,
 				FD10A7F122414F3F0027D42C /* Start Packager */,
@@ -425,14 +425,14 @@
 			);
 			dependencies = (
 			);
-			name = "TDTrieuDo-tvOS";
-			productName = "TDTrieuDo-tvOS";
-			productReference = 2D02E47B1E0B4A5D006451C7 /* TDTrieuDo-tvOS.app */;
+			name = "TICHDIEMV99-tvOS";
+			productName = "TICHDIEMV99-tvOS";
+			productReference = 2D02E47B1E0B4A5D006451C7 /* TICHDIEMV99-tvOS.app */;
 			productType = "com.apple.product-type.application";
 		};
-		2D02E48F1E0B4A5D006451C7 /* TDTrieuDo-tvOSTests */ = {
+		2D02E48F1E0B4A5D006451C7 /* TICHDIEMV99-tvOSTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 2D02E4BB1E0B4A5E006451C7 /* Build configuration list for PBXNativeTarget "TDTrieuDo-tvOSTests" */;
+			buildConfigurationList = 2D02E4BB1E0B4A5E006451C7 /* Build configuration list for PBXNativeTarget "TICHDIEMV99-tvOSTests" */;
 			buildPhases = (
 				AAA938F90909D53DDF6360AF /* [CP] Check Pods Manifest.lock */,
 				2D02E48C1E0B4A5D006451C7 /* Sources */,
@@ -444,9 +444,9 @@
 			dependencies = (
 				2D02E4921E0B4A5D006451C7 /* PBXTargetDependency */,
 			);
-			name = "TDTrieuDo-tvOSTests";
-			productName = "TDTrieuDo-tvOSTests";
-			productReference = 2D02E4901E0B4A5D006451C7 /* TDTrieuDo-tvOSTests.xctest */;
+			name = "TICHDIEMV99-tvOSTests";
+			productName = "TICHDIEMV99-tvOSTests";
+			productReference = 2D02E4901E0B4A5D006451C7 /* TICHDIEMV99-tvOSTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
@@ -491,7 +491,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "TDTrieuDo" */;
+			buildConfigurationList = 83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "TICHDIEMV99" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -505,10 +505,10 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				13B07F861A680F5B00A75B9A /* TDTrieuDo */,
-				00E356ED1AD99517003FC87E /* TDTrieuDoTests */,
-				2D02E47A1E0B4A5D006451C7 /* TDTrieuDo-tvOS */,
-				2D02E48F1E0B4A5D006451C7 /* TDTrieuDo-tvOSTests */,
+				13B07F861A680F5B00A75B9A /* TICHDIEMV99 */,
+				00E356ED1AD99517003FC87E /* TICHDIEMV99Tests */,
+				2D02E47A1E0B4A5D006451C7 /* TICHDIEMV99-tvOS */,
+				2D02E48F1E0B4A5D006451C7 /* TICHDIEMV99-tvOSTests */,
 			);
 		};
 /* End PBXProject section */
@@ -616,7 +616,7 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-TDTrieuDo-tvOS-checkManifestLockResult.txt",
+				"$(DERIVED_FILE_DIR)/Pods-TICHDIEMV99-tvOS-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -638,7 +638,7 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-TDTrieuDo-checkManifestLockResult.txt",
+				"$(DERIVED_FILE_DIR)/Pods-TICHDIEMV99-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -651,7 +651,7 @@
 			files = (
 			);
 			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-TDTrieuDo/Pods-TDTrieuDo-resources.sh",
+				"${PODS_ROOT}/Target Support Files/Pods-TICHDIEMV99/Pods-TICHDIEMV99-resources.sh",
 				"${PODS_ROOT}/FBSDKCoreKit/FacebookSDKStrings.bundle",
 				"${PODS_ROOT}/GoogleSignIn/Resources/GoogleSignIn.bundle",
 				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/AntDesign.ttf",
@@ -694,7 +694,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-TDTrieuDo/Pods-TDTrieuDo-resources.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-TICHDIEMV99/Pods-TICHDIEMV99-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		AAA938F90909D53DDF6360AF /* [CP] Check Pods Manifest.lock */ = {
@@ -712,7 +712,7 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-TDTrieuDo-tvOSTests-checkManifestLockResult.txt",
+				"$(DERIVED_FILE_DIR)/Pods-TICHDIEMV99-tvOSTests-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -734,7 +734,7 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-TDTrieuDoTests-checkManifestLockResult.txt",
+				"$(DERIVED_FILE_DIR)/Pods-TICHDIEMV99Tests-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -786,7 +786,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				00E356F31AD99517003FC87E /* TDTrieuDoTests.m in Sources */,
+				00E356F31AD99517003FC87E /* TICHDIEMV99Tests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -812,7 +812,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2DCD954D1E0B4F2C00145EB5 /* TDTrieuDoTests.m in Sources */,
+				2DCD954D1E0B4F2C00145EB5 /* TICHDIEMV99Tests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -821,12 +821,12 @@
 /* Begin PBXTargetDependency section */
 		00E356F51AD99517003FC87E /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 13B07F861A680F5B00A75B9A /* TDTrieuDo */;
+			target = 13B07F861A680F5B00A75B9A /* TICHDIEMV99 */;
 			targetProxy = 00E356F41AD99517003FC87E /* PBXContainerItemProxy */;
 		};
 		2D02E4921E0B4A5D006451C7 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 2D02E47A1E0B4A5D006451C7 /* TDTrieuDo-tvOS */;
+			target = 2D02E47A1E0B4A5D006451C7 /* TICHDIEMV99-tvOS */;
 			targetProxy = 2D02E4911E0B4A5D006451C7 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -839,7 +839,7 @@
 				0F5CCC432358526B00404296 /* vi-VN */,
 			);
 			name = LaunchScreen.xib;
-			path = TDTrieuDo;
+			path = TICHDIEMV99;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
@@ -847,7 +847,7 @@
 /* Begin XCBuildConfiguration section */
 		00E356F61AD99517003FC87E /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 429A036D270648CAE1D281DA /* Pods-TDTrieuDoTests.debug.xcconfig */;
+			baseConfigurationReference = 429A036D270648CAE1D281DA /* Pods-TICHDIEMV99Tests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_IDENTITY = "Apple Development";
@@ -858,7 +858,7 @@
 					"DEBUG=1",
 					"$(inherited)",
 				);
-				INFOPLIST_FILE = TDTrieuDoTests/Info.plist;
+				INFOPLIST_FILE = TICHDIEMV99Tests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				OTHER_LDFLAGS = (
@@ -870,13 +870,13 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				"PROVISIONING_PROFILE_SPECIFIER[sdk=macosx*]" = "";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TDTrieuDo.app/TDTrieuDo";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TICHDIEMV99.app/TICHDIEMV99";
 			};
 			name = Debug;
 		};
 		00E356F71AD99517003FC87E /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 9E88D1E0FB74E8E709D02C06 /* Pods-TDTrieuDoTests.release.xcconfig */;
+			baseConfigurationReference = 9E88D1E0FB74E8E709D02C06 /* Pods-TICHDIEMV99Tests.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_IDENTITY = "Apple Development";
@@ -884,7 +884,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
 				DEVELOPMENT_TEAM = RLQ8V7RCTT;
-				INFOPLIST_FILE = TDTrieuDoTests/Info.plist;
+				INFOPLIST_FILE = TICHDIEMV99Tests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				OTHER_LDFLAGS = (
@@ -896,23 +896,23 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				"PROVISIONING_PROFILE_SPECIFIER[sdk=macosx*]" = "";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TDTrieuDo.app/TDTrieuDo";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TICHDIEMV99.app/TICHDIEMV99";
 			};
 			name = Release;
 		};
 		13B07F941A680F5B00A75B9A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 5ADE38FDE4488CE788208067 /* Pods-TDTrieuDo.debug.xcconfig */;
+			baseConfigurationReference = 5ADE38FDE4488CE788208067 /* Pods-TICHDIEMV99.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_ENTITLEMENTS = TDTrieuDo/TDTrieuDo.entitlements;
+				CODE_SIGN_ENTITLEMENTS = TICHDIEMV99/TICHDIEMV99.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 2;
 				DEAD_CODE_STRIPPING = NO;
 				DEVELOPMENT_TEAM = ZWYLLP9F89;
 				ENABLE_BITCODE = NO;
-				INFOPLIST_FILE = TDTrieuDo/Info.plist;
+				INFOPLIST_FILE = TICHDIEMV99/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MARKETING_VERSION = 1.0;
 				OTHER_LDFLAGS = (
@@ -930,16 +930,16 @@
 		};
 		13B07F951A680F5B00A75B9A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 11779F9B7F7320692F9FAC5D /* Pods-TDTrieuDo.release.xcconfig */;
+			baseConfigurationReference = 11779F9B7F7320692F9FAC5D /* Pods-TICHDIEMV99.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_ENTITLEMENTS = TDTrieuDo/TDTrieuDo.entitlements;
+				CODE_SIGN_ENTITLEMENTS = TICHDIEMV99/TICHDIEMV99.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = ZWYLLP9F89;
 				ENABLE_BITCODE = NO;
-				INFOPLIST_FILE = TDTrieuDo/Info.plist;
+				INFOPLIST_FILE = TICHDIEMV99/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MARKETING_VERSION = 1.0;
 				OTHER_LDFLAGS = (
@@ -957,7 +957,7 @@
 		};
 		2D02E4971E0B4A5E006451C7 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = AE64ED939FD02E76A0EB0678 /* Pods-TDTrieuDo-tvOS.debug.xcconfig */;
+			baseConfigurationReference = AE64ED939FD02E76A0EB0678 /* Pods-TICHDIEMV99-tvOS.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon & Top Shelf Image";
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
@@ -971,7 +971,7 @@
 				DEVELOPMENT_TEAM = "";
 				ENABLE_TESTABILITY = YES;
 				GCC_NO_COMMON_BLOCKS = YES;
-				INFOPLIST_FILE = "TDTrieuDo-tvOS/Info.plist";
+				INFOPLIST_FILE = "TICHDIEMV99-tvOS/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = (
 					"$(inherited)",
@@ -989,7 +989,7 @@
 		};
 		2D02E4981E0B4A5E006451C7 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = C5116CE3F506DAD85E314A66 /* Pods-TDTrieuDo-tvOS.release.xcconfig */;
+			baseConfigurationReference = C5116CE3F506DAD85E314A66 /* Pods-TICHDIEMV99-tvOS.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon & Top Shelf Image";
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
@@ -1003,7 +1003,7 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = "";
 				GCC_NO_COMMON_BLOCKS = YES;
-				INFOPLIST_FILE = "TDTrieuDo-tvOS/Info.plist";
+				INFOPLIST_FILE = "TICHDIEMV99-tvOS/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = (
 					"$(inherited)",
@@ -1021,7 +1021,7 @@
 		};
 		2D02E4991E0B4A5E006451C7 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 2DD337C478EA1894C0DC3B44 /* Pods-TDTrieuDo-tvOSTests.debug.xcconfig */;
+			baseConfigurationReference = 2DD337C478EA1894C0DC3B44 /* Pods-TICHDIEMV99-tvOSTests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CLANG_ANALYZER_NONNULL = YES;
@@ -1032,24 +1032,24 @@
 				DEVELOPMENT_TEAM = ZWYLLP9F89;
 				ENABLE_TESTABILITY = YES;
 				GCC_NO_COMMON_BLOCKS = YES;
-				INFOPLIST_FILE = "TDTrieuDo-tvOSTests/Info.plist";
+				INFOPLIST_FILE = "TICHDIEMV99-tvOSTests/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.facebook.REACT.TDTrieuDo-tvOSTests";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.facebook.REACT.TICHDIEMV99-tvOSTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = appletvos;
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TDTrieuDo-tvOS.app/TDTrieuDo-tvOS";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TICHDIEMV99-tvOS.app/TICHDIEMV99-tvOS";
 				TVOS_DEPLOYMENT_TARGET = 10.1;
 			};
 			name = Debug;
 		};
 		2D02E49A1E0B4A5E006451C7 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 4BE7013CFBA4F2D38B343C44 /* Pods-TDTrieuDo-tvOSTests.release.xcconfig */;
+			baseConfigurationReference = 4BE7013CFBA4F2D38B343C44 /* Pods-TICHDIEMV99-tvOSTests.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CLANG_ANALYZER_NONNULL = YES;
@@ -1060,17 +1060,17 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = ZWYLLP9F89;
 				GCC_NO_COMMON_BLOCKS = YES;
-				INFOPLIST_FILE = "TDTrieuDo-tvOSTests/Info.plist";
+				INFOPLIST_FILE = "TICHDIEMV99-tvOSTests/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.facebook.REACT.TDTrieuDo-tvOSTests";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.facebook.REACT.TICHDIEMV99-tvOSTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = appletvos;
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TDTrieuDo-tvOS.app/TDTrieuDo-tvOS";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TICHDIEMV99-tvOS.app/TICHDIEMV99-tvOS";
 				TVOS_DEPLOYMENT_TARGET = 10.1;
 			};
 			name = Release;
@@ -1179,7 +1179,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		00E357021AD99517003FC87E /* Build configuration list for PBXNativeTarget "TDTrieuDoTests" */ = {
+		00E357021AD99517003FC87E /* Build configuration list for PBXNativeTarget "TICHDIEMV99Tests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				00E356F61AD99517003FC87E /* Debug */,
@@ -1188,7 +1188,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "TDTrieuDo" */ = {
+		13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "TICHDIEMV99" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				13B07F941A680F5B00A75B9A /* Debug */,
@@ -1197,7 +1197,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		2D02E4BA1E0B4A5E006451C7 /* Build configuration list for PBXNativeTarget "TDTrieuDo-tvOS" */ = {
+		2D02E4BA1E0B4A5E006451C7 /* Build configuration list for PBXNativeTarget "TICHDIEMV99-tvOS" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				2D02E4971E0B4A5E006451C7 /* Debug */,
@@ -1206,7 +1206,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		2D02E4BB1E0B4A5E006451C7 /* Build configuration list for PBXNativeTarget "TDTrieuDo-tvOSTests" */ = {
+		2D02E4BB1E0B4A5E006451C7 /* Build configuration list for PBXNativeTarget "TICHDIEMV99-tvOSTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				2D02E4991E0B4A5E006451C7 /* Debug */,
@@ -1215,7 +1215,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "TDTrieuDo" */ = {
+		83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "TICHDIEMV99" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				83CBBA201A601CBA00E9B192 /* Debug */,

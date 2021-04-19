@@ -1,8 +1,8 @@
 platform :ios, '9.0'
 require_relative '../node_modules/@react-native-community/cli-platform-ios/native_modules'
-project './TDTrieuDo.xcodeproj'
-target 'TDTrieuDo' do
-  # Pods for TDTrieuDo
+project './TICHDIEMV99.xcodeproj'
+target 'TICHDIEMV99' do
+  # Pods for TICHDIEMV99
   pod 'FBLazyVector', :path => "../node_modules/react-native/Libraries/FBLazyVector"
   pod 'FBReactNativeSpec', :path => "../node_modules/react-native/Libraries/FBReactNativeSpec"
   pod 'RCTRequired', :path => "../node_modules/react-native/Libraries/RCTRequired"
@@ -48,7 +48,7 @@ target 'TDTrieuDo' do
 
   pod 'RNFastImage', :path => '../node_modules/react-native-fast-image'
 
-  target 'TDTrieuDoTests' do
+  target 'TICHDIEMV99Tests' do
     inherit! :search_paths
     # Pods for testing
   end
@@ -56,10 +56,10 @@ target 'TDTrieuDo' do
   use_native_modules!
 end
 
-target 'TDTrieuDo-tvOS' do
-  # Pods for TDTrieuDo-tvOS
+target 'TICHDIEMV99-tvOS' do
+  # Pods for TICHDIEMV99-tvOS
 
-  target 'TDTrieuDo-tvOSTests' do
+  target 'TICHDIEMV99-tvOSTests' do
     inherit! :search_paths
     # Pods for testing
   end
