@@ -69,6 +69,7 @@ const REDUCER = {
 const GIFT_TYPE = {
   GIFT: 1,
   CARD: 3,
+  POIN_V: 4
 }
 const GENDER = {
   MALE: 0,

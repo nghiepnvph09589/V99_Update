@@ -169,7 +169,8 @@ function strings(){
         reward_points: I18n.t("reward_points", { defaultValue: "" }),
         see_more: I18n.t("see_more", { defaultValue: "" }),
         fee_use_app: I18n.t("fee_use_app", { defaultValue: "" }),
-        introduce_customers: I18n.t("introduce_customers", { defaultValue: "" })
+        introduce_customers: I18n.t("introduce_customers", { defaultValue: "" }),
+        point_V: I18n.t("point_V", {defaultValue: ""})
 }}
 export default strings
         
