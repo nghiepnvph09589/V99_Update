@@ -1,0 +1,20 @@
+{
+  "plugins": [
+    [
+      "module-resolver",
+      {
+        "alias": {
+          "@app": "./app/",
+          "@screen": "./app/screens/",
+          "@utils": "./app/utils",
+          "@constant": "./app/constants/Constant.js",
+          "@action": "./app/redux/actions/index.js",
+          "@component": "./app/components",
+          "@theme": "./app/constants/Theme.js",
+          "@R": "./app/assets/R.js",
+          "@api": "./app/constants/Api.js"
+        }
+      }
+    ]
+  ]
+}

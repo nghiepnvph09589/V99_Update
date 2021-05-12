@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>243074458243-5uhanka2q5b2q8bphk0juenide0mnnmf.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.243074458243-5uhanka2q5b2q8bphk0juenide0mnnmf</string>
+	<key>API_KEY</key>
+	<string>AIzaSyDBUzR9fTWWLau5sVq13b7TKmM2RpQCa8c</string>
+	<key>GCM_SENDER_ID</key>
+	<string>243074458243</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>vn.com.tdtd</string>
+	<key>PROJECT_ID</key>
+	<string>imotor-69f07</string>
+	<key>STORAGE_BUCKET</key>
+	<string>imotor-69f07.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false/>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false/>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true/>
+	<key>IS_GCM_ENABLED</key>
+	<true/>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true/>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:243074458243:ios:1774225a91f2ba8561b1b6</string>
+	<key>DATABASE_URL</key>
+	<string>https://imotor-69f07.firebaseio.com</string>
+</dict>
+</plist>
