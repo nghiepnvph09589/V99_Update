@@ -45,6 +45,7 @@ namespace Data.Business
                                   Category = i.GroupItem != null ? i.GroupItem.Name : "Chưa được cập nhật",
                                   ItemStatus = i.Status,
                                   Price = i.Price,
+                                  PriceVip = i.PriceVIP,
                                   CreateDate = i.CreateDate
                               };
                 if (Status != null)
@@ -159,7 +160,7 @@ namespace Data.Business
         }
 
 
-        public int CreateItem(int CategoryID,int? Special, string Code, string Name, int Status, int StockStatus, string Price, int Warranty, string ImageUrl, string Technical, string Note)
+        public int CreateItem(int CategoryID,int? Special, string Code, string Name, int Status, int StockStatus, string Price,string PriceVip, int Warranty, string ImageUrl, string Technical, string Note)
         {
             //kiểm tra mã sản phẩm
             var q = cnn.Items.Where(x => x.Code.Equals(Code) && x.IsActive.Equals(SystemParam.ACTIVE)).ToList();
@@ -174,6 +175,7 @@ namespace Data.Business
                 item.Status = Status;
                 item.StockStatus = StockStatus;
                 item.Price = Convert.ToInt32((Price).ToString().Replace(",", ""));
+                item.PriceVIP = Convert.ToInt32((Price).ToString().Replace(",", ""));
                 item.Warranty = Warranty;
                 item.ImageUrl = ImageUrl;
                 item.Special = Special.Value;
@@ -207,6 +209,7 @@ namespace Data.Business
                     CategoryID = obj.GroupItemID,
                     Status = obj.Status,
                     Price = obj.Price.ToString(),
+                    PriceVip = obj.PriceVIP.ToString(),
                     ImageUrl = obj.ImageUrl,
                     Note = obj.Description,
                     StockStatus = (int)obj.StockStatus,
@@ -250,7 +253,7 @@ namespace Data.Business
         }
 
         //Lưu lại cập nhật sản phẩm
-        public int SaveEditItem(int ID,int? Special, string Code, string Name, int? Status, int? StockStatus, int? CategoryID, string ImageUrl, int? Warranty, string Technical, string Note, string Price)
+        public int SaveEditItem(int ID,int? Special, string Code, string Name, int? Status, int? StockStatus, int? CategoryID, string ImageUrl, int? Warranty, string Technical, string Note, string Price,string PriceVip)
         {
             try
             {
@@ -264,6 +267,7 @@ namespace Data.Business
                 item.Status = Status.Value;
                 item.StockStatus = StockStatus.Value;
                 item.Price = Convert.ToInt32((Price).ToString().Replace(",", ""));
+                item.PriceVIP = Convert.ToInt32((PriceVip).ToString().Replace(",", ""));
                 item.ImageUrl = ImageUrl;
                 item.Description = Note.Trim();
                 cnn.SaveChanges();

@@ -53,7 +53,7 @@ namespace Data.Business
             cnn.SaveChanges();
             pBus.CreateHistoryes(cusID, gift.Point, SystemParam.TYPE_POINT_RECEIVE_GIFT, SystemParam.HISTORY_TYPE_ADD_ANOTHER, code, "Yêu cầu đổi quà '" + gift.Name + "'", 0);
             EmailBusiness email = new EmailBusiness();
-            email.configClient(SystemParam.EMAIL_CONFIG, "[DAIICHI CÓ YÊU CẦU ĐỔI QUÀ MỚI]", "Tài khoản " + cus.Name + " đã yêu cầu đổi quà " + gift.Name);
+            email.configClient(SystemParam.EMAIL_CONFIG, "[TÍCH ĐIỂM V99]", "Tài khoản " + cus.Name + " đã yêu cầu đổi quà " + gift.Name);
             return SystemParam.SUCCESS;
         }
         //từ chối yêu cầu rút điểm

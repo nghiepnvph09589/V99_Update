@@ -65,6 +65,15 @@
                     <input type="text" class="form-control number" id="PriceEdit" name="Price" placeholder="Nhập giá tiền..." value="@String.Format("{0:n0}", Convert.ToInt32(Model.Price))" />
                 </div>
             </div>
+
+            <div class="row">
+                <div class="col-md-4 col-sm-12 mt-2">
+                    <p class="mb-0 color-require"><label class="text-dark">Giá VIP</label> *</p>
+                </div>
+                <div class="col-md-8 col-sm-12 mb-md-2 mb-sm-2">
+                    <input type="text" class="form-control number" id="PriceVipEdit" name="PriceVip" placeholder="Nhập giá vip..." value="@String.Format("{0:n0}", Convert.ToInt32(Model.PriceVip))" />
+                </div>
+            </div>
             <div class="row">
                 <div class="col-md-4 col-sm-12 mt-2">
                     <p class="mb-0 color-require"><label class="text-dark">Trạng thái hoạt động</label> *</p>

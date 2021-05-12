@@ -98,6 +98,7 @@ namespace Data.Business
                 return new RequestPointModel();
             }
         }
+        
 
         //Tiến hành rút điểm sau khi chọn đầy đủ thông tin
         public ResultRequestOuptputModel SuccessDrawPoint(int ID, double point, int bankID)

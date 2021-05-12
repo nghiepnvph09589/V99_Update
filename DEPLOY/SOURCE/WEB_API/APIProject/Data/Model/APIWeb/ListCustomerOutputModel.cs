@@ -28,6 +28,7 @@ namespace Data.Model.APIWeb
         public string TypeLoginStr { set; get; }
         public int TypeLogin { set; get; }
         public double Point { set; get; }
+        public double PointV { set; get; }
         public DateTime? CreateDate { set; get; }
         public int ProvinceCode { get; set; }
         public int DistrictCode { get; set; }

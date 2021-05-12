@@ -9,6 +9,8 @@ namespace Data.Model.APIApp
     public class CustomerDetailOutputModel
     {
         public double Point { get; set; }
+        public double PointV { get; set; }
+        public int IsVip { get; set; }
         public int TypeLogin { get; set; }
         public string Phone { set; get; }
         public string CustomerName { set; get; }

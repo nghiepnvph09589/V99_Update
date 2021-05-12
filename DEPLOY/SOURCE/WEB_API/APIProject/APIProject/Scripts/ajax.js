@@ -2428,10 +2428,16 @@ function GetCustomerDetail(id) {
 
 function saveEditCustomer(id) {
     var status = null;
+    var isVip = null;
     if ($('#val-check-active').prop("checked") == true) {
         status = 1;
     } else {
         status = 0;
+    }
+    if ($('#val-check-vip').prop("checked") == true) {
+        isVip = 1;
+    } else {
+        isVip = 0;
     }
     console.log(status);
     var name = $('#txtCusName').val();
@@ -2448,7 +2454,8 @@ function saveEditCustomer(id) {
         url: "/Customer/SaveEditCustomer",
         data: {
             ID: id,
-            Status: status
+            Status: status,
+            IsVip: isVip
         },
         success: function (result) {
             if (result == SUCCESS) {
@@ -2974,6 +2981,8 @@ function CreateItem() {
     var Code = $('#CodeCreate').val().trim();
     var Name = $('#NameCreate').val().trim();
     var Price = $('#PriceCreate').val().trim();
+    var PriceVip = $('#PriceVipCreate').val().trim();
+
     //var Image = $('#txt-url-img').val().trim();
     var Note = $.trim(CKEDITOR.instances['NoteCreate'].getData());
     //var Note = $('#NoteCreates').val();
@@ -3027,7 +3036,7 @@ function CreateItem() {
         })
         return;
     }
-    if (Code == "" || Name == "" || Price == "" || Image == "" || Note == "") {
+    if (Code == "" || Name == "" || Price == "" || Image == "" || Note == "" || PriceVip == "") {
         swal({
             title: "Thông báo",
             text: "Vui lòng nhập đầy đủ thông tin!",
@@ -3051,10 +3060,12 @@ function CreateItem() {
                     CategoryID: CategoryID,
                     Code: Code, Name: Name,
                     Price: Price,
+                    PriceVip: PriceVip,
                     Warranty: warranty,
                     Technical: technical,
                     StockStatus: StockStatus,
-                    Note: Note, Status: Status,
+                    Note: Note,
+                    Status: Status,
                     ImageUrl: Image,
                     Special: special
                 },
@@ -3159,6 +3170,7 @@ function SaveEditItem() {
     var Code = $('#CodeEdit').val().trim();
     var Name = $('#NameEdit').val().trim();
     var Price = $('#PriceEdit').val().trim();
+    var PriceVip = $('#PriceVipEdit').val().trim();
     //var Image = $('#tagImage').attr('src');
     //var ImageUrl = $('#txt-url-image').val();
     var Note = $.trim(CKEDITOR.instances['NoteEdit'].getData());
@@ -3176,7 +3188,7 @@ function SaveEditItem() {
     } else {
         special = 0;
     }
-    if (Code == "" || Name == "" || Price == "" || Image == "" || Note == "" || technical == "" || warranty == "") {
+    if (Code == "" || Name == "" || Price == "" || Image == "" || Note == "" || technical == "" || warranty == "" || PriceVip == "") {
         swal({
             title: "Thông báo",
             text: "Vui lòng nhập đầy đủ thông tin!",
@@ -3208,6 +3220,7 @@ function SaveEditItem() {
                     Note: Note,
                     Warranty: warranty,
                     Price: Price,
+                    PriceVip: PriceVip,
                     Special: special
                 },
                 type:"POST",

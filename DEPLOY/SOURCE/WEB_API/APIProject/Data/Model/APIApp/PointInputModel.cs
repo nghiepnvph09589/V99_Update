@@ -13,4 +13,8 @@ namespace Data.Model.APIApp
         public string note { get; set; }
         public string phone { get; set; }
     }
+    public class ConvertPointInputModel
+    {
+        public double point { get; set; }
+    }
 }

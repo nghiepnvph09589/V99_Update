@@ -99,6 +99,8 @@ namespace Data.Business
             query.PointRanking =Math.Round(p,2);
             query.Status = cus.Status;
             query.LastRefCode = cus.LastRefCode;
+            query.IsVip = cus.IsVip;
+            query.PointV = cus.PointV;
 
             return query;
         }
@@ -333,7 +335,7 @@ namespace Data.Business
                         check.Code = code;
                         check.ExpireTocken = DateTime.Now.AddSeconds(SystemParam.TIME_EXPIRE_OTP);
                         cnn.SaveChanges();
-                        email.configClient(Email, "[TÍCH ĐIỂM TRIỆU ĐÔ]", contentMessage + code);
+                        email.configClient(Email, "[TÍCH ĐIỂM V99]", contentMessage + code);
                         return data;
                     }
                     else
@@ -366,13 +368,15 @@ namespace Data.Business
                     cus.Address = "";
                     cus.Type = SystemParam.CHECK_OTP_FAIL;
                     cus.Status = SystemParam.ACTIVE_FALSE;
+                    cus.PointV = SystemParam.POINT_V_START;
+                    cus.IsVip = SystemParam.CUSTOMER_NORMAL;
                     cus.IsActive = SystemParam.ACTIVE;
                     cnn.Customers.Add(cus);
                     cnn.SaveChanges();
                     string contentMessage = string.Format(SystemParam.CONTENT_MESS, code);
                     log.Info("Gui den mail: " + Email);
                     log.Info("Noi dung: " + contentMessage);
-                    email.configClient(Email, "[Tra Tien Thao]", contentMessage + code);
+                    email.configClient(Email, "[TÍCH ĐIỂM V99]", contentMessage + code);
                 }
                 return data;
             }
@@ -420,12 +424,17 @@ namespace Data.Business
                     cus.Password = Util.GenPass(input.Password);
                     cus.ExpireTocken = DateTime.Now.AddYears(1);
                     cus.Token = Util.CreateMD5(DateTime.Now.ToString());
+                    cus.IsVip = SystemParam.CUSTOMER_NORMAL;
+                    cus.PointV = 500;
                     cus.LastRefCode = input.LastRefCode;
                     cus.Phone = input.Phone;
                     cnn.SaveChanges();
                     data.UserID = cus.ID;
                     return data;
                 }
+                var customerRef = cnn.Customers.FirstOrDefault(x => x.Phone == input.LastRefCode);
+                customerRef.PointV += 1000;
+                cnn.SaveChanges();
                 data.UserID = 0;
                 return data;
 
@@ -448,7 +457,7 @@ namespace Data.Business
             if (check != null)
             {
                 EmailBusiness email = new EmailBusiness();
-                email.configClient(Email, "[Tra Tien Thao]", "Mã xác thực của bạn là: " + code);
+                email.configClient(Email, "[TÍCH ĐIỂM V99]", "Mã xác thực của bạn là: " + code);
                 check.ExpireTocken = DateTime.Now.AddSeconds(SystemParam.TIME_EXPIRE_OTP);
                 check.Code = code;
                 cnn.SaveChanges();

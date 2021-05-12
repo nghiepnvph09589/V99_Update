@@ -27,8 +27,11 @@ namespace Data.DB
         public System.DateTime CreateDate { get; set; }
         public int IsActive { get; set; }
         public Nullable<int> DisplayOrder { get; set; }
+        public Nullable<System.DateTime> TimePush { get; set; }
+        public Nullable<int> ItemID { get; set; }
     
         public virtual CategoryNew CategoryNew { get; set; }
+        public virtual Item Item { get; set; }
         public virtual User User { get; set; }
     }
 }
