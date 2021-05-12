@@ -19,6 +19,7 @@ namespace Data.DB
         {
             this.Batches = new HashSet<Batch>();
             this.OrderItems = new HashSet<OrderItem>();
+            this.News = new HashSet<News>();
         }
     
         public int ID { get; set; }
@@ -26,6 +27,7 @@ namespace Data.DB
         public string Name { get; set; }
         public string Description { get; set; }
         public long Price { get; set; }
+        public long PriceVIP { get; set; }
         public string ImageUrl { get; set; }
         public int Status { get; set; }
         public System.DateTime CreateDate { get; set; }
@@ -41,5 +43,7 @@ namespace Data.DB
         public virtual GroupItem GroupItem { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<OrderItem> OrderItems { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<News> News { get; set; }
     }
 }

@@ -32,8 +32,8 @@ namespace APIProject.Controllers
                 ViewBag.Status = Status;
                 ViewBag.Category = category;
                 ViewBag.StockStatus = StockStatus;
-                DateTime? startDate = Util.ConvertDate(fromDate);
-                DateTime? endDate = Util.ConvertDate(toDate);
+                DateTime? startDate = Util.ConvertFromDate(fromDate);
+                DateTime? endDate = Util.ConvertToDate(toDate);
                 List<ListItemOutputModel> lstProduct = itemBusiness.Search(Page, startDate, endDate, itemName, Status, category, StockStatus);
                 return PartialView("_TableItem", lstProduct.ToPagedList(Page, SystemParam.MAX_ROW_IN_LIST_WEB));
             }
@@ -52,11 +52,11 @@ namespace APIProject.Controllers
 
         [UserAuthenticationFilter]
         [ValidateInput(false)]
-        public int CreateItem(int? CategoryID,int? Special, string Code, string Name, int? Status, int? StockStatus, string Price, int? Warranty, string ImageUrl, string Technical, string Note)
+        public int CreateItem(int? CategoryID,int? Special, string Code, string Name, int? Status, int? StockStatus, string Price,string PriceVip, int? Warranty, string ImageUrl, string Technical, string Note)
         {
             try
             {
-                return itemBusiness.CreateItem(CategoryID.Value,Special, Code, Name, Status.Value, StockStatus.Value, Price, Warranty.Value, ImageUrl, Technical, Note);
+                return itemBusiness.CreateItem(CategoryID.Value,Special, Code, Name, Status.Value, StockStatus.Value, Price, PriceVip, Warranty.Value, ImageUrl, Technical, Note);
             }
             catch (Exception ex)
             {
@@ -83,11 +83,11 @@ namespace APIProject.Controllers
         [UserAuthenticationFilter]
         [ValidateInput(false)]
         // Lưu lại cập nhật sản phẩm
-        public int SaveEditItem(int ID,int? Special, string Code, string Name, int? Status, int? StockStatus, int? CategoryID, string ImageUrl, int? Warranty, string Technical, string Note, string Price)
+        public int SaveEditItem(int ID,int? Special, string Code, string Name, int? Status, int? StockStatus, int? CategoryID, string ImageUrl, int? Warranty, string Technical, string Note, string Price,string PriceVip)
         {
             try
             {
-                return itemBusiness.SaveEditItem(ID,Special, Code, Name, Status.Value,StockStatus.Value, CategoryID.Value, ImageUrl, Warranty.Value, Technical, Note, Price);
+                return itemBusiness.SaveEditItem(ID,Special, Code, Name, Status.Value,StockStatus.Value, CategoryID.Value, ImageUrl, Warranty.Value, Technical, Note, Price,PriceVip);
             }
             catch (Exception ex)
             {

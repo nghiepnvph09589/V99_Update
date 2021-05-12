@@ -48,6 +48,7 @@ namespace Data.DB
         public int Status { get; set; }
         public System.DateTime ExpireTocken { get; set; }
         public int Type { get; set; }
+        public int IsVip { get; set; }
         public System.DateTime CraeteDate { get; set; }
         public int IsActive { get; set; }
         public string DeviceID { get; set; }
@@ -55,6 +56,7 @@ namespace Data.DB
         public string Password { get; set; }
         public double Point { get; set; }
         public double PointRanking { get; set; }
+        public double PointV { get; set; }
         public string LastRefCode { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

@@ -100,6 +100,7 @@ namespace Data.Business
                             Sex = cus.Sex,
                             AgentCode = cus.AgentCode,
                             PointRanking = cus.PointRanking,
+                            PointV = cus.PointV,
                             LastRefCode=cus.LastRefCode,
                             Address = cus.Address.Length == 0 || cus.Address == null ? "Chưa cập nhật" : cus.Address
                         };
@@ -308,13 +309,14 @@ namespace Data.Business
                 return new Customer();
             }
         }
-        public int SaveEditCustomer(int ID, int Status)
+        public int SaveEditCustomer(int ID, int Status,int IsVip)
         {
             try
             {
                 Customer cus = cnn.Customers.Find(ID);
                 //cus.Status = Status;
                 cus.Status = Status;
+                cus.IsVip = IsVip;
                 cnn.SaveChanges();
                 return SystemParam.RETURN_TRUE;
             }
@@ -386,6 +388,60 @@ namespace Data.Business
                 var query = from MBH in cnn.MembersPointHistories
                             where MBH.IsActive.Equals(SystemParam.ACTIVE)
                             && MBH.CustomerID == cusID && ((MBH.Type == SystemParam.TYPE_SYSTEM_ADD_POINT && MBH.TypeAdd == SystemParam.TYPE_POINT_RANKING) || (MBH.Type == SystemParam.TYPEADD_POINT_FROM_BILL && MBH.TypeAdd == SystemParam.TYPE_POINT_RANKING))
+                            select new GetListHistoryMemberPointInputModel
+                            {
+                                HistoryID = MBH.ID,
+                                AddPointCode = MBH.AddPointCode,
+                                Type = MBH.Type,
+                                TypeAdd = MBH.TypeAdd,
+                                Point = MBH.Point,
+                                Comment = MBH.Comment,
+                                Title = MBH.Title,
+                                CreateDate = MBH.CraeteDate,
+                                Phone = MBH.UserSendID.HasValue ? cus.Where(c => c.ID == MBH.UserSendID.Value).Select(c => c.Phone).FirstOrDefault() : "Chưa cập nhật",
+                                UserSend = MBH.UserSendID.HasValue ? cus.Where(c => c.ID == MBH.UserSendID.Value).Select(c => c.Name).FirstOrDefault() : "Chưa cập nhật",
+                                BankOwner = MBH.BankID.HasValue ? cnn.CustomerBanks.Where(b => b.ID == MBH.BankID.Value).FirstOrDefault().BankOwner : "",
+                                BankAccount = MBH.BankID.HasValue ? cnn.CustomerBanks.Where(b => b.ID == MBH.BankID.Value).FirstOrDefault().BankAccount : "",
+                                
+                            };
+                if (FromDate != null && FromDate != "")
+                {
+                    DateTime? fd = Util.ConvertDate(FromDate);
+                    query = query.Where(p => p.CreateDate >= fd);
+                }
+                if (ToDate != null && ToDate != "")
+
+
+
+                {
+                    DateTime? td = Util.ConvertDate(ToDate);
+                    td = td.Value.AddDays(1);
+                    query = query.Where(p => p.CreateDate <= td);
+                }
+                if (query != null && query.Count() > 0)
+                {
+                    var s = query.OrderByDescending(x => x.CreateDate).ToList();
+                    return s;
+                }
+                else
+                    return new List<GetListHistoryMemberPointInputModel>();
+            }
+            catch (Exception ex)
+            {
+                ex.ToString();
+                return new List<GetListHistoryMemberPointInputModel>();
+            }
+        }
+        //lịch sử ví V
+
+        public List<GetListHistoryMemberPointInputModel> SearchHistoryPointV(int cusID, string FromDate, string ToDate)
+        {
+            try
+            {
+                var cus = cnn.Customers;
+                var query = from MBH in cnn.MembersPointHistories
+                            where MBH.IsActive.Equals(SystemParam.ACTIVE)
+                            && MBH.CustomerID == cusID && MBH.TypeAdd == SystemParam.TYPE_POINT_V
                             select new GetListHistoryMemberPointInputModel
                             {
                                 HistoryID = MBH.ID,
@@ -647,6 +703,15 @@ namespace Data.Business
             var revenue = (from c in cnn.Customers
                            where c.IsActive.Equals(SystemParam.ACTIVE) && c.Status.Equals(SystemParam.ACTIVE)
                            select (double?)c.PointRanking).Sum() ?? 0;
+            //var revenue = (cnn.Orders.Where(x => x.Status == SystemParam.STATUS_ORDER_PAID && x.IsActive == SystemParam.ACTIVE).Sum(x => x.TotalPrice));
+            return revenue;
+        }
+        //Get Revenue
+        public double RevenuePointV()
+        {
+            var revenue = (from c in cnn.Customers
+                           where c.IsActive.Equals(SystemParam.ACTIVE) && c.Status.Equals(SystemParam.ACTIVE)
+                           select (double?)c.PointV).Sum() ?? 0;
             //var revenue = (cnn.Orders.Where(x => x.Status == SystemParam.STATUS_ORDER_PAID && x.IsActive == SystemParam.ACTIVE).Sum(x => x.TotalPrice));
             return revenue;
         }

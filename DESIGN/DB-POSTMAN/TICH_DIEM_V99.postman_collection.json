@@ -1,0 +1,102 @@
+{
+	"info": {
+		"_postman_id": "aef8def8-e6e9-4829-ac2e-470bbaa6637d",
+		"name": "TICH_DIEM_V99",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "CheckPhoneRegister",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"Email\":\"vietphuonga2@gmail.com\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{localhost}}/Service/CheckPhoneRegister",
+					"host": [
+						"{{localhost}}"
+					],
+					"path": [
+						"Service",
+						"CheckPhoneRegister"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "ConvertPointVtoPointRanking",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "token",
+						"value": "{{token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"point\":0\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{server}}/service/convertPointVtoPointRanking",
+					"host": [
+						"{{server}}"
+					],
+					"path": [
+						"service",
+						"convertPointVtoPointRanking"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "ConvertPointRankingtoPointV",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "token",
+						"type": "text",
+						"value": "{{token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"point\":0\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{server}}/service/convertPointRankingtoPointV",
+					"host": [
+						"{{server}}"
+					],
+					"path": [
+						"service",
+						"convertPointRankingtoPointV"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

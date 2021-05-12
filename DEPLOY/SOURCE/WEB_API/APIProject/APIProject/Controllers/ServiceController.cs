@@ -310,6 +310,168 @@ namespace APIProject.Controllers
                 return serverError();
             }
         }
+        [HttpPost]
+        public JsonResultModel ConvertPointVtoPointRanking([FromBody] ConvertPointInputModel input)
+        {
+            try
+            {
+                string token = getTokenApp();
+                if (token.Length == 0)
+                    return response(SystemParam.ERROR, SystemParam.ERROR_PASS_API, SystemParam.TOKEN_NOT_FOUND, "");
+                int? cusID = checkTokenApp(token);
+                if (cusID == null)
+                    return response(SystemParam.ERROR, SystemParam.ERROR_PASS_API, SystemParam.TOKEN_INVALID, "");
+                var cus = cnn.Customers.FirstOrDefault(x => x.ID == cusID);
+                if (input.point > cus.PointV || input.point <= 0)
+                {
+                    return response(SystemParam.ERROR, SystemParam.FAIL, SystemParam.MESSAGE_INVALID_INPUT_POINT, "");
+                }
+                var balanceV = cus.PointV - input.point;
+                var balancePoint = cus.PointRanking + input.point;
+                cus.PointV -= input.point;
+                cus.PointRanking += input.point;
+                //Tạo lịch sử chuyển điểm ví V
+                MembersPointHistory mv = new MembersPointHistory();
+                mv.CustomerID = cus.ID;
+                mv.Point = input.point;
+                mv.Type = SystemParam.TYPE_CONVERT_POINT_V_TO_POINT_RANKING;
+                mv.AddPointCode = Util.CreateMD5(DateTime.Now.ToString()).Substring(0, 6);
+                mv.TypeAdd = SystemParam.TYPE_POINT_V;
+                mv.CraeteDate = DateTime.Now;
+                mv.IsActive = SystemParam.ACTIVE;
+                mv.Comment = "Chuyển điểm từ ví V sang ví điểm tích lũy";
+                mv.Title = "Ví V đã bị trừ " + input.point + "điểm";
+                mv.Balance = balanceV;
+
+                //Tạo lịch sử rút điểm
+                MembersPointHistory m = new MembersPointHistory();
+                m.CustomerID = cus.ID;
+                m.Point = input.point;
+                m.Type = SystemParam.TYPE_CONVERT_POINT_V_TO_POINT_RANKING;
+                m.AddPointCode = Util.CreateMD5(DateTime.Now.ToString()).Substring(0, 6);
+                m.TypeAdd = SystemParam.TYPE_POINT_RANKING;
+                m.CraeteDate = DateTime.Now;
+                m.IsActive = SystemParam.ACTIVE;
+                m.Comment = "Chuyển điểm từ ví V sang ví tích điểm";
+                m.Title = "Ví tích điểm đã được cộng" + input.point + "điểm";
+                m.Balance = balancePoint;
+
+                //Tạo thông báo cho người nhận
+                Notification ntf = new Notification();
+                ntf.CustomerID = cus.ID;
+                ntf.Content = "Bạn vừa chuyển điểm từ ví V sang ví điểm tích lũy";
+                ntf.Viewed = 0;
+                ntf.CreateDate = DateTime.Now;
+                ntf.IsActive = SystemParam.ACTIVE;
+                ntf.Title = "Bạn vừa chuyển " + input.point + " điểm từ ví V sang ví điểm tích lũy thành công";
+                ntf.Type = SystemParam.NOTIFY_NAVIGATE_REQUEST;
+
+
+                cnn.Notifications.Add(ntf);
+                cnn.MembersPointHistories.Add(mv);
+                cnn.MembersPointHistories.Add(m);
+                cnn.SaveChanges();
+                if (cus.DeviceID != null && cus.DeviceID.Length > 15)
+                {
+                    //Tiến hành gửi thông báo
+                    NotifyDataModel notifyData = new NotifyDataModel();
+                    notifyData.type = SystemParam.ONESIGNAL_NOTIFY_REQUEST_DETAIL;
+                    notifyData.id = m.ID;
+                    string titleNoti = "Bạn vừa chuyển " + input.point + " điểm từ ví V sang ví điểm tích lũy thành công";
+                    List<string> listDevice = new List<string>();
+                    listDevice.Add(cus.DeviceID);
+                    string value = packageBusiness.StartPushNoti(notifyData, listDevice, titleNoti, titleNoti);
+                    packageBusiness.PushOneSignals(value);
+                }
+                return response(SystemParam.SUCCESS, SystemParam.SUCCESS_CODE, SystemParam.SUCCESS_MESSAGE, "");
+            }
+            catch (Exception ex)
+            {
+                return serverError();
+            }
+        }
+
+
+        [HttpPost]
+        public JsonResultModel ConvertPointRankingtoPointV([FromBody] ConvertPointInputModel input)
+        {
+            try
+            {
+                string token = getTokenApp();
+                if (token.Length == 0)
+                    return response(SystemParam.ERROR, SystemParam.ERROR_PASS_API, SystemParam.TOKEN_NOT_FOUND, "");
+                int? cusID = checkTokenApp(token);
+                if (cusID == null)
+                    return response(SystemParam.ERROR, SystemParam.ERROR_PASS_API, SystemParam.TOKEN_INVALID, "");
+                var cus = cnn.Customers.FirstOrDefault(x => x.ID == cusID);
+                if (input.point > cus.PointV || input.point <= 0)
+                {
+                    return response(SystemParam.ERROR, SystemParam.FAIL, SystemParam.MESSAGE_INVALID_INPUT_POINT, "");
+                }
+                var balanceV = cus.PointV + input.point;
+                var balancePoint = cus.PointRanking - input.point;
+                cus.PointV += input.point;
+                cus.PointRanking -= input.point;
+                //Tạo lịch sử chuyển điểm ví V
+                MembersPointHistory mv = new MembersPointHistory();
+                mv.CustomerID = cus.ID;
+                mv.Point = input.point;
+                mv.Type = SystemParam.TYPE_CONVERT_POINT_RANKING_TO_POINT_V;
+                mv.AddPointCode = Util.CreateMD5(DateTime.Now.ToString()).Substring(0, 6);
+                mv.TypeAdd = SystemParam.TYPE_POINT_V;
+                mv.CraeteDate = DateTime.Now;
+                mv.IsActive = SystemParam.ACTIVE;
+                mv.Comment = "Chuyển điểm từ ví điểm tích lũy sang ví V";
+                mv.Title = "Ví V đã được cộng " + input.point + "điểm";
+                mv.Balance = balanceV;
+
+                //Tạo lịch sử rút điểm
+                MembersPointHistory m = new MembersPointHistory();
+                m.CustomerID = cus.ID;
+                m.Point = input.point;
+                m.Type = SystemParam.TYPE_CONVERT_POINT_RANKING_TO_POINT_V;
+                m.AddPointCode = Util.CreateMD5(DateTime.Now.ToString()).Substring(0, 6);
+                m.TypeAdd = SystemParam.TYPE_POINT_RANKING;
+                m.CraeteDate = DateTime.Now;
+                m.IsActive = SystemParam.ACTIVE;
+                m.Comment = "Chuyển điểm từ ví điểm tích lũy sang ví V";
+                m.Title = "Ví tích điểm đã bị trừ" + input.point + "điểm";
+                m.Balance = balancePoint;
+
+                //Tạo thông báo cho người nhận
+                Notification ntf = new Notification();
+                ntf.CustomerID = cus.ID;
+                ntf.Content = "Bạn vừa chuyển điểm từ ví V sang ví điểm tích lũy";
+                ntf.Viewed = 0;
+                ntf.CreateDate = DateTime.Now;
+                ntf.IsActive = SystemParam.ACTIVE;
+                ntf.Title = "Bạn vừa chuyển " + input.point + " điểm từ ví V sang ví điểm tích lũy thành công";
+                ntf.Type = SystemParam.NOTIFY_NAVIGATE_REQUEST;
+
+
+                cnn.Notifications.Add(ntf);
+                cnn.MembersPointHistories.Add(mv);
+                cnn.MembersPointHistories.Add(m);
+                cnn.SaveChanges();
+                if (cus.DeviceID != null && cus.DeviceID.Length > 15)
+                {
+                    //Tiến hành gửi thông báo
+                    NotifyDataModel notifyData = new NotifyDataModel();
+                    notifyData.type = SystemParam.ONESIGNAL_NOTIFY_REQUEST_DETAIL;
+                    notifyData.id = m.ID;
+                    string titleNoti = "Bạn vừa chuyển " + input.point + " điểm từ ví V sang ví điểm tích lũy thành công";
+                    List<string> listDevice = new List<string>();
+                    listDevice.Add(cus.DeviceID);
+                    string value = packageBusiness.StartPushNoti(notifyData, listDevice, titleNoti, titleNoti);
+                    packageBusiness.PushOneSignals(value);
+                }
+                return response(SystemParam.SUCCESS, SystemParam.SUCCESS_CODE, SystemParam.SUCCESS_MESSAGE, "");
+            }
+            catch (Exception ex)
+            {
+                return serverError();
+            }
+        }
 
         //// Rút điểm
         //public JsonResultModel WithdraPoints([FromBody] PointInputModel input)

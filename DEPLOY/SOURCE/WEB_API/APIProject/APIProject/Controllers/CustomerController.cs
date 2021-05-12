@@ -23,6 +23,7 @@ namespace APIProject.Controllers
         {
             ViewBag.RevenuePoint = cusBusiness.RevenuePoint();
             ViewBag.RevenuePointRanking = cusBusiness.RevenuePointRanking();
+            ViewBag.RevenuePointV = cusBusiness.RevenuePointV();
             ViewBag.listCity = cusBusiness.LoadCityCustomer();
             return View();
 
@@ -80,7 +81,7 @@ namespace APIProject.Controllers
         }
 
         [UserAuthenticationFilter]
-        public int SaveEditCustomer(int ID,  int Status)
+        public int SaveEditCustomer(int ID,  int Status, int IsVip)
         {
             //List<int> lstIdImg = new List<int>();
             //List<string> lstUrlImg = new List<string>();
@@ -99,7 +100,7 @@ namespace APIProject.Controllers
 
             try
             {
-                return cusBusiness.SaveEditCustomer( ID,Status);
+                return cusBusiness.SaveEditCustomer( ID,Status,IsVip);
             }
             catch (Exception ex)
             {
@@ -124,6 +125,14 @@ namespace APIProject.Controllers
             ViewBag.FromDateHis = FromDate;
             ViewBag.ToDateHis = ToDate;
             IPagedList<GetListHistoryMemberPointInputModel> list = cusBusiness.SearchHistoryPointR(cusID, FromDate, ToDate).ToPagedList(Page, SystemParam.MAX_ROW_IN_LIST_WEB);
+            return PartialView("_ListRequest", list);
+        }
+        public PartialViewResult SearchHistoryPointV(int Page, int cusID, string FromDate, string ToDate)
+        {
+            ViewBag.cusID = cusID;
+            ViewBag.FromDateHis = FromDate;
+            ViewBag.ToDateHis = ToDate;
+            IPagedList<GetListHistoryMemberPointInputModel> list = cusBusiness.SearchHistoryPointV(cusID, FromDate, ToDate).ToPagedList(Page, SystemParam.MAX_ROW_IN_LIST_WEB);
             return PartialView("_ListRequest", list);
         }
 

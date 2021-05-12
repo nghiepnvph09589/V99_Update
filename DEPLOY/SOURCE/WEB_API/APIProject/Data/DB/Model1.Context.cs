@@ -52,6 +52,7 @@ namespace Data.DB
         public virtual DbSet<Request> Requests { get; set; }
         public virtual DbSet<Shop> Shops { get; set; }
         public virtual DbSet<ShopImage> ShopImages { get; set; }
+        public virtual DbSet<sysdiagram> sysdiagrams { get; set; }
         public virtual DbSet<User> Users { get; set; }
         public virtual DbSet<Warranty> Warranties { get; set; }
         public virtual DbSet<WarrantyCard> WarrantyCards { get; set; }

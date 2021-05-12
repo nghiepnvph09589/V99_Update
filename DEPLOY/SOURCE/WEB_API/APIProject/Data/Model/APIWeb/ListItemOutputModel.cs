@@ -15,6 +15,7 @@ namespace Data.Model.APIWeb
         public int ItemStatus { set; get; }
         public int StockStatus { set; get; }
         public double Price { set; get; }
+        public double PriceVip { get; set; }
         public string ImgUrl { set; get; }
         public string Technical { set; get; }
         public string Description { set; get; }

@@ -44,12 +44,16 @@ namespace Data.Utils
         public const int ONESIGNAL_NOTIFY_REQUEST_DETAIL = 7;//push onsignal tới màn hình chi tiết yêu cầu
         public const int ONESIGNAL_NOTIFY_HISTORY_POINT_RANKING = 8;//Lịch sử tích điểm ví tích điểm
 
+        // Customer
+        public const int CUSTOMER_VIP = 1;
+        public const int CUSTOMER_NORMAL = 0;
 
         public const int CONFIG_TIME = 5;
         public const int ROLL_ADMIN = 1;
         public const int ROLL_CUSTOMER = 0;
         public const int POINT_START = 10;
         public const int POINT_RANKING_START = 0;
+        public const int POINT_V_START = 0;
         public const int QTY_CONTENT_HOME_SCREEN = 5;
         public const int TYPE_LOGIN_ACCOUNT = 4;
         public const int TYPE_LOGIN_PHONE = 3;
@@ -176,6 +180,7 @@ namespace Data.Utils
         public const string MESSAGE_ERROR_DUPLICATE_BANK_ACOUNT = "Không thể có  2 tài khoản chung một ngân hàng, vui lòng kiểm tra lại.";
         public const string MESSAGE_ERROR_EMAIL_NOT_FOUND = "Vui lòng nhập lại email";
         public const string MESSAGE_EMAIL_ERROR_LOGIN = "Tài khoản chưa được đăng ký";
+        public const string MESSAGE_INVALID_INPUT_POINT = "Số điểm chuyển không hợp lệ";
 
 
 
@@ -293,12 +298,18 @@ namespace Data.Utils
         public const int TYPE_ADD_POINT_RANKING = 9;
         //Type cộng điểm khi giới thiệu sản phẩm
         public const int TYPE_ADD_POINT_PRODUCT_INTRODUCTION = 10;
+        //Type chuyển điểm ví V sang ví tích điểm
+        public const int TYPE_CONVERT_POINT_V_TO_POINT_RANKING = 11;
+        //Type chuyển điểm ví tích điểm sang ví V 
+        public const int TYPE_CONVERT_POINT_RANKING_TO_POINT_V = 12;
 
 
         //Type ví điểm tích
         public const int TYPE_POINT_RANKING = 1;
         //Type ví point
-        public const int TYPE_POINT = 2;
+        public const int TYPE_POINT = 2;        
+        //Type ví V
+        public const int TYPE_POINT_V = 3;
 
         public const string TYPE_POINT_SAVE_ICON = "https://image.flaticon.com/icons/png/512/2333/2333325.png";
         public const string TYPE_POINT_GIVE_ICON = "https://image.flaticon.com/icons/png/512/1643/1643098.png";

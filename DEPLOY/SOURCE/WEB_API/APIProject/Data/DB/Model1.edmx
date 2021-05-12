@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="TichDiemV99Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="TichDiemV99Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Agent">
           <Key>
             <PropertyRef Name="ID" />
@@ -116,6 +116,7 @@
           <Property Name="Status" Type="int" Nullable="false" />
           <Property Name="ExpireTocken" Type="datetime" Nullable="false" />
           <Property Name="Type" Type="int" Nullable="false" />
+          <Property Name="IsVip" Type="int" Nullable="false" />
           <Property Name="CraeteDate" Type="datetime" Nullable="false" />
           <Property Name="IsActive" Type="int" Nullable="false" />
           <Property Name="DeviceID" Type="nvarchar(max)" />
@@ -123,6 +124,7 @@
           <Property Name="Password" Type="varchar(max)" />
           <Property Name="Point" Type="float" Nullable="false" />
           <Property Name="PointRanking" Type="float" Nullable="false" />
+          <Property Name="PointV" Type="float" Nullable="false" />
           <Property Name="LastRefCode" Type="varchar" MaxLength="15" />
         </EntityType>
         <EntityType Name="CustomerBank">
@@ -199,6 +201,7 @@
           <Property Name="Name" Type="nvarchar" MaxLength="150" Nullable="false" />
           <Property Name="Description" Type="nvarchar(max)" Nullable="false" />
           <Property Name="Price" Type="bigint" Nullable="false" />
+          <Property Name="PriceVIP" Type="bigint" Nullable="false" />
           <Property Name="ImageUrl" Type="nvarchar(max)" Nullable="false" />
           <Property Name="Status" Type="int" Nullable="false" />
           <Property Name="CreateDate" Type="datetime" Nullable="false" />
@@ -259,6 +262,8 @@
           <Property Name="CreateDate" Type="datetime" Nullable="false" />
           <Property Name="IsActive" Type="int" Nullable="false" />
           <Property Name="DisplayOrder" Type="int" />
+          <Property Name="TimePush" Type="datetime" />
+          <Property Name="ItemID" Type="int" />
         </EntityType>
         <EntityType Name="Notification">
           <Key>
@@ -404,6 +409,16 @@
           <Property Name="Path" Type="varchar" MaxLength="250" />
           <Property Name="IsActive" Type="int" Nullable="false" />
           <Property Name="CraeteDate" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="principal_id" Type="int" Nullable="false" />
+          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="version" Type="int" />
+          <Property Name="definition" Type="varbinary(max)" />
         </EntityType>
         <EntityType Name="Users">
           <Key>
@@ -851,6 +866,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_News_Items">
+          <End Role="Items" Type="Self.Items" Multiplicity="0..1" />
+          <End Role="News" Type="Self.News" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Items">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="News">
+              <PropertyRef Name="ItemID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Orders_Customer">
           <End Role="Customer" Type="Self.Customer" Multiplicity="1" />
           <End Role="Orders" Type="Self.Orders" Multiplicity="*" />
@@ -915,6 +942,7 @@
           <EntitySet Name="Request" EntityType="Self.Request" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Shop" EntityType="Self.Shop" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ShopImage" EntityType="Self.ShopImage" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Warranty" EntityType="Self.Warranty" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="WarrantyCard" EntityType="Self.WarrantyCard" Schema="dbo" store:Type="Tables" />
@@ -1054,6 +1082,10 @@
             <End Role="Customer" EntitySet="Customer" />
             <End Role="MembersPointHistory" EntitySet="MembersPointHistory" />
           </AssociationSet>
+          <AssociationSet Name="FK_News_Items" Association="Self.FK_News_Items">
+            <End Role="Items" EntitySet="Items" />
+            <End Role="News" EntitySet="News" />
+          </AssociationSet>
           <AssociationSet Name="FK_Orders_Customer" Association="Self.FK_Orders_Customer">
             <End Role="Customer" EntitySet="Customer" />
             <End Role="Orders" EntitySet="Orders" />
@@ -1067,18 +1099,202 @@
             <End Role="WarrantyCard" EntitySet="WarrantyCard" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="TichDiemV99Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="TichDiemTrieuDo" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Agents" EntityType="TichDiemV99Model.Agent" />
+          <EntitySet Name="AppVersions" EntityType="TichDiemV99Model.AppVersion" />
+          <EntitySet Name="Banks" EntityType="TichDiemV99Model.Bank" />
+          <EntitySet Name="Batches" EntityType="TichDiemV99Model.Batch" />
+          <EntitySet Name="Cards" EntityType="TichDiemV99Model.Card" />
+          <EntitySet Name="CategoryNews" EntityType="TichDiemV99Model.CategoryNew" />
+          <EntitySet Name="Configs" EntityType="TichDiemV99Model.Config" />
+          <EntitySet Name="Customers" EntityType="TichDiemV99Model.Customer" />
+          <EntitySet Name="CustomerBanks" EntityType="TichDiemV99Model.CustomerBank" />
+          <EntitySet Name="CustomerImages" EntityType="TichDiemV99Model.CustomerImage" />
+          <EntitySet Name="Districts" EntityType="TichDiemV99Model.District" />
+          <EntitySet Name="Gifts" EntityType="TichDiemV99Model.Gift" />
+          <EntitySet Name="GroupItems" EntityType="TichDiemV99Model.GroupItem" />
+          <EntitySet Name="Items" EntityType="TichDiemV99Model.Item" />
+          <EntitySet Name="MembersPointHistories" EntityType="TichDiemV99Model.MembersPointHistory" />
+          <EntitySet Name="Messages" EntityType="TichDiemV99Model.Message" />
+          <EntitySet Name="News" EntityType="TichDiemV99Model.News" />
+          <EntitySet Name="Notifications" EntityType="TichDiemV99Model.Notification" />
+          <EntitySet Name="NotifiWebs" EntityType="TichDiemV99Model.NotifiWeb" />
+          <EntitySet Name="OrderItems" EntityType="TichDiemV99Model.OrderItem" />
+          <EntitySet Name="Orders" EntityType="TichDiemV99Model.Order" />
+          <EntitySet Name="Products" EntityType="TichDiemV99Model.Product" />
+          <EntitySet Name="Provinces" EntityType="TichDiemV99Model.Province" />
+          <EntitySet Name="Rankings" EntityType="TichDiemV99Model.Ranking" />
+          <EntitySet Name="Requests" EntityType="TichDiemV99Model.Request" />
+          <EntitySet Name="Shops" EntityType="TichDiemV99Model.Shop" />
+          <EntitySet Name="ShopImages" EntityType="TichDiemV99Model.ShopImage" />
+          <EntitySet Name="sysdiagrams" EntityType="TichDiemV99Model.sysdiagram" />
+          <EntitySet Name="Users" EntityType="TichDiemV99Model.User" />
+          <EntitySet Name="Warranties" EntityType="TichDiemV99Model.Warranty" />
+          <EntitySet Name="WarrantyCards" EntityType="TichDiemV99Model.WarrantyCard" />
+          <AssociationSet Name="FK__Agent__CustomerA__6477ECF3" Association="TichDiemV99Model.FK__Agent__CustomerA__6477ECF3">
+            <End Role="Customer" EntitySet="Customers" />
+            <End Role="Agent" EntitySet="Agents" />
+          </AssociationSet>
+          <AssociationSet Name="FK__CustomerB__BankI__6C190EBB" Association="TichDiemV99Model.FK__CustomerB__BankI__6C190EBB">
+            <End Role="Bank" EntitySet="Banks" />
+            <End Role="CustomerBank" EntitySet="CustomerBanks" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Batch__CreateUse__656C112C" Association="TichDiemV99Model.FK__Batch__CreateUse__656C112C">
+            <End Role="User" EntitySet="Users" />
+            <End Role="Batch" EntitySet="Batches" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Batch__ItemID__66603565" Association="TichDiemV99Model.FK__Batch__ItemID__66603565">
+            <End Role="Item" EntitySet="Items" />
+            <End Role="Batch" EntitySet="Batches" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Product__BatchID__1B0907CE" Association="TichDiemV99Model.FK__Product__BatchID__1B0907CE">
+            <End Role="Batch" EntitySet="Batches" />
+            <End Role="Product" EntitySet="Products" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Card__CreateUser__6754599E" Association="TichDiemV99Model.FK__Card__CreateUser__6754599E">
+            <End Role="User" EntitySet="Users" />
+            <End Role="Card" EntitySet="Cards" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Card__CustomerAc__68487DD7" Association="TichDiemV99Model.FK__Card__CustomerAc__68487DD7">
+            <End Role="Customer" EntitySet="Customers" />
+            <End Role="Card" EntitySet="Cards" />
+          </AssociationSet>
+          <AssociationSet Name="FK__News__CategoryID__778AC167" Association="TichDiemV99Model.FK__News__CategoryID__778AC167">
+            <End Role="CategoryNew" EntitySet="CategoryNews" />
+            <End Role="News" EntitySet="News" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Customer__Distri__6A30C649" Association="TichDiemV99Model.FK__Customer__Distri__6A30C649">
+            <End Role="District" EntitySet="Districts" />
+            <End Role="Customer" EntitySet="Customers" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Customer__Provin__6B24EA82" Association="TichDiemV99Model.FK__Customer__Provin__6B24EA82">
+            <End Role="Province" EntitySet="Provinces" />
+            <End Role="Customer" EntitySet="Customers" />
+          </AssociationSet>
+          <AssociationSet Name="FK__CustomerB__Custo__6D0D32F4" Association="TichDiemV99Model.FK__CustomerB__Custo__6D0D32F4">
+            <End Role="Customer" EntitySet="Customers" />
+            <End Role="CustomerBank" EntitySet="CustomerBanks" />
+          </AssociationSet>
+          <AssociationSet Name="FK__CustomerI__Custo__6E01572D" Association="TichDiemV99Model.FK__CustomerI__Custo__6E01572D">
+            <End Role="Customer" EntitySet="Customers" />
+            <End Role="CustomerImage" EntitySet="CustomerImages" />
+          </AssociationSet>
+          <AssociationSet Name="FK__MembersPo__Custo__72C60C4A" Association="TichDiemV99Model.FK__MembersPo__Custo__72C60C4A">
+            <End Role="Customer" EntitySet="Customers" />
+            <End Role="MembersPointHistory" EntitySet="MembersPointHistories" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Message__Custome__75A278F5" Association="TichDiemV99Model.FK__Message__Custome__75A278F5">
+            <End Role="Customer" EntitySet="Customers" />
+            <End Role="Message" EntitySet="Messages" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Notificat__Custo__4F7CD00D" Association="TichDiemV99Model.FK__Notificat__Custo__4F7CD00D">
+            <End Role="Customer" EntitySet="Customers" />
+            <End Role="Notification" EntitySet="Notifications" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Product__Custome__1BFD2C07" Association="TichDiemV99Model.FK__Product__Custome__1BFD2C07">
+            <End Role="Customer" EntitySet="Customers" />
+            <End Role="Product" EntitySet="Products" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Request__Custome__01142BA1" Association="TichDiemV99Model.FK__Request__Custome__01142BA1">
+            <End Role="Customer" EntitySet="Customers" />
+            <End Role="Request" EntitySet="Requests" />
+          </AssociationSet>
+          <AssociationSet Name="FK__WarrantyC__Custo__2B3F6F97" Association="TichDiemV99Model.FK__WarrantyC__Custo__2B3F6F97">
+            <End Role="Customer" EntitySet="Customers" />
+            <End Role="WarrantyCard" EntitySet="WarrantyCards" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MembersPointHistory_Customer" Association="TichDiemV99Model.FK_MembersPointHistory_Customer">
+            <End Role="Customer" EntitySet="Customers" />
+            <End Role="MembersPointHistory" EntitySet="MembersPointHistories" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Orders_Customer" Association="TichDiemV99Model.FK_Orders_Customer">
+            <End Role="Customer" EntitySet="Customers" />
+            <End Role="Order" EntitySet="Orders" />
+          </AssociationSet>
+          <AssociationSet Name="FK__District__Provin__6EF57B66" Association="TichDiemV99Model.FK__District__Provin__6EF57B66">
+            <End Role="Province" EntitySet="Provinces" />
+            <End Role="District" EntitySet="Districts" />
+          </AssociationSet>
+          <AssociationSet Name="FK__District__Provin__6FE99F9F" Association="TichDiemV99Model.FK__District__Provin__6FE99F9F">
+            <End Role="Province" EntitySet="Provinces" />
+            <End Role="District" EntitySet="Districts" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Orders__District__7C4F7684" Association="TichDiemV99Model.FK__Orders__District__7C4F7684">
+            <End Role="District" EntitySet="Districts" />
+            <End Role="Order" EntitySet="Orders" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Shop__DistrictID__02FC7413" Association="TichDiemV99Model.FK__Shop__DistrictID__02FC7413">
+            <End Role="District" EntitySet="Districts" />
+            <End Role="Shop" EntitySet="Shops" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Gift__CreateUser__70DDC3D8" Association="TichDiemV99Model.FK__Gift__CreateUser__70DDC3D8">
+            <End Role="User" EntitySet="Users" />
+            <End Role="Gift" EntitySet="Gifts" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Items__GroupItem__71D1E811" Association="TichDiemV99Model.FK__Items__GroupItem__71D1E811">
+            <End Role="GroupItem" EntitySet="GroupItems" />
+            <End Role="Item" EntitySet="Items" />
+          </AssociationSet>
+          <AssociationSet Name="FK__OrderItem__ItemI__1332DBDC" Association="TichDiemV99Model.FK__OrderItem__ItemI__1332DBDC">
+            <End Role="Item" EntitySet="Items" />
+            <End Role="OrderItem" EntitySet="OrderItems" />
+          </AssociationSet>
+          <AssociationSet Name="FK_News_Items" Association="TichDiemV99Model.FK_News_Items">
+            <End Role="Item" EntitySet="Items" />
+            <End Role="News" EntitySet="News" />
+          </AssociationSet>
+          <AssociationSet Name="FK__MembersPo__Produ__73BA3083" Association="TichDiemV99Model.FK__MembersPo__Produ__73BA3083">
+            <End Role="Product" EntitySet="Products" />
+            <End Role="MembersPointHistory" EntitySet="MembersPointHistories" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Message__UserID__76969D2E" Association="TichDiemV99Model.FK__Message__UserID__76969D2E">
+            <End Role="User" EntitySet="Users" />
+            <End Role="Message" EntitySet="Messages" />
+          </AssociationSet>
+          <AssociationSet Name="FK__News__CreateUser__787EE5A0" Association="TichDiemV99Model.FK__News__CreateUser__787EE5A0">
+            <End Role="User" EntitySet="Users" />
+            <End Role="News" EntitySet="News" />
+          </AssociationSet>
+          <AssociationSet Name="FK__OrderItem__Order__123EB7A3" Association="TichDiemV99Model.FK__OrderItem__Order__123EB7A3">
+            <End Role="Order" EntitySet="Orders" />
+            <End Role="OrderItem" EntitySet="OrderItems" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Orders__Province__7D439ABD" Association="TichDiemV99Model.FK__Orders__Province__7D439ABD">
+            <End Role="Province" EntitySet="Provinces" />
+            <End Role="Order" EntitySet="Orders" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Shop_Province" Association="TichDiemV99Model.FK_Shop_Province">
+            <End Role="Province" EntitySet="Provinces" />
+            <End Role="Shop" EntitySet="Shops" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Request__UserMod__02084FDA" Association="TichDiemV99Model.FK__Request__UserMod__02084FDA">
+            <End Role="User" EntitySet="Users" />
+            <End Role="Request" EntitySet="Requests" />
+          </AssociationSet>
+          <AssociationSet Name="FK__ShopImage__ShopI__236943A5" Association="TichDiemV99Model.FK__ShopImage__ShopI__236943A5">
+            <End Role="Shop" EntitySet="Shops" />
+            <End Role="ShopImage" EntitySet="ShopImages" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Warranty__Create__05D8E0BE" Association="TichDiemV99Model.FK__Warranty__Create__05D8E0BE">
+            <End Role="User" EntitySet="Users" />
+            <End Role="Warranty" EntitySet="Warranties" />
+          </AssociationSet>
+          <AssociationSet Name="FK_WarrantyCard_Warranty" Association="TichDiemV99Model.FK_WarrantyCard_Warranty">
+            <End Role="Warranty" EntitySet="Warranties" />
+            <End Role="WarrantyCard" EntitySet="WarrantyCards" />
+          </AssociationSet>
+        </EntityContainer>
         <EntityType Name="Agent">
           <Key>
             <PropertyRef Name="ID" />
           </Key>
           <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Name" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
-          <Property Name="Code" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Code" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="CustomerActiveID" Type="Int32" />
           <Property Name="ActiveDate" Type="DateTime" Precision="3" />
           <Property Name="Address" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
@@ -1086,16 +1302,16 @@
           <Property Name="CreateDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="IsActive" Type="Int32" Nullable="false" />
           <Property Name="Note" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="Customer" Relationship="Self.FK__Agent__CustomerA__6477ECF3" FromRole="Agent" ToRole="Customer" />
+          <NavigationProperty Name="Customer" Relationship="TichDiemV99Model.FK__Agent__CustomerA__6477ECF3" FromRole="Agent" ToRole="Customer" />
         </EntityType>
         <EntityType Name="AppVersion">
           <Key>
             <PropertyRef Name="ID" />
           </Key>
           <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="VersionApp" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="VersionApp" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
           <Property Name="TypeOS" Type="Int32" />
-          <Property Name="CodePushVersion" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="CodePushVersion" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
           <Property Name="Is_Force_Update" Type="Int32" />
         </EntityType>
         <EntityType Name="Bank">
@@ -1103,30 +1319,30 @@
             <PropertyRef Name="ID" />
           </Key>
           <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="BankName" Type="String" MaxLength="500" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="ShortName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="BankName" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="ShortName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="ImageUrl" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="CustomerBanks" Relationship="Self.FK__CustomerB__BankI__6C190EBB" FromRole="Bank" ToRole="CustomerBank" />
+          <NavigationProperty Name="CustomerBanks" Relationship="TichDiemV99Model.FK__CustomerB__BankI__6C190EBB" FromRole="Bank" ToRole="CustomerBank" />
         </EntityType>
         <EntityType Name="Batch">
           <Key>
             <PropertyRef Name="ID" />
           </Key>
           <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="BatchName" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="BatchCode" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="Note" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="BatchName" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="BatchCode" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Note" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="Price" Type="Int64" Nullable="false" />
           <Property Name="QTY" Type="Int32" Nullable="false" />
           <Property Name="Point" Type="Int32" Nullable="false" />
           <Property Name="CreateUserID" Type="Int32" Nullable="false" />
           <Property Name="CreateDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="IsActive" Type="Int32" Nullable="false" />
-          <Property Name="ProductName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="ProductName" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="ItemID" Type="Int32" />
-          <NavigationProperty Name="User" Relationship="Self.FK__Batch__CreateUse__656C112C" FromRole="Batch" ToRole="Users" />
-          <NavigationProperty Name="Item" Relationship="Self.FK__Batch__ItemID__66603565" FromRole="Batch" ToRole="Items" />
-          <NavigationProperty Name="Products" Relationship="Self.FK__Product__BatchID__1B0907CE" FromRole="Batch" ToRole="Product" />
+          <NavigationProperty Name="User" Relationship="TichDiemV99Model.FK__Batch__CreateUse__656C112C" FromRole="Batch" ToRole="User" />
+          <NavigationProperty Name="Item" Relationship="TichDiemV99Model.FK__Batch__ItemID__66603565" FromRole="Batch" ToRole="Item" />
+          <NavigationProperty Name="Products" Relationship="TichDiemV99Model.FK__Product__BatchID__1B0907CE" FromRole="Batch" ToRole="Product" />
         </EntityType>
         <EntityType Name="Card">
           <Key>
@@ -1135,8 +1351,8 @@
           <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="CreateUserID" Type="Int32" Nullable="false" />
           <Property Name="CustomerActiveID" Type="Int32" />
-          <Property Name="Code" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="Seri" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Code" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="Seri" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
           <Property Name="TelecomType" Type="Int32" Nullable="false" />
           <Property Name="CardType" Type="Int32" Nullable="false" />
           <Property Name="StartDate" Type="DateTime" Nullable="false" Precision="3" />
@@ -1145,29 +1361,29 @@
           <Property Name="Status" Type="Int32" Nullable="false" />
           <Property Name="CreateDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="IsActive" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="User" Relationship="Self.FK__Card__CreateUser__6754599E" FromRole="Card" ToRole="Users" />
-          <NavigationProperty Name="Customer" Relationship="Self.FK__Card__CustomerAc__68487DD7" FromRole="Card" ToRole="Customer" />
+          <NavigationProperty Name="User" Relationship="TichDiemV99Model.FK__Card__CreateUser__6754599E" FromRole="Card" ToRole="User" />
+          <NavigationProperty Name="Customer" Relationship="TichDiemV99Model.FK__Card__CustomerAc__68487DD7" FromRole="Card" ToRole="Customer" />
         </EntityType>
         <EntityType Name="CategoryNew">
           <Key>
             <PropertyRef Name="ID" />
           </Key>
           <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
           <Property Name="CreateDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="IsActive" Type="Int32" Nullable="false" />
           <Property Name="ParentID" Type="Int32" Nullable="false" />
           <Property Name="CreateUserID" Type="Int32" Nullable="false" />
           <Property Name="Type" Type="Int32" Nullable="false" />
           <Property Name="Image" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="News" Relationship="Self.FK__News__CategoryID__778AC167" FromRole="CategoryNews" ToRole="News" />
+          <NavigationProperty Name="News" Relationship="TichDiemV99Model.FK__News__CategoryID__778AC167" FromRole="CategoryNew" ToRole="News" />
         </EntityType>
         <EntityType Name="Config">
           <Key>
             <PropertyRef Name="ID" />
           </Key>
           <Property Name="ID" Type="Int32" Nullable="false" />
-          <Property Name="Key" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Key" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="Value" Type="Int32" Nullable="false" />
         </EntityType>
         <EntityType Name="Customer">
@@ -1175,22 +1391,23 @@
             <PropertyRef Name="ID" />
           </Key>
           <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="Phone" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="Code" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="Token" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="Phone" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="Code" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="Token" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="DOB" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="Email" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Email" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="Role" Type="Int32" Nullable="false" />
           <Property Name="Sex" Type="Int32" Nullable="false" />
-          <Property Name="AvatarUrl" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="AvatarUrl" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="ProvinceCode" Type="Int32" Nullable="false" />
           <Property Name="DistrictCode" Type="Int32" Nullable="false" />
-          <Property Name="Address" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Address" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="LastLoginDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="Status" Type="Int32" Nullable="false" />
           <Property Name="ExpireTocken" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="Type" Type="Int32" Nullable="false" />
+          <Property Name="IsVip" Type="Int32" Nullable="false" />
           <Property Name="CraeteDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="IsActive" Type="Int32" Nullable="false" />
           <Property Name="DeviceID" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
@@ -1198,21 +1415,22 @@
           <Property Name="Password" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="Point" Type="Double" Nullable="false" />
           <Property Name="PointRanking" Type="Double" Nullable="false" />
+          <Property Name="PointV" Type="Double" Nullable="false" />
           <Property Name="LastRefCode" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="Agents" Relationship="Self.FK__Agent__CustomerA__6477ECF3" FromRole="Customer" ToRole="Agent" />
-          <NavigationProperty Name="Cards" Relationship="Self.FK__Card__CustomerAc__68487DD7" FromRole="Customer" ToRole="Card" />
-          <NavigationProperty Name="District" Relationship="Self.FK__Customer__Distri__6A30C649" FromRole="Customer" ToRole="District" />
-          <NavigationProperty Name="Province" Relationship="Self.FK__Customer__Provin__6B24EA82" FromRole="Customer" ToRole="Province" />
-          <NavigationProperty Name="CustomerBanks" Relationship="Self.FK__CustomerB__Custo__6D0D32F4" FromRole="Customer" ToRole="CustomerBank" />
-          <NavigationProperty Name="CustomerImages" Relationship="Self.FK__CustomerI__Custo__6E01572D" FromRole="Customer" ToRole="CustomerImage" />
-          <NavigationProperty Name="MembersPointHistories" Relationship="Self.FK__MembersPo__Custo__72C60C4A" FromRole="Customer" ToRole="MembersPointHistory" />
-          <NavigationProperty Name="Messages" Relationship="Self.FK__Message__Custome__75A278F5" FromRole="Customer" ToRole="Message" />
-          <NavigationProperty Name="Notifications" Relationship="Self.FK__Notificat__Custo__4F7CD00D" FromRole="Customer" ToRole="Notification" />
-          <NavigationProperty Name="Products" Relationship="Self.FK__Product__Custome__1BFD2C07" FromRole="Customer" ToRole="Product" />
-          <NavigationProperty Name="Requests" Relationship="Self.FK__Request__Custome__01142BA1" FromRole="Customer" ToRole="Request" />
-          <NavigationProperty Name="WarrantyCards" Relationship="Self.FK__WarrantyC__Custo__2B3F6F97" FromRole="Customer" ToRole="WarrantyCard" />
-          <NavigationProperty Name="MembersPointHistories1" Relationship="Self.FK_MembersPointHistory_Customer" FromRole="Customer" ToRole="MembersPointHistory" />
-          <NavigationProperty Name="Orders" Relationship="Self.FK_Orders_Customer" FromRole="Customer" ToRole="Orders" />
+          <NavigationProperty Name="Agents" Relationship="TichDiemV99Model.FK__Agent__CustomerA__6477ECF3" FromRole="Customer" ToRole="Agent" />
+          <NavigationProperty Name="Cards" Relationship="TichDiemV99Model.FK__Card__CustomerAc__68487DD7" FromRole="Customer" ToRole="Card" />
+          <NavigationProperty Name="District" Relationship="TichDiemV99Model.FK__Customer__Distri__6A30C649" FromRole="Customer" ToRole="District" />
+          <NavigationProperty Name="Province" Relationship="TichDiemV99Model.FK__Customer__Provin__6B24EA82" FromRole="Customer" ToRole="Province" />
+          <NavigationProperty Name="CustomerBanks" Relationship="TichDiemV99Model.FK__CustomerB__Custo__6D0D32F4" FromRole="Customer" ToRole="CustomerBank" />
+          <NavigationProperty Name="CustomerImages" Relationship="TichDiemV99Model.FK__CustomerI__Custo__6E01572D" FromRole="Customer" ToRole="CustomerImage" />
+          <NavigationProperty Name="MembersPointHistories" Relationship="TichDiemV99Model.FK__MembersPo__Custo__72C60C4A" FromRole="Customer" ToRole="MembersPointHistory" />
+          <NavigationProperty Name="Messages" Relationship="TichDiemV99Model.FK__Message__Custome__75A278F5" FromRole="Customer" ToRole="Message" />
+          <NavigationProperty Name="Notifications" Relationship="TichDiemV99Model.FK__Notificat__Custo__4F7CD00D" FromRole="Customer" ToRole="Notification" />
+          <NavigationProperty Name="Products" Relationship="TichDiemV99Model.FK__Product__Custome__1BFD2C07" FromRole="Customer" ToRole="Product" />
+          <NavigationProperty Name="Requests" Relationship="TichDiemV99Model.FK__Request__Custome__01142BA1" FromRole="Customer" ToRole="Request" />
+          <NavigationProperty Name="WarrantyCards" Relationship="TichDiemV99Model.FK__WarrantyC__Custo__2B3F6F97" FromRole="Customer" ToRole="WarrantyCard" />
+          <NavigationProperty Name="MembersPointHistories1" Relationship="TichDiemV99Model.FK_MembersPointHistory_Customer" FromRole="Customer" ToRole="MembersPointHistory" />
+          <NavigationProperty Name="Orders" Relationship="TichDiemV99Model.FK_Orders_Customer" FromRole="Customer" ToRole="Order" />
         </EntityType>
         <EntityType Name="CustomerBank">
           <Key>
@@ -1226,39 +1444,39 @@
           <Property Name="BankAccount" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="IsActive" Type="Int32" />
           <Property Name="CreatedDate" Type="DateTime" Precision="3" />
-          <NavigationProperty Name="Bank" Relationship="Self.FK__CustomerB__BankI__6C190EBB" FromRole="CustomerBank" ToRole="Bank" />
-          <NavigationProperty Name="Customer" Relationship="Self.FK__CustomerB__Custo__6D0D32F4" FromRole="CustomerBank" ToRole="Customer" />
+          <NavigationProperty Name="Bank" Relationship="TichDiemV99Model.FK__CustomerB__BankI__6C190EBB" FromRole="CustomerBank" ToRole="Bank" />
+          <NavigationProperty Name="Customer" Relationship="TichDiemV99Model.FK__CustomerB__Custo__6D0D32F4" FromRole="CustomerBank" ToRole="Customer" />
         </EntityType>
         <EntityType Name="CustomerImage">
           <Key>
             <PropertyRef Name="ID" />
           </Key>
           <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Images" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Images" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="CustomerID" Type="Int32" Nullable="false" />
           <Property Name="IsActive" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="Customer" Relationship="Self.FK__CustomerI__Custo__6E01572D" FromRole="CustomerImage" ToRole="Customer" />
+          <NavigationProperty Name="Customer" Relationship="TichDiemV99Model.FK__CustomerI__Custo__6E01572D" FromRole="CustomerImage" ToRole="Customer" />
         </EntityType>
         <EntityType Name="District">
           <Key>
             <PropertyRef Name="Code" />
           </Key>
           <Property Name="Code" Type="Int32" Nullable="false" />
-          <Property Name="Name" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="Type" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="Type" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
           <Property Name="ProvinceCode" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="Customers" Relationship="Self.FK__Customer__Distri__6A30C649" FromRole="District" ToRole="Customer" />
-          <NavigationProperty Name="Province" Relationship="Self.FK__District__Provin__6EF57B66" FromRole="District" ToRole="Province" />
-          <NavigationProperty Name="Province1" Relationship="Self.FK__District__Provin__6FE99F9F" FromRole="District" ToRole="Province" />
-          <NavigationProperty Name="Orders" Relationship="Self.FK__Orders__District__7C4F7684" FromRole="District" ToRole="Orders" />
-          <NavigationProperty Name="Shops" Relationship="Self.FK__Shop__DistrictID__02FC7413" FromRole="District" ToRole="Shop" />
+          <NavigationProperty Name="Customers" Relationship="TichDiemV99Model.FK__Customer__Distri__6A30C649" FromRole="District" ToRole="Customer" />
+          <NavigationProperty Name="Province" Relationship="TichDiemV99Model.FK__District__Provin__6EF57B66" FromRole="District" ToRole="Province" />
+          <NavigationProperty Name="Province1" Relationship="TichDiemV99Model.FK__District__Provin__6FE99F9F" FromRole="District" ToRole="Province" />
+          <NavigationProperty Name="Orders" Relationship="TichDiemV99Model.FK__Orders__District__7C4F7684" FromRole="District" ToRole="Order" />
+          <NavigationProperty Name="Shops" Relationship="TichDiemV99Model.FK__Shop__DistrictID__02FC7413" FromRole="District" ToRole="Shop" />
         </EntityType>
         <EntityType Name="Gift">
           <Key>
             <PropertyRef Name="ID" />
           </Key>
           <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
           <Property Name="Price" Type="Int32" Nullable="false" />
           <Property Name="Point" Type="Int32" Nullable="false" />
           <Property Name="UrlImage" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
@@ -1271,7 +1489,7 @@
           <Property Name="CreateDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="IsActive" Type="Int32" Nullable="false" />
           <Property Name="TelecomType" Type="Int32" />
-          <NavigationProperty Name="User" Relationship="Self.FK__Gift__CreateUser__70DDC3D8" FromRole="Gift" ToRole="Users" />
+          <NavigationProperty Name="User" Relationship="TichDiemV99Model.FK__Gift__CreateUser__70DDC3D8" FromRole="Gift" ToRole="User" />
         </EntityType>
         <EntityType Name="GroupItem">
           <Key>
@@ -1287,7 +1505,7 @@
           <Property Name="IsActive" Type="Int32" />
           <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="Status" Type="Int32" />
-          <NavigationProperty Name="Items" Relationship="Self.FK__Items__GroupItem__71D1E811" FromRole="GroupItem" ToRole="Items" />
+          <NavigationProperty Name="Items" Relationship="TichDiemV99Model.FK__Items__GroupItem__71D1E811" FromRole="GroupItem" ToRole="Item" />
         </EntityType>
         <EntityType Name="Item">
           <Key>
@@ -1295,10 +1513,11 @@
           </Key>
           <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Code" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Name" Type="String" MaxLength="150" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="Description" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="Price" Type="Int64" Nullable="false" />
-          <Property Name="ImageUrl" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="PriceVIP" Type="Int64" Nullable="false" />
+          <Property Name="ImageUrl" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="Status" Type="Int32" Nullable="false" />
           <Property Name="CreateDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="IsActive" Type="Int32" Nullable="false" />
@@ -1307,9 +1526,10 @@
           <Property Name="Warranty" Type="Int32" Nullable="false" />
           <Property Name="Special" Type="Int32" Nullable="false" />
           <Property Name="StockStatus" Type="Int32" />
-          <NavigationProperty Name="Batches" Relationship="Self.FK__Batch__ItemID__66603565" FromRole="Items" ToRole="Batch" />
-          <NavigationProperty Name="GroupItem" Relationship="Self.FK__Items__GroupItem__71D1E811" FromRole="Items" ToRole="GroupItem" />
-          <NavigationProperty Name="OrderItems" Relationship="Self.FK__OrderItem__ItemI__1332DBDC" FromRole="Items" ToRole="OrderItems" />
+          <NavigationProperty Name="Batches" Relationship="TichDiemV99Model.FK__Batch__ItemID__66603565" FromRole="Item" ToRole="Batch" />
+          <NavigationProperty Name="GroupItem" Relationship="TichDiemV99Model.FK__Items__GroupItem__71D1E811" FromRole="Item" ToRole="GroupItem" />
+          <NavigationProperty Name="OrderItems" Relationship="TichDiemV99Model.FK__OrderItem__ItemI__1332DBDC" FromRole="Item" ToRole="OrderItem" />
+          <NavigationProperty Name="News" Relationship="TichDiemV99Model.FK_News_Items" FromRole="Item" ToRole="News" />
         </EntityType>
         <EntityType Name="MembersPointHistory">
           <Key>
@@ -1319,7 +1539,7 @@
           <Property Name="CustomerID" Type="Int32" />
           <Property Name="Point" Type="Double" Nullable="false" />
           <Property Name="Type" Type="Int32" Nullable="false" />
-          <Property Name="AddPointCode" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="AddPointCode" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="TypeAdd" Type="Int32" Nullable="false" />
           <Property Name="CraeteDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="IsActive" Type="Int32" Nullable="false" />
@@ -1330,9 +1550,9 @@
           <Property Name="UserSendID" Type="Int32" />
           <Property Name="BankID" Type="Int32" />
           <Property Name="Status" Type="Int32" />
-          <NavigationProperty Name="Customer" Relationship="Self.FK__MembersPo__Custo__72C60C4A" FromRole="MembersPointHistory" ToRole="Customer" />
-          <NavigationProperty Name="Customer1" Relationship="Self.FK_MembersPointHistory_Customer" FromRole="MembersPointHistory" ToRole="Customer" />
-          <NavigationProperty Name="Product" Relationship="Self.FK__MembersPo__Produ__73BA3083" FromRole="MembersPointHistory" ToRole="Product" />
+          <NavigationProperty Name="Customer" Relationship="TichDiemV99Model.FK__MembersPo__Custo__72C60C4A" FromRole="MembersPointHistory" ToRole="Customer" />
+          <NavigationProperty Name="Customer1" Relationship="TichDiemV99Model.FK_MembersPointHistory_Customer" FromRole="MembersPointHistory" ToRole="Customer" />
+          <NavigationProperty Name="Product" Relationship="TichDiemV99Model.FK__MembersPo__Produ__73BA3083" FromRole="MembersPointHistory" ToRole="Product" />
         </EntityType>
         <EntityType Name="Message">
           <Key>
@@ -1341,13 +1561,13 @@
           <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="UserID" Type="Int32" Nullable="false" />
           <Property Name="CustomerID" Type="Int32" />
-          <Property Name="Content" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Content" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="Viewed" Type="Int32" Nullable="false" />
           <Property Name="Type" Type="Int32" Nullable="false" />
           <Property Name="CraeteDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="IsActive" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="Customer" Relationship="Self.FK__Message__Custome__75A278F5" FromRole="Message" ToRole="Customer" />
-          <NavigationProperty Name="User" Relationship="Self.FK__Message__UserID__76969D2E" FromRole="Message" ToRole="Users" />
+          <NavigationProperty Name="Customer" Relationship="TichDiemV99Model.FK__Message__Custome__75A278F5" FromRole="Message" ToRole="Customer" />
+          <NavigationProperty Name="User" Relationship="TichDiemV99Model.FK__Message__UserID__76969D2E" FromRole="Message" ToRole="User" />
         </EntityType>
         <EntityType Name="News">
           <Key>
@@ -1356,18 +1576,21 @@
           <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="CreateUserID" Type="Int32" Nullable="false" />
           <Property Name="CategoryID" Type="Int32" Nullable="false" />
-          <Property Name="Title" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="Content" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="UrlImage" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Title" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Description" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Content" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="UrlImage" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="Status" Type="Int32" Nullable="false" />
           <Property Name="Type" Type="Int32" Nullable="false" />
           <Property Name="TypeSend" Type="Int32" Nullable="false" />
           <Property Name="CreateDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="IsActive" Type="Int32" Nullable="false" />
           <Property Name="DisplayOrder" Type="Int32" />
-          <NavigationProperty Name="CategoryNew" Relationship="Self.FK__News__CategoryID__778AC167" FromRole="News" ToRole="CategoryNews" />
-          <NavigationProperty Name="User" Relationship="Self.FK__News__CreateUser__787EE5A0" FromRole="News" ToRole="Users" />
+          <Property Name="TimePush" Type="DateTime" Precision="3" />
+          <Property Name="ItemID" Type="Int32" />
+          <NavigationProperty Name="CategoryNew" Relationship="TichDiemV99Model.FK__News__CategoryID__778AC167" FromRole="News" ToRole="CategoryNew" />
+          <NavigationProperty Name="Item" Relationship="TichDiemV99Model.FK_News_Items" FromRole="News" ToRole="Item" />
+          <NavigationProperty Name="User" Relationship="TichDiemV99Model.FK__News__CreateUser__787EE5A0" FromRole="News" ToRole="User" />
         </EntityType>
         <EntityType Name="Notification">
           <Key>
@@ -1375,21 +1598,21 @@
           </Key>
           <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="CustomerID" Type="Int32" />
-          <Property Name="Content" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Content" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="Viewed" Type="Int32" Nullable="false" />
           <Property Name="CreateDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="IsActive" Type="Int32" Nullable="false" />
           <Property Name="Title" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="Type" Type="Int32" />
           <Property Name="NewsID" Type="Int32" />
-          <NavigationProperty Name="Customer" Relationship="Self.FK__Notificat__Custo__4F7CD00D" FromRole="Notification" ToRole="Customer" />
+          <NavigationProperty Name="Customer" Relationship="TichDiemV99Model.FK__Notificat__Custo__4F7CD00D" FromRole="Notification" ToRole="Customer" />
         </EntityType>
         <EntityType Name="NotifiWeb">
           <Key>
             <PropertyRef Name="ID" />
           </Key>
           <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Content" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Content" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
           <Property Name="Type" Type="Int32" Nullable="false" />
           <Property Name="CreatedDate" Type="DateTime" Precision="3" />
           <Property Name="Viewed" Type="Int32" />
@@ -1409,8 +1632,8 @@
           <Property Name="IsActive" Type="Int32" Nullable="false" />
           <Property Name="Type" Type="Int32" Nullable="false" />
           <Property Name="UpdateAt" Type="DateTime" Precision="3" />
-          <NavigationProperty Name="Item" Relationship="Self.FK__OrderItem__ItemI__1332DBDC" FromRole="OrderItems" ToRole="Items" />
-          <NavigationProperty Name="Order" Relationship="Self.FK__OrderItem__Order__123EB7A3" FromRole="OrderItems" ToRole="Orders" />
+          <NavigationProperty Name="Item" Relationship="TichDiemV99Model.FK__OrderItem__ItemI__1332DBDC" FromRole="OrderItem" ToRole="Item" />
+          <NavigationProperty Name="Order" Relationship="TichDiemV99Model.FK__OrderItem__Order__123EB7A3" FromRole="OrderItem" ToRole="Order" />
         </EntityType>
         <EntityType Name="Order">
           <Key>
@@ -1436,10 +1659,10 @@
           <Property Name="ConfirmDate" Type="DateTime" Precision="3" />
           <Property Name="PaymentDate" Type="DateTime" Precision="3" />
           <Property Name="LastRefCode" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="Customer" Relationship="Self.FK_Orders_Customer" FromRole="Orders" ToRole="Customer" />
-          <NavigationProperty Name="District" Relationship="Self.FK__Orders__District__7C4F7684" FromRole="Orders" ToRole="District" />
-          <NavigationProperty Name="OrderItems" Relationship="Self.FK__OrderItem__Order__123EB7A3" FromRole="Orders" ToRole="OrderItems" />
-          <NavigationProperty Name="Province" Relationship="Self.FK__Orders__Province__7D439ABD" FromRole="Orders" ToRole="Province" />
+          <NavigationProperty Name="Customer" Relationship="TichDiemV99Model.FK_Orders_Customer" FromRole="Order" ToRole="Customer" />
+          <NavigationProperty Name="District" Relationship="TichDiemV99Model.FK__Orders__District__7C4F7684" FromRole="Order" ToRole="District" />
+          <NavigationProperty Name="OrderItems" Relationship="TichDiemV99Model.FK__OrderItem__Order__123EB7A3" FromRole="Order" ToRole="OrderItem" />
+          <NavigationProperty Name="Province" Relationship="TichDiemV99Model.FK__Orders__Province__7D439ABD" FromRole="Order" ToRole="Province" />
         </EntityType>
         <EntityType Name="Product">
           <Key>
@@ -1448,36 +1671,36 @@
           <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="BatchID" Type="Int32" Nullable="false" />
           <Property Name="CustomerActiveID" Type="Int32" />
-          <Property Name="ProductCode" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="ProductCode" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
           <Property Name="ActiveDate" Type="DateTime" Precision="3" />
           <Property Name="Status" Type="Int32" Nullable="false" />
           <Property Name="CreateDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="IsActive" Type="Int32" Nullable="false" />
           <Property Name="ExpireDate" Type="DateTime" Precision="3" />
-          <NavigationProperty Name="Batch" Relationship="Self.FK__Product__BatchID__1B0907CE" FromRole="Product" ToRole="Batch" />
-          <NavigationProperty Name="Customer" Relationship="Self.FK__Product__Custome__1BFD2C07" FromRole="Product" ToRole="Customer" />
-          <NavigationProperty Name="MembersPointHistories" Relationship="Self.FK__MembersPo__Produ__73BA3083" FromRole="Product" ToRole="MembersPointHistory" />
+          <NavigationProperty Name="Batch" Relationship="TichDiemV99Model.FK__Product__BatchID__1B0907CE" FromRole="Product" ToRole="Batch" />
+          <NavigationProperty Name="Customer" Relationship="TichDiemV99Model.FK__Product__Custome__1BFD2C07" FromRole="Product" ToRole="Customer" />
+          <NavigationProperty Name="MembersPointHistories" Relationship="TichDiemV99Model.FK__MembersPo__Produ__73BA3083" FromRole="Product" ToRole="MembersPointHistory" />
         </EntityType>
         <EntityType Name="Province">
           <Key>
             <PropertyRef Name="Code" />
           </Key>
           <Property Name="Code" Type="Int32" Nullable="false" />
-          <Property Name="Name" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="Type" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
-          <NavigationProperty Name="Customers" Relationship="Self.FK__Customer__Provin__6B24EA82" FromRole="Province" ToRole="Customer" />
-          <NavigationProperty Name="Districts" Relationship="Self.FK__District__Provin__6EF57B66" FromRole="Province" ToRole="District" />
-          <NavigationProperty Name="Districts1" Relationship="Self.FK__District__Provin__6FE99F9F" FromRole="Province" ToRole="District" />
-          <NavigationProperty Name="Orders" Relationship="Self.FK__Orders__Province__7D439ABD" FromRole="Province" ToRole="Orders" />
-          <NavigationProperty Name="Shops" Relationship="Self.FK_Shop_Province" FromRole="Province" ToRole="Shop" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="Type" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Customers" Relationship="TichDiemV99Model.FK__Customer__Provin__6B24EA82" FromRole="Province" ToRole="Customer" />
+          <NavigationProperty Name="Districts" Relationship="TichDiemV99Model.FK__District__Provin__6EF57B66" FromRole="Province" ToRole="District" />
+          <NavigationProperty Name="Districts1" Relationship="TichDiemV99Model.FK__District__Provin__6FE99F9F" FromRole="Province" ToRole="District" />
+          <NavigationProperty Name="Orders" Relationship="TichDiemV99Model.FK__Orders__Province__7D439ABD" FromRole="Province" ToRole="Order" />
+          <NavigationProperty Name="Shops" Relationship="TichDiemV99Model.FK_Shop_Province" FromRole="Province" ToRole="Shop" />
         </EntityType>
         <EntityType Name="Ranking">
           <Key>
             <PropertyRef Name="ID" />
           </Key>
           <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="RankName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="Descriptions" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="RankName" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Descriptions" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="CraeteDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="IsActive" Type="Int32" Nullable="false" />
           <Property Name="MinPoint" Type="Int32" />
@@ -1493,24 +1716,24 @@
           <Property Name="CustomerID" Type="Int32" Nullable="false" />
           <Property Name="GiftID" Type="Int32" Nullable="false" />
           <Property Name="Note" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="Code" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Code" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="Status" Type="Int32" Nullable="false" />
           <Property Name="Type" Type="Int32" Nullable="false" />
           <Property Name="Point" Type="Double" />
           <Property Name="CreateDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="IsActive" Type="Int32" Nullable="false" />
           <Property Name="BankID" Type="Int32" />
-          <NavigationProperty Name="Customer" Relationship="Self.FK__Request__Custome__01142BA1" FromRole="Request" ToRole="Customer" />
-          <NavigationProperty Name="User" Relationship="Self.FK__Request__UserMod__02084FDA" FromRole="Request" ToRole="Users" />
+          <NavigationProperty Name="Customer" Relationship="TichDiemV99Model.FK__Request__Custome__01142BA1" FromRole="Request" ToRole="Customer" />
+          <NavigationProperty Name="User" Relationship="TichDiemV99Model.FK__Request__UserMod__02084FDA" FromRole="Request" ToRole="User" />
         </EntityType>
         <EntityType Name="Shop">
           <Key>
             <PropertyRef Name="ID" />
           </Key>
           <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="String" MaxLength="250" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="true" />
           <Property Name="ProvinceID" Type="Int32" Nullable="false" />
-          <Property Name="Address" Type="String" MaxLength="250" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Address" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="true" />
           <Property Name="Lati" Type="Double" Nullable="false" />
           <Property Name="Long" Type="Double" Nullable="false" />
           <Property Name="PlusCode" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
@@ -1520,9 +1743,9 @@
           <Property Name="CraeteDate" Type="DateTime" Precision="3" />
           <Property Name="IsActive" Type="Int32" Nullable="false" />
           <Property Name="DistrictID" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="District" Relationship="Self.FK__Shop__DistrictID__02FC7413" FromRole="Shop" ToRole="District" />
-          <NavigationProperty Name="Province" Relationship="Self.FK_Shop_Province" FromRole="Shop" ToRole="Province" />
-          <NavigationProperty Name="ShopImages" Relationship="Self.FK__ShopImage__ShopI__236943A5" FromRole="Shop" ToRole="ShopImage" />
+          <NavigationProperty Name="District" Relationship="TichDiemV99Model.FK__Shop__DistrictID__02FC7413" FromRole="Shop" ToRole="District" />
+          <NavigationProperty Name="Province" Relationship="TichDiemV99Model.FK_Shop_Province" FromRole="Shop" ToRole="Province" />
+          <NavigationProperty Name="ShopImages" Relationship="TichDiemV99Model.FK__ShopImage__ShopI__236943A5" FromRole="Shop" ToRole="ShopImage" />
         </EntityType>
         <EntityType Name="ShopImage">
           <Key>
@@ -1533,26 +1756,36 @@
           <Property Name="Path" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
           <Property Name="IsActive" Type="Int32" Nullable="false" />
           <Property Name="CraeteDate" Type="DateTime" Nullable="false" Precision="3" />
-          <NavigationProperty Name="Shop" Relationship="Self.FK__ShopImage__ShopI__236943A5" FromRole="ShopImage" ToRole="Shop" />
+          <NavigationProperty Name="Shop" Relationship="TichDiemV99Model.FK__ShopImage__ShopI__236943A5" FromRole="ShopImage" ToRole="Shop" />
+        </EntityType>
+        <EntityType Name="sysdiagram">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
         </EntityType>
         <EntityType Name="User">
           <Key>
             <PropertyRef Name="UserID" />
           </Key>
           <Property Name="UserID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Phone" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Phone" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Role" Type="Int32" Nullable="false" />
           <Property Name="PassWord" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Name="UserName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="UserName" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="CreateDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="IsActive" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="Batches" Relationship="Self.FK__Batch__CreateUse__656C112C" FromRole="Users" ToRole="Batch" />
-          <NavigationProperty Name="Cards" Relationship="Self.FK__Card__CreateUser__6754599E" FromRole="Users" ToRole="Card" />
-          <NavigationProperty Name="Gifts" Relationship="Self.FK__Gift__CreateUser__70DDC3D8" FromRole="Users" ToRole="Gift" />
-          <NavigationProperty Name="Messages" Relationship="Self.FK__Message__UserID__76969D2E" FromRole="Users" ToRole="Message" />
-          <NavigationProperty Name="News" Relationship="Self.FK__News__CreateUser__787EE5A0" FromRole="Users" ToRole="News" />
-          <NavigationProperty Name="Requests" Relationship="Self.FK__Request__UserMod__02084FDA" FromRole="Users" ToRole="Request" />
-          <NavigationProperty Name="Warranties" Relationship="Self.FK__Warranty__Create__05D8E0BE" FromRole="Users" ToRole="Warranty" />
+          <NavigationProperty Name="Batches" Relationship="TichDiemV99Model.FK__Batch__CreateUse__656C112C" FromRole="User" ToRole="Batch" />
+          <NavigationProperty Name="Cards" Relationship="TichDiemV99Model.FK__Card__CreateUser__6754599E" FromRole="User" ToRole="Card" />
+          <NavigationProperty Name="Gifts" Relationship="TichDiemV99Model.FK__Gift__CreateUser__70DDC3D8" FromRole="User" ToRole="Gift" />
+          <NavigationProperty Name="Messages" Relationship="TichDiemV99Model.FK__Message__UserID__76969D2E" FromRole="User" ToRole="Message" />
+          <NavigationProperty Name="News" Relationship="TichDiemV99Model.FK__News__CreateUser__787EE5A0" FromRole="User" ToRole="News" />
+          <NavigationProperty Name="Requests" Relationship="TichDiemV99Model.FK__Request__UserMod__02084FDA" FromRole="User" ToRole="Request" />
+          <NavigationProperty Name="Warranties" Relationship="TichDiemV99Model.FK__Warranty__Create__05D8E0BE" FromRole="User" ToRole="Warranty" />
         </EntityType>
         <EntityType Name="Warranty">
           <Key>
@@ -1560,14 +1793,14 @@
           </Key>
           <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="CreateUserID" Type="Int32" Nullable="false" />
-          <Property Name="WarrantyCode" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="WarrantyCode" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
           <Property Name="QTY" Type="Int32" Nullable="false" />
           <Property Name="Point" Type="Int32" Nullable="false" />
           <Property Name="ExpireDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="CreateDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="IsActive" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="User" Relationship="Self.FK__Warranty__Create__05D8E0BE" FromRole="Warranty" ToRole="Users" />
-          <NavigationProperty Name="WarrantyCards" Relationship="Self.FK_WarrantyCard_Warranty" FromRole="Warranty" ToRole="WarrantyCard" />
+          <NavigationProperty Name="User" Relationship="TichDiemV99Model.FK__Warranty__Create__05D8E0BE" FromRole="Warranty" ToRole="User" />
+          <NavigationProperty Name="WarrantyCards" Relationship="TichDiemV99Model.FK_WarrantyCard_Warranty" FromRole="Warranty" ToRole="WarrantyCard" />
         </EntityType>
         <EntityType Name="WarrantyCard">
           <Key>
@@ -1575,18 +1808,18 @@
           </Key>
           <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="CustomerActiveID" Type="Int32" />
-          <Property Name="WarrantyCardCode" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="WarrantyCardCode" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
           <Property Name="Status" Type="Int32" Nullable="false" />
           <Property Name="ActiveDate" Type="DateTime" Precision="3" />
           <Property Name="CreateDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="IsActive" Type="Int32" Nullable="false" />
           <Property Name="WarrantyID" Type="Int32" />
-          <NavigationProperty Name="Customer" Relationship="Self.FK__WarrantyC__Custo__2B3F6F97" FromRole="WarrantyCard" ToRole="Customer" />
-          <NavigationProperty Name="Warranty" Relationship="Self.FK_WarrantyCard_Warranty" FromRole="WarrantyCard" ToRole="Warranty" />
+          <NavigationProperty Name="Customer" Relationship="TichDiemV99Model.FK__WarrantyC__Custo__2B3F6F97" FromRole="WarrantyCard" ToRole="Customer" />
+          <NavigationProperty Name="Warranty" Relationship="TichDiemV99Model.FK_WarrantyCard_Warranty" FromRole="WarrantyCard" ToRole="Warranty" />
         </EntityType>
         <Association Name="FK__Agent__CustomerA__6477ECF3">
-          <End Role="Customer" Type="Self.Customer" Multiplicity="0..1" />
-          <End Role="Agent" Type="Self.Agent" Multiplicity="*" />
+          <End Type="TichDiemV99Model.Customer" Role="Customer" Multiplicity="0..1" />
+          <End Type="TichDiemV99Model.Agent" Role="Agent" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Customer">
               <PropertyRef Name="ID" />
@@ -1597,8 +1830,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK__CustomerB__BankI__6C190EBB">
-          <End Role="Bank" Type="Self.Bank" Multiplicity="1" />
-          <End Role="CustomerBank" Type="Self.CustomerBank" Multiplicity="*" />
+          <End Type="TichDiemV99Model.Bank" Role="Bank" Multiplicity="1" />
+          <End Type="TichDiemV99Model.CustomerBank" Role="CustomerBank" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Bank">
               <PropertyRef Name="ID" />
@@ -1609,10 +1842,10 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK__Batch__CreateUse__656C112C">
-          <End Role="Users" Type="Self.User" Multiplicity="1" />
-          <End Role="Batch" Type="Self.Batch" Multiplicity="*" />
+          <End Type="TichDiemV99Model.User" Role="User" Multiplicity="1" />
+          <End Type="TichDiemV99Model.Batch" Role="Batch" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Users">
+            <Principal Role="User">
               <PropertyRef Name="UserID" />
             </Principal>
             <Dependent Role="Batch">
@@ -1621,10 +1854,10 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK__Batch__ItemID__66603565">
-          <End Role="Items" Type="Self.Item" Multiplicity="0..1" />
-          <End Role="Batch" Type="Self.Batch" Multiplicity="*" />
+          <End Type="TichDiemV99Model.Item" Role="Item" Multiplicity="0..1" />
+          <End Type="TichDiemV99Model.Batch" Role="Batch" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Items">
+            <Principal Role="Item">
               <PropertyRef Name="ID" />
             </Principal>
             <Dependent Role="Batch">
@@ -1633,8 +1866,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK__Product__BatchID__1B0907CE">
-          <End Role="Batch" Type="Self.Batch" Multiplicity="1" />
-          <End Role="Product" Type="Self.Product" Multiplicity="*" />
+          <End Type="TichDiemV99Model.Batch" Role="Batch" Multiplicity="1" />
+          <End Type="TichDiemV99Model.Product" Role="Product" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Batch">
               <PropertyRef Name="ID" />
@@ -1645,10 +1878,10 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK__Card__CreateUser__6754599E">
-          <End Role="Users" Type="Self.User" Multiplicity="1" />
-          <End Role="Card" Type="Self.Card" Multiplicity="*" />
+          <End Type="TichDiemV99Model.User" Role="User" Multiplicity="1" />
+          <End Type="TichDiemV99Model.Card" Role="Card" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Users">
+            <Principal Role="User">
               <PropertyRef Name="UserID" />
             </Principal>
             <Dependent Role="Card">
@@ -1657,8 +1890,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK__Card__CustomerAc__68487DD7">
-          <End Role="Customer" Type="Self.Customer" Multiplicity="0..1" />
-          <End Role="Card" Type="Self.Card" Multiplicity="*" />
+          <End Type="TichDiemV99Model.Customer" Role="Customer" Multiplicity="0..1" />
+          <End Type="TichDiemV99Model.Card" Role="Card" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Customer">
               <PropertyRef Name="ID" />
@@ -1669,10 +1902,10 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK__News__CategoryID__778AC167">
-          <End Role="CategoryNews" Type="Self.CategoryNew" Multiplicity="1" />
-          <End Role="News" Type="Self.News" Multiplicity="*" />
+          <End Type="TichDiemV99Model.CategoryNew" Role="CategoryNew" Multiplicity="1" />
+          <End Type="TichDiemV99Model.News" Role="News" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="CategoryNews">
+            <Principal Role="CategoryNew">
               <PropertyRef Name="ID" />
             </Principal>
             <Dependent Role="News">
@@ -1681,8 +1914,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK__Customer__Distri__6A30C649">
-          <End Role="District" Type="Self.District" Multiplicity="1" />
-          <End Role="Customer" Type="Self.Customer" Multiplicity="*" />
+          <End Type="TichDiemV99Model.District" Role="District" Multiplicity="1" />
+          <End Type="TichDiemV99Model.Customer" Role="Customer" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="District">
               <PropertyRef Name="Code" />
@@ -1693,8 +1926,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK__Customer__Provin__6B24EA82">
-          <End Role="Province" Type="Self.Province" Multiplicity="1" />
-          <End Role="Customer" Type="Self.Customer" Multiplicity="*" />
+          <End Type="TichDiemV99Model.Province" Role="Province" Multiplicity="1" />
+          <End Type="TichDiemV99Model.Customer" Role="Customer" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Province">
               <PropertyRef Name="Code" />
@@ -1705,8 +1938,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK__CustomerB__Custo__6D0D32F4">
-          <End Role="Customer" Type="Self.Customer" Multiplicity="1" />
-          <End Role="CustomerBank" Type="Self.CustomerBank" Multiplicity="*" />
+          <End Type="TichDiemV99Model.Customer" Role="Customer" Multiplicity="1" />
+          <End Type="TichDiemV99Model.CustomerBank" Role="CustomerBank" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Customer">
               <PropertyRef Name="ID" />
@@ -1717,8 +1950,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK__CustomerI__Custo__6E01572D">
-          <End Role="Customer" Type="Self.Customer" Multiplicity="1" />
-          <End Role="CustomerImage" Type="Self.CustomerImage" Multiplicity="*" />
+          <End Type="TichDiemV99Model.Customer" Role="Customer" Multiplicity="1" />
+          <End Type="TichDiemV99Model.CustomerImage" Role="CustomerImage" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Customer">
               <PropertyRef Name="ID" />
@@ -1729,8 +1962,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK__MembersPo__Custo__72C60C4A">
-          <End Role="Customer" Type="Self.Customer" Multiplicity="0..1" />
-          <End Role="MembersPointHistory" Type="Self.MembersPointHistory" Multiplicity="*" />
+          <End Type="TichDiemV99Model.Customer" Role="Customer" Multiplicity="0..1" />
+          <End Type="TichDiemV99Model.MembersPointHistory" Role="MembersPointHistory" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Customer">
               <PropertyRef Name="ID" />
@@ -1741,8 +1974,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK__Message__Custome__75A278F5">
-          <End Role="Customer" Type="Self.Customer" Multiplicity="0..1" />
-          <End Role="Message" Type="Self.Message" Multiplicity="*" />
+          <End Type="TichDiemV99Model.Customer" Role="Customer" Multiplicity="0..1" />
+          <End Type="TichDiemV99Model.Message" Role="Message" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Customer">
               <PropertyRef Name="ID" />
@@ -1753,8 +1986,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK__Notificat__Custo__4F7CD00D">
-          <End Role="Customer" Type="Self.Customer" Multiplicity="0..1" />
-          <End Role="Notification" Type="Self.Notification" Multiplicity="*" />
+          <End Type="TichDiemV99Model.Customer" Role="Customer" Multiplicity="0..1" />
+          <End Type="TichDiemV99Model.Notification" Role="Notification" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Customer">
               <PropertyRef Name="ID" />
@@ -1765,8 +1998,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK__Product__Custome__1BFD2C07">
-          <End Role="Customer" Type="Self.Customer" Multiplicity="0..1" />
-          <End Role="Product" Type="Self.Product" Multiplicity="*" />
+          <End Type="TichDiemV99Model.Customer" Role="Customer" Multiplicity="0..1" />
+          <End Type="TichDiemV99Model.Product" Role="Product" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Customer">
               <PropertyRef Name="ID" />
@@ -1777,8 +2010,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK__Request__Custome__01142BA1">
-          <End Role="Customer" Type="Self.Customer" Multiplicity="1" />
-          <End Role="Request" Type="Self.Request" Multiplicity="*" />
+          <End Type="TichDiemV99Model.Customer" Role="Customer" Multiplicity="1" />
+          <End Type="TichDiemV99Model.Request" Role="Request" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Customer">
               <PropertyRef Name="ID" />
@@ -1789,8 +2022,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK__WarrantyC__Custo__2B3F6F97">
-          <End Role="Customer" Type="Self.Customer" Multiplicity="0..1" />
-          <End Role="WarrantyCard" Type="Self.WarrantyCard" Multiplicity="*" />
+          <End Type="TichDiemV99Model.Customer" Role="Customer" Multiplicity="0..1" />
+          <End Type="TichDiemV99Model.WarrantyCard" Role="WarrantyCard" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Customer">
               <PropertyRef Name="ID" />
@@ -1801,8 +2034,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_MembersPointHistory_Customer">
-          <End Role="Customer" Type="Self.Customer" Multiplicity="0..1" />
-          <End Role="MembersPointHistory" Type="Self.MembersPointHistory" Multiplicity="*" />
+          <End Type="TichDiemV99Model.Customer" Role="Customer" Multiplicity="0..1" />
+          <End Type="TichDiemV99Model.MembersPointHistory" Role="MembersPointHistory" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Customer">
               <PropertyRef Name="ID" />
@@ -1813,20 +2046,20 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Orders_Customer">
-          <End Role="Customer" Type="Self.Customer" Multiplicity="1" />
-          <End Role="Orders" Type="Self.Order" Multiplicity="*" />
+          <End Type="TichDiemV99Model.Customer" Role="Customer" Multiplicity="1" />
+          <End Type="TichDiemV99Model.Order" Role="Order" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Customer">
               <PropertyRef Name="ID" />
             </Principal>
-            <Dependent Role="Orders">
+            <Dependent Role="Order">
               <PropertyRef Name="CustomerID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
         <Association Name="FK__District__Provin__6EF57B66">
-          <End Role="Province" Type="Self.Province" Multiplicity="1" />
-          <End Role="District" Type="Self.District" Multiplicity="*" />
+          <End Type="TichDiemV99Model.Province" Role="Province" Multiplicity="1" />
+          <End Type="TichDiemV99Model.District" Role="District" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Province">
               <PropertyRef Name="Code" />
@@ -1837,8 +2070,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK__District__Provin__6FE99F9F">
-          <End Role="Province" Type="Self.Province" Multiplicity="1" />
-          <End Role="District" Type="Self.District" Multiplicity="*" />
+          <End Type="TichDiemV99Model.Province" Role="Province" Multiplicity="1" />
+          <End Type="TichDiemV99Model.District" Role="District" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Province">
               <PropertyRef Name="Code" />
@@ -1849,20 +2082,20 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK__Orders__District__7C4F7684">
-          <End Role="District" Type="Self.District" Multiplicity="0..1" />
-          <End Role="Orders" Type="Self.Order" Multiplicity="*" />
+          <End Type="TichDiemV99Model.District" Role="District" Multiplicity="0..1" />
+          <End Type="TichDiemV99Model.Order" Role="Order" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="District">
               <PropertyRef Name="Code" />
             </Principal>
-            <Dependent Role="Orders">
+            <Dependent Role="Order">
               <PropertyRef Name="DistrictID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
         <Association Name="FK__Shop__DistrictID__02FC7413">
-          <End Role="District" Type="Self.District" Multiplicity="1" />
-          <End Role="Shop" Type="Self.Shop" Multiplicity="*" />
+          <End Type="TichDiemV99Model.District" Role="District" Multiplicity="1" />
+          <End Type="TichDiemV99Model.Shop" Role="Shop" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="District">
               <PropertyRef Name="Code" />
@@ -1873,10 +2106,10 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK__Gift__CreateUser__70DDC3D8">
-          <End Role="Users" Type="Self.User" Multiplicity="1" />
-          <End Role="Gift" Type="Self.Gift" Multiplicity="*" />
+          <End Type="TichDiemV99Model.User" Role="User" Multiplicity="1" />
+          <End Type="TichDiemV99Model.Gift" Role="Gift" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Users">
+            <Principal Role="User">
               <PropertyRef Name="UserID" />
             </Principal>
             <Dependent Role="Gift">
@@ -1885,32 +2118,44 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK__Items__GroupItem__71D1E811">
-          <End Role="GroupItem" Type="Self.GroupItem" Multiplicity="1" />
-          <End Role="Items" Type="Self.Item" Multiplicity="*" />
+          <End Type="TichDiemV99Model.GroupItem" Role="GroupItem" Multiplicity="1" />
+          <End Type="TichDiemV99Model.Item" Role="Item" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="GroupItem">
               <PropertyRef Name="ID" />
             </Principal>
-            <Dependent Role="Items">
+            <Dependent Role="Item">
               <PropertyRef Name="GroupItemID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
         <Association Name="FK__OrderItem__ItemI__1332DBDC">
-          <End Role="Items" Type="Self.Item" Multiplicity="1" />
-          <End Role="OrderItems" Type="Self.OrderItem" Multiplicity="*" />
+          <End Type="TichDiemV99Model.Item" Role="Item" Multiplicity="1" />
+          <End Type="TichDiemV99Model.OrderItem" Role="OrderItem" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Items">
+            <Principal Role="Item">
               <PropertyRef Name="ID" />
             </Principal>
-            <Dependent Role="OrderItems">
+            <Dependent Role="OrderItem">
+              <PropertyRef Name="ItemID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_News_Items">
+          <End Type="TichDiemV99Model.Item" Role="Item" Multiplicity="0..1" />
+          <End Type="TichDiemV99Model.News" Role="News" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Item">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="News">
               <PropertyRef Name="ItemID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
         <Association Name="FK__MembersPo__Produ__73BA3083">
-          <End Role="Product" Type="Self.Product" Multiplicity="0..1" />
-          <End Role="MembersPointHistory" Type="Self.MembersPointHistory" Multiplicity="*" />
+          <End Type="TichDiemV99Model.Product" Role="Product" Multiplicity="0..1" />
+          <End Type="TichDiemV99Model.MembersPointHistory" Role="MembersPointHistory" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Product">
               <PropertyRef Name="ID" />
@@ -1921,10 +2166,10 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK__Message__UserID__76969D2E">
-          <End Role="Users" Type="Self.User" Multiplicity="1" />
-          <End Role="Message" Type="Self.Message" Multiplicity="*" />
+          <End Type="TichDiemV99Model.User" Role="User" Multiplicity="1" />
+          <End Type="TichDiemV99Model.Message" Role="Message" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Users">
+            <Principal Role="User">
               <PropertyRef Name="UserID" />
             </Principal>
             <Dependent Role="Message">
@@ -1933,10 +2178,10 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK__News__CreateUser__787EE5A0">
-          <End Role="Users" Type="Self.User" Multiplicity="1" />
-          <End Role="News" Type="Self.News" Multiplicity="*" />
+          <End Type="TichDiemV99Model.User" Role="User" Multiplicity="1" />
+          <End Type="TichDiemV99Model.News" Role="News" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Users">
+            <Principal Role="User">
               <PropertyRef Name="UserID" />
             </Principal>
             <Dependent Role="News">
@@ -1945,32 +2190,32 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK__OrderItem__Order__123EB7A3">
-          <End Role="Orders" Type="Self.Order" Multiplicity="1" />
-          <End Role="OrderItems" Type="Self.OrderItem" Multiplicity="*" />
+          <End Type="TichDiemV99Model.Order" Role="Order" Multiplicity="1" />
+          <End Type="TichDiemV99Model.OrderItem" Role="OrderItem" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Orders">
+            <Principal Role="Order">
               <PropertyRef Name="ID" />
             </Principal>
-            <Dependent Role="OrderItems">
+            <Dependent Role="OrderItem">
               <PropertyRef Name="OrderID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
         <Association Name="FK__Orders__Province__7D439ABD">
-          <End Role="Province" Type="Self.Province" Multiplicity="0..1" />
-          <End Role="Orders" Type="Self.Order" Multiplicity="*" />
+          <End Type="TichDiemV99Model.Province" Role="Province" Multiplicity="0..1" />
+          <End Type="TichDiemV99Model.Order" Role="Order" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Province">
               <PropertyRef Name="Code" />
             </Principal>
-            <Dependent Role="Orders">
+            <Dependent Role="Order">
               <PropertyRef Name="ProvinceID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Shop_Province">
-          <End Role="Province" Type="Self.Province" Multiplicity="1" />
-          <End Role="Shop" Type="Self.Shop" Multiplicity="*" />
+          <End Type="TichDiemV99Model.Province" Role="Province" Multiplicity="1" />
+          <End Type="TichDiemV99Model.Shop" Role="Shop" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Province">
               <PropertyRef Name="Code" />
@@ -1981,10 +2226,10 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK__Request__UserMod__02084FDA">
-          <End Role="Users" Type="Self.User" Multiplicity="0..1" />
-          <End Role="Request" Type="Self.Request" Multiplicity="*" />
+          <End Type="TichDiemV99Model.User" Role="User" Multiplicity="0..1" />
+          <End Type="TichDiemV99Model.Request" Role="Request" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Users">
+            <Principal Role="User">
               <PropertyRef Name="UserID" />
             </Principal>
             <Dependent Role="Request">
@@ -1993,8 +2238,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK__ShopImage__ShopI__236943A5">
-          <End Role="Shop" Type="Self.Shop" Multiplicity="1" />
-          <End Role="ShopImage" Type="Self.ShopImage" Multiplicity="*" />
+          <End Type="TichDiemV99Model.Shop" Role="Shop" Multiplicity="1" />
+          <End Type="TichDiemV99Model.ShopImage" Role="ShopImage" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Shop">
               <PropertyRef Name="ID" />
@@ -2005,10 +2250,10 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK__Warranty__Create__05D8E0BE">
-          <End Role="Users" Type="Self.User" Multiplicity="1" />
-          <End Role="Warranty" Type="Self.Warranty" Multiplicity="*" />
+          <End Type="TichDiemV99Model.User" Role="User" Multiplicity="1" />
+          <End Type="TichDiemV99Model.Warranty" Role="Warranty" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Users">
+            <Principal Role="User">
               <PropertyRef Name="UserID" />
             </Principal>
             <Dependent Role="Warranty">
@@ -2017,8 +2262,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_WarrantyCard_Warranty">
-          <End Role="Warranty" Type="Self.Warranty" Multiplicity="0..1" />
-          <End Role="WarrantyCard" Type="Self.WarrantyCard" Multiplicity="*" />
+          <End Type="TichDiemV99Model.Warranty" Role="Warranty" Multiplicity="0..1" />
+          <End Type="TichDiemV99Model.WarrantyCard" Role="WarrantyCard" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Warranty">
               <PropertyRef Name="ID" />
@@ -2028,186 +2273,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityContainer Name="TichDiemTrieuDo" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="Agents" EntityType="Self.Agent" />
-          <EntitySet Name="AppVersions" EntityType="Self.AppVersion" />
-          <EntitySet Name="Banks" EntityType="Self.Bank" />
-          <EntitySet Name="Batches" EntityType="Self.Batch" />
-          <EntitySet Name="Cards" EntityType="Self.Card" />
-          <EntitySet Name="CategoryNews" EntityType="Self.CategoryNew" />
-          <EntitySet Name="Configs" EntityType="Self.Config" />
-          <EntitySet Name="Customers" EntityType="Self.Customer" />
-          <EntitySet Name="CustomerBanks" EntityType="Self.CustomerBank" />
-          <EntitySet Name="CustomerImages" EntityType="Self.CustomerImage" />
-          <EntitySet Name="Districts" EntityType="Self.District" />
-          <EntitySet Name="Gifts" EntityType="Self.Gift" />
-          <EntitySet Name="GroupItems" EntityType="Self.GroupItem" />
-          <EntitySet Name="Items" EntityType="Self.Item" />
-          <EntitySet Name="MembersPointHistories" EntityType="Self.MembersPointHistory" />
-          <EntitySet Name="Messages" EntityType="Self.Message" />
-          <EntitySet Name="News" EntityType="Self.News" />
-          <EntitySet Name="Notifications" EntityType="Self.Notification" />
-          <EntitySet Name="NotifiWebs" EntityType="Self.NotifiWeb" />
-          <EntitySet Name="OrderItems" EntityType="Self.OrderItem" />
-          <EntitySet Name="Orders" EntityType="Self.Order" />
-          <EntitySet Name="Products" EntityType="Self.Product" />
-          <EntitySet Name="Provinces" EntityType="Self.Province" />
-          <EntitySet Name="Rankings" EntityType="Self.Ranking" />
-          <EntitySet Name="Requests" EntityType="Self.Request" />
-          <EntitySet Name="Shops" EntityType="Self.Shop" />
-          <EntitySet Name="ShopImages" EntityType="Self.ShopImage" />
-          <EntitySet Name="Users" EntityType="Self.User" />
-          <EntitySet Name="Warranties" EntityType="Self.Warranty" />
-          <EntitySet Name="WarrantyCards" EntityType="Self.WarrantyCard" />
-          <AssociationSet Name="FK__Agent__CustomerA__6477ECF3" Association="Self.FK__Agent__CustomerA__6477ECF3">
-            <End Role="Customer" EntitySet="Customers" />
-            <End Role="Agent" EntitySet="Agents" />
-          </AssociationSet>
-          <AssociationSet Name="FK__CustomerB__BankI__6C190EBB" Association="Self.FK__CustomerB__BankI__6C190EBB">
-            <End Role="Bank" EntitySet="Banks" />
-            <End Role="CustomerBank" EntitySet="CustomerBanks" />
-          </AssociationSet>
-          <AssociationSet Name="FK__Batch__CreateUse__656C112C" Association="Self.FK__Batch__CreateUse__656C112C">
-            <End Role="Users" EntitySet="Users" />
-            <End Role="Batch" EntitySet="Batches" />
-          </AssociationSet>
-          <AssociationSet Name="FK__Batch__ItemID__66603565" Association="Self.FK__Batch__ItemID__66603565">
-            <End Role="Items" EntitySet="Items" />
-            <End Role="Batch" EntitySet="Batches" />
-          </AssociationSet>
-          <AssociationSet Name="FK__Product__BatchID__1B0907CE" Association="Self.FK__Product__BatchID__1B0907CE">
-            <End Role="Batch" EntitySet="Batches" />
-            <End Role="Product" EntitySet="Products" />
-          </AssociationSet>
-          <AssociationSet Name="FK__Card__CreateUser__6754599E" Association="Self.FK__Card__CreateUser__6754599E">
-            <End Role="Users" EntitySet="Users" />
-            <End Role="Card" EntitySet="Cards" />
-          </AssociationSet>
-          <AssociationSet Name="FK__Card__CustomerAc__68487DD7" Association="Self.FK__Card__CustomerAc__68487DD7">
-            <End Role="Customer" EntitySet="Customers" />
-            <End Role="Card" EntitySet="Cards" />
-          </AssociationSet>
-          <AssociationSet Name="FK__News__CategoryID__778AC167" Association="Self.FK__News__CategoryID__778AC167">
-            <End Role="CategoryNews" EntitySet="CategoryNews" />
-            <End Role="News" EntitySet="News" />
-          </AssociationSet>
-          <AssociationSet Name="FK__Customer__Distri__6A30C649" Association="Self.FK__Customer__Distri__6A30C649">
-            <End Role="District" EntitySet="Districts" />
-            <End Role="Customer" EntitySet="Customers" />
-          </AssociationSet>
-          <AssociationSet Name="FK__Customer__Provin__6B24EA82" Association="Self.FK__Customer__Provin__6B24EA82">
-            <End Role="Province" EntitySet="Provinces" />
-            <End Role="Customer" EntitySet="Customers" />
-          </AssociationSet>
-          <AssociationSet Name="FK__CustomerB__Custo__6D0D32F4" Association="Self.FK__CustomerB__Custo__6D0D32F4">
-            <End Role="Customer" EntitySet="Customers" />
-            <End Role="CustomerBank" EntitySet="CustomerBanks" />
-          </AssociationSet>
-          <AssociationSet Name="FK__CustomerI__Custo__6E01572D" Association="Self.FK__CustomerI__Custo__6E01572D">
-            <End Role="Customer" EntitySet="Customers" />
-            <End Role="CustomerImage" EntitySet="CustomerImages" />
-          </AssociationSet>
-          <AssociationSet Name="FK__MembersPo__Custo__72C60C4A" Association="Self.FK__MembersPo__Custo__72C60C4A">
-            <End Role="Customer" EntitySet="Customers" />
-            <End Role="MembersPointHistory" EntitySet="MembersPointHistories" />
-          </AssociationSet>
-          <AssociationSet Name="FK__Message__Custome__75A278F5" Association="Self.FK__Message__Custome__75A278F5">
-            <End Role="Customer" EntitySet="Customers" />
-            <End Role="Message" EntitySet="Messages" />
-          </AssociationSet>
-          <AssociationSet Name="FK__Notificat__Custo__4F7CD00D" Association="Self.FK__Notificat__Custo__4F7CD00D">
-            <End Role="Customer" EntitySet="Customers" />
-            <End Role="Notification" EntitySet="Notifications" />
-          </AssociationSet>
-          <AssociationSet Name="FK__Product__Custome__1BFD2C07" Association="Self.FK__Product__Custome__1BFD2C07">
-            <End Role="Customer" EntitySet="Customers" />
-            <End Role="Product" EntitySet="Products" />
-          </AssociationSet>
-          <AssociationSet Name="FK__Request__Custome__01142BA1" Association="Self.FK__Request__Custome__01142BA1">
-            <End Role="Customer" EntitySet="Customers" />
-            <End Role="Request" EntitySet="Requests" />
-          </AssociationSet>
-          <AssociationSet Name="FK__WarrantyC__Custo__2B3F6F97" Association="Self.FK__WarrantyC__Custo__2B3F6F97">
-            <End Role="Customer" EntitySet="Customers" />
-            <End Role="WarrantyCard" EntitySet="WarrantyCards" />
-          </AssociationSet>
-          <AssociationSet Name="FK_MembersPointHistory_Customer" Association="Self.FK_MembersPointHistory_Customer">
-            <End Role="Customer" EntitySet="Customers" />
-            <End Role="MembersPointHistory" EntitySet="MembersPointHistories" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Orders_Customer" Association="Self.FK_Orders_Customer">
-            <End Role="Customer" EntitySet="Customers" />
-            <End Role="Orders" EntitySet="Orders" />
-          </AssociationSet>
-          <AssociationSet Name="FK__District__Provin__6EF57B66" Association="Self.FK__District__Provin__6EF57B66">
-            <End Role="Province" EntitySet="Provinces" />
-            <End Role="District" EntitySet="Districts" />
-          </AssociationSet>
-          <AssociationSet Name="FK__District__Provin__6FE99F9F" Association="Self.FK__District__Provin__6FE99F9F">
-            <End Role="Province" EntitySet="Provinces" />
-            <End Role="District" EntitySet="Districts" />
-          </AssociationSet>
-          <AssociationSet Name="FK__Orders__District__7C4F7684" Association="Self.FK__Orders__District__7C4F7684">
-            <End Role="District" EntitySet="Districts" />
-            <End Role="Orders" EntitySet="Orders" />
-          </AssociationSet>
-          <AssociationSet Name="FK__Shop__DistrictID__02FC7413" Association="Self.FK__Shop__DistrictID__02FC7413">
-            <End Role="District" EntitySet="Districts" />
-            <End Role="Shop" EntitySet="Shops" />
-          </AssociationSet>
-          <AssociationSet Name="FK__Gift__CreateUser__70DDC3D8" Association="Self.FK__Gift__CreateUser__70DDC3D8">
-            <End Role="Users" EntitySet="Users" />
-            <End Role="Gift" EntitySet="Gifts" />
-          </AssociationSet>
-          <AssociationSet Name="FK__Items__GroupItem__71D1E811" Association="Self.FK__Items__GroupItem__71D1E811">
-            <End Role="GroupItem" EntitySet="GroupItems" />
-            <End Role="Items" EntitySet="Items" />
-          </AssociationSet>
-          <AssociationSet Name="FK__OrderItem__ItemI__1332DBDC" Association="Self.FK__OrderItem__ItemI__1332DBDC">
-            <End Role="Items" EntitySet="Items" />
-            <End Role="OrderItems" EntitySet="OrderItems" />
-          </AssociationSet>
-          <AssociationSet Name="FK__MembersPo__Produ__73BA3083" Association="Self.FK__MembersPo__Produ__73BA3083">
-            <End Role="Product" EntitySet="Products" />
-            <End Role="MembersPointHistory" EntitySet="MembersPointHistories" />
-          </AssociationSet>
-          <AssociationSet Name="FK__Message__UserID__76969D2E" Association="Self.FK__Message__UserID__76969D2E">
-            <End Role="Users" EntitySet="Users" />
-            <End Role="Message" EntitySet="Messages" />
-          </AssociationSet>
-          <AssociationSet Name="FK__News__CreateUser__787EE5A0" Association="Self.FK__News__CreateUser__787EE5A0">
-            <End Role="Users" EntitySet="Users" />
-            <End Role="News" EntitySet="News" />
-          </AssociationSet>
-          <AssociationSet Name="FK__OrderItem__Order__123EB7A3" Association="Self.FK__OrderItem__Order__123EB7A3">
-            <End Role="Orders" EntitySet="Orders" />
-            <End Role="OrderItems" EntitySet="OrderItems" />
-          </AssociationSet>
-          <AssociationSet Name="FK__Orders__Province__7D439ABD" Association="Self.FK__Orders__Province__7D439ABD">
-            <End Role="Province" EntitySet="Provinces" />
-            <End Role="Orders" EntitySet="Orders" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Shop_Province" Association="Self.FK_Shop_Province">
-            <End Role="Province" EntitySet="Provinces" />
-            <End Role="Shop" EntitySet="Shops" />
-          </AssociationSet>
-          <AssociationSet Name="FK__Request__UserMod__02084FDA" Association="Self.FK__Request__UserMod__02084FDA">
-            <End Role="Users" EntitySet="Users" />
-            <End Role="Request" EntitySet="Requests" />
-          </AssociationSet>
-          <AssociationSet Name="FK__ShopImage__ShopI__236943A5" Association="Self.FK__ShopImage__ShopI__236943A5">
-            <End Role="Shop" EntitySet="Shops" />
-            <End Role="ShopImage" EntitySet="ShopImages" />
-          </AssociationSet>
-          <AssociationSet Name="FK__Warranty__Create__05D8E0BE" Association="Self.FK__Warranty__Create__05D8E0BE">
-            <End Role="Users" EntitySet="Users" />
-            <End Role="Warranty" EntitySet="Warranties" />
-          </AssociationSet>
-          <AssociationSet Name="FK_WarrantyCard_Warranty" Association="Self.FK_WarrantyCard_Warranty">
-            <End Role="Warranty" EntitySet="Warranties" />
-            <End Role="WarrantyCard" EntitySet="WarrantyCards" />
-          </AssociationSet>
-        </EntityContainer>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -2217,468 +2282,484 @@
           <EntitySetMapping Name="Agents">
             <EntityTypeMapping TypeName="TichDiemV99Model.Agent">
               <MappingFragment StoreEntitySet="Agent">
-                <ScalarProperty Name="ID" ColumnName="ID" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="Code" ColumnName="Code" />
-                <ScalarProperty Name="CustomerActiveID" ColumnName="CustomerActiveID" />
-                <ScalarProperty Name="ActiveDate" ColumnName="ActiveDate" />
-                <ScalarProperty Name="Address" ColumnName="Address" />
-                <ScalarProperty Name="Phone" ColumnName="Phone" />
-                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
-                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
                 <ScalarProperty Name="Note" ColumnName="Note" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+                <ScalarProperty Name="Phone" ColumnName="Phone" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="ActiveDate" ColumnName="ActiveDate" />
+                <ScalarProperty Name="CustomerActiveID" ColumnName="CustomerActiveID" />
+                <ScalarProperty Name="Code" ColumnName="Code" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="AppVersions">
             <EntityTypeMapping TypeName="TichDiemV99Model.AppVersion">
               <MappingFragment StoreEntitySet="AppVersion">
-                <ScalarProperty Name="ID" ColumnName="ID" />
-                <ScalarProperty Name="VersionApp" ColumnName="VersionApp" />
-                <ScalarProperty Name="TypeOS" ColumnName="TypeOS" />
-                <ScalarProperty Name="CodePushVersion" ColumnName="CodePushVersion" />
                 <ScalarProperty Name="Is_Force_Update" ColumnName="Is_Force_Update" />
+                <ScalarProperty Name="CodePushVersion" ColumnName="CodePushVersion" />
+                <ScalarProperty Name="TypeOS" ColumnName="TypeOS" />
+                <ScalarProperty Name="VersionApp" ColumnName="VersionApp" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Banks">
             <EntityTypeMapping TypeName="TichDiemV99Model.Bank">
               <MappingFragment StoreEntitySet="Bank">
-                <ScalarProperty Name="ID" ColumnName="ID" />
-                <ScalarProperty Name="BankName" ColumnName="BankName" />
-                <ScalarProperty Name="ShortName" ColumnName="ShortName" />
                 <ScalarProperty Name="ImageUrl" ColumnName="ImageUrl" />
+                <ScalarProperty Name="ShortName" ColumnName="ShortName" />
+                <ScalarProperty Name="BankName" ColumnName="BankName" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Batches">
             <EntityTypeMapping TypeName="TichDiemV99Model.Batch">
               <MappingFragment StoreEntitySet="Batch">
-                <ScalarProperty Name="ID" ColumnName="ID" />
-                <ScalarProperty Name="BatchName" ColumnName="BatchName" />
-                <ScalarProperty Name="BatchCode" ColumnName="BatchCode" />
-                <ScalarProperty Name="Note" ColumnName="Note" />
-                <ScalarProperty Name="Price" ColumnName="Price" />
-                <ScalarProperty Name="QTY" ColumnName="QTY" />
-                <ScalarProperty Name="Point" ColumnName="Point" />
-                <ScalarProperty Name="CreateUserID" ColumnName="CreateUserID" />
-                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
-                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
-                <ScalarProperty Name="ProductName" ColumnName="ProductName" />
                 <ScalarProperty Name="ItemID" ColumnName="ItemID" />
+                <ScalarProperty Name="ProductName" ColumnName="ProductName" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+                <ScalarProperty Name="CreateUserID" ColumnName="CreateUserID" />
+                <ScalarProperty Name="Point" ColumnName="Point" />
+                <ScalarProperty Name="QTY" ColumnName="QTY" />
+                <ScalarProperty Name="Price" ColumnName="Price" />
+                <ScalarProperty Name="Note" ColumnName="Note" />
+                <ScalarProperty Name="BatchCode" ColumnName="BatchCode" />
+                <ScalarProperty Name="BatchName" ColumnName="BatchName" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Cards">
             <EntityTypeMapping TypeName="TichDiemV99Model.Card">
               <MappingFragment StoreEntitySet="Card">
-                <ScalarProperty Name="ID" ColumnName="ID" />
-                <ScalarProperty Name="CreateUserID" ColumnName="CreateUserID" />
-                <ScalarProperty Name="CustomerActiveID" ColumnName="CustomerActiveID" />
-                <ScalarProperty Name="Code" ColumnName="Code" />
-                <ScalarProperty Name="Seri" ColumnName="Seri" />
-                <ScalarProperty Name="TelecomType" ColumnName="TelecomType" />
-                <ScalarProperty Name="CardType" ColumnName="CardType" />
-                <ScalarProperty Name="StartDate" ColumnName="StartDate" />
-                <ScalarProperty Name="ExpireDate" ColumnName="ExpireDate" />
-                <ScalarProperty Name="ActiveDate" ColumnName="ActiveDate" />
-                <ScalarProperty Name="Status" ColumnName="Status" />
-                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
                 <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="ActiveDate" ColumnName="ActiveDate" />
+                <ScalarProperty Name="ExpireDate" ColumnName="ExpireDate" />
+                <ScalarProperty Name="StartDate" ColumnName="StartDate" />
+                <ScalarProperty Name="CardType" ColumnName="CardType" />
+                <ScalarProperty Name="TelecomType" ColumnName="TelecomType" />
+                <ScalarProperty Name="Seri" ColumnName="Seri" />
+                <ScalarProperty Name="Code" ColumnName="Code" />
+                <ScalarProperty Name="CustomerActiveID" ColumnName="CustomerActiveID" />
+                <ScalarProperty Name="CreateUserID" ColumnName="CreateUserID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="CategoryNews">
             <EntityTypeMapping TypeName="TichDiemV99Model.CategoryNew">
               <MappingFragment StoreEntitySet="CategoryNews">
-                <ScalarProperty Name="ID" ColumnName="ID" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
-                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
-                <ScalarProperty Name="ParentID" ColumnName="ParentID" />
-                <ScalarProperty Name="CreateUserID" ColumnName="CreateUserID" />
-                <ScalarProperty Name="Type" ColumnName="Type" />
                 <ScalarProperty Name="Image" ColumnName="Image" />
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="CreateUserID" ColumnName="CreateUserID" />
+                <ScalarProperty Name="ParentID" ColumnName="ParentID" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Configs">
             <EntityTypeMapping TypeName="TichDiemV99Model.Config">
               <MappingFragment StoreEntitySet="Config">
-                <ScalarProperty Name="ID" ColumnName="ID" />
-                <ScalarProperty Name="Key" ColumnName="Key" />
                 <ScalarProperty Name="Value" ColumnName="Value" />
+                <ScalarProperty Name="Key" ColumnName="Key" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Customers">
             <EntityTypeMapping TypeName="TichDiemV99Model.Customer">
               <MappingFragment StoreEntitySet="Customer">
-                <ScalarProperty Name="ID" ColumnName="ID" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="Phone" ColumnName="Phone" />
-                <ScalarProperty Name="Code" ColumnName="Code" />
-                <ScalarProperty Name="Token" ColumnName="Token" />
-                <ScalarProperty Name="DOB" ColumnName="DOB" />
-                <ScalarProperty Name="Email" ColumnName="Email" />
-                <ScalarProperty Name="Role" ColumnName="Role" />
-                <ScalarProperty Name="Sex" ColumnName="Sex" />
-                <ScalarProperty Name="AvatarUrl" ColumnName="AvatarUrl" />
-                <ScalarProperty Name="ProvinceCode" ColumnName="ProvinceCode" />
-                <ScalarProperty Name="DistrictCode" ColumnName="DistrictCode" />
-                <ScalarProperty Name="Address" ColumnName="Address" />
-                <ScalarProperty Name="LastLoginDate" ColumnName="LastLoginDate" />
-                <ScalarProperty Name="Status" ColumnName="Status" />
-                <ScalarProperty Name="ExpireTocken" ColumnName="ExpireTocken" />
-                <ScalarProperty Name="Type" ColumnName="Type" />
-                <ScalarProperty Name="CraeteDate" ColumnName="CraeteDate" />
-                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
-                <ScalarProperty Name="DeviceID" ColumnName="DeviceID" />
-                <ScalarProperty Name="AgentCode" ColumnName="AgentCode" />
-                <ScalarProperty Name="Password" ColumnName="Password" />
-                <ScalarProperty Name="Point" ColumnName="Point" />
-                <ScalarProperty Name="PointRanking" ColumnName="PointRanking" />
                 <ScalarProperty Name="LastRefCode" ColumnName="LastRefCode" />
+                <ScalarProperty Name="PointV" ColumnName="PointV" />
+                <ScalarProperty Name="PointRanking" ColumnName="PointRanking" />
+                <ScalarProperty Name="Point" ColumnName="Point" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="AgentCode" ColumnName="AgentCode" />
+                <ScalarProperty Name="DeviceID" ColumnName="DeviceID" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="CraeteDate" ColumnName="CraeteDate" />
+                <ScalarProperty Name="IsVip" ColumnName="IsVip" />
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="ExpireTocken" ColumnName="ExpireTocken" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="LastLoginDate" ColumnName="LastLoginDate" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="DistrictCode" ColumnName="DistrictCode" />
+                <ScalarProperty Name="ProvinceCode" ColumnName="ProvinceCode" />
+                <ScalarProperty Name="AvatarUrl" ColumnName="AvatarUrl" />
+                <ScalarProperty Name="Sex" ColumnName="Sex" />
+                <ScalarProperty Name="Role" ColumnName="Role" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="DOB" ColumnName="DOB" />
+                <ScalarProperty Name="Token" ColumnName="Token" />
+                <ScalarProperty Name="Code" ColumnName="Code" />
+                <ScalarProperty Name="Phone" ColumnName="Phone" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="CustomerBanks">
             <EntityTypeMapping TypeName="TichDiemV99Model.CustomerBank">
               <MappingFragment StoreEntitySet="CustomerBank">
-                <ScalarProperty Name="ID" ColumnName="ID" />
-                <ScalarProperty Name="BankOwner" ColumnName="BankOwner" />
-                <ScalarProperty Name="CustomerID" ColumnName="CustomerID" />
-                <ScalarProperty Name="BankID" ColumnName="BankID" />
-                <ScalarProperty Name="ActiveDate" ColumnName="ActiveDate" />
-                <ScalarProperty Name="BankAccount" ColumnName="BankAccount" />
-                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
                 <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="BankAccount" ColumnName="BankAccount" />
+                <ScalarProperty Name="ActiveDate" ColumnName="ActiveDate" />
+                <ScalarProperty Name="BankID" ColumnName="BankID" />
+                <ScalarProperty Name="CustomerID" ColumnName="CustomerID" />
+                <ScalarProperty Name="BankOwner" ColumnName="BankOwner" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="CustomerImages">
             <EntityTypeMapping TypeName="TichDiemV99Model.CustomerImage">
               <MappingFragment StoreEntitySet="CustomerImage">
-                <ScalarProperty Name="ID" ColumnName="ID" />
-                <ScalarProperty Name="Images" ColumnName="Images" />
-                <ScalarProperty Name="CustomerID" ColumnName="CustomerID" />
                 <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="CustomerID" ColumnName="CustomerID" />
+                <ScalarProperty Name="Images" ColumnName="Images" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Districts">
             <EntityTypeMapping TypeName="TichDiemV99Model.District">
               <MappingFragment StoreEntitySet="District">
-                <ScalarProperty Name="Code" ColumnName="Code" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="Type" ColumnName="Type" />
                 <ScalarProperty Name="ProvinceCode" ColumnName="ProvinceCode" />
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Code" ColumnName="Code" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Gifts">
             <EntityTypeMapping TypeName="TichDiemV99Model.Gift">
               <MappingFragment StoreEntitySet="Gift">
-                <ScalarProperty Name="ID" ColumnName="ID" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="Price" ColumnName="Price" />
-                <ScalarProperty Name="Point" ColumnName="Point" />
-                <ScalarProperty Name="UrlImage" ColumnName="UrlImage" />
-                <ScalarProperty Name="Description" ColumnName="Description" />
-                <ScalarProperty Name="CreateUserID" ColumnName="CreateUserID" />
-                <ScalarProperty Name="Type" ColumnName="Type" />
-                <ScalarProperty Name="Status" ColumnName="Status" />
-                <ScalarProperty Name="FromDate" ColumnName="FromDate" />
-                <ScalarProperty Name="ToDate" ColumnName="ToDate" />
-                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
-                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
                 <ScalarProperty Name="TelecomType" ColumnName="TelecomType" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+                <ScalarProperty Name="ToDate" ColumnName="ToDate" />
+                <ScalarProperty Name="FromDate" ColumnName="FromDate" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="CreateUserID" ColumnName="CreateUserID" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="UrlImage" ColumnName="UrlImage" />
+                <ScalarProperty Name="Point" ColumnName="Point" />
+                <ScalarProperty Name="Price" ColumnName="Price" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="GroupItems">
             <EntityTypeMapping TypeName="TichDiemV99Model.GroupItem">
               <MappingFragment StoreEntitySet="GroupItem">
-                <ScalarProperty Name="ID" ColumnName="ID" />
-                <ScalarProperty Name="ParentID" ColumnName="ParentID" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="ImageUrl" ColumnName="ImageUrl" />
-                <ScalarProperty Name="OrderIndex" ColumnName="OrderIndex" />
-                <ScalarProperty Name="Type" ColumnName="Type" />
-                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
-                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
-                <ScalarProperty Name="Description" ColumnName="Description" />
                 <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="OrderIndex" ColumnName="OrderIndex" />
+                <ScalarProperty Name="ImageUrl" ColumnName="ImageUrl" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ParentID" ColumnName="ParentID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Items">
             <EntityTypeMapping TypeName="TichDiemV99Model.Item">
               <MappingFragment StoreEntitySet="Items">
-                <ScalarProperty Name="ID" ColumnName="ID" />
-                <ScalarProperty Name="Code" ColumnName="Code" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="Description" ColumnName="Description" />
-                <ScalarProperty Name="Price" ColumnName="Price" />
-                <ScalarProperty Name="ImageUrl" ColumnName="ImageUrl" />
-                <ScalarProperty Name="Status" ColumnName="Status" />
-                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
-                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
-                <ScalarProperty Name="GroupItemID" ColumnName="GroupItemID" />
-                <ScalarProperty Name="Technical" ColumnName="Technical" />
-                <ScalarProperty Name="Warranty" ColumnName="Warranty" />
-                <ScalarProperty Name="Special" ColumnName="Special" />
                 <ScalarProperty Name="StockStatus" ColumnName="StockStatus" />
+                <ScalarProperty Name="Special" ColumnName="Special" />
+                <ScalarProperty Name="Warranty" ColumnName="Warranty" />
+                <ScalarProperty Name="Technical" ColumnName="Technical" />
+                <ScalarProperty Name="GroupItemID" ColumnName="GroupItemID" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="ImageUrl" ColumnName="ImageUrl" />
+                <ScalarProperty Name="PriceVIP" ColumnName="PriceVIP" />
+                <ScalarProperty Name="Price" ColumnName="Price" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Code" ColumnName="Code" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="MembersPointHistories">
             <EntityTypeMapping TypeName="TichDiemV99Model.MembersPointHistory">
               <MappingFragment StoreEntitySet="MembersPointHistory">
-                <ScalarProperty Name="ID" ColumnName="ID" />
-                <ScalarProperty Name="CustomerID" ColumnName="CustomerID" />
-                <ScalarProperty Name="Point" ColumnName="Point" />
-                <ScalarProperty Name="Type" ColumnName="Type" />
-                <ScalarProperty Name="AddPointCode" ColumnName="AddPointCode" />
-                <ScalarProperty Name="TypeAdd" ColumnName="TypeAdd" />
-                <ScalarProperty Name="CraeteDate" ColumnName="CraeteDate" />
-                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
-                <ScalarProperty Name="Comment" ColumnName="Comment" />
-                <ScalarProperty Name="Title" ColumnName="Title" />
-                <ScalarProperty Name="Balance" ColumnName="Balance" />
-                <ScalarProperty Name="ProductID" ColumnName="ProductID" />
-                <ScalarProperty Name="UserSendID" ColumnName="UserSendID" />
-                <ScalarProperty Name="BankID" ColumnName="BankID" />
                 <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="BankID" ColumnName="BankID" />
+                <ScalarProperty Name="UserSendID" ColumnName="UserSendID" />
+                <ScalarProperty Name="ProductID" ColumnName="ProductID" />
+                <ScalarProperty Name="Balance" ColumnName="Balance" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="Comment" ColumnName="Comment" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="CraeteDate" ColumnName="CraeteDate" />
+                <ScalarProperty Name="TypeAdd" ColumnName="TypeAdd" />
+                <ScalarProperty Name="AddPointCode" ColumnName="AddPointCode" />
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="Point" ColumnName="Point" />
+                <ScalarProperty Name="CustomerID" ColumnName="CustomerID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Messages">
             <EntityTypeMapping TypeName="TichDiemV99Model.Message">
               <MappingFragment StoreEntitySet="Message">
-                <ScalarProperty Name="ID" ColumnName="ID" />
-                <ScalarProperty Name="UserID" ColumnName="UserID" />
-                <ScalarProperty Name="CustomerID" ColumnName="CustomerID" />
-                <ScalarProperty Name="Content" ColumnName="Content" />
-                <ScalarProperty Name="Viewed" ColumnName="Viewed" />
-                <ScalarProperty Name="Type" ColumnName="Type" />
-                <ScalarProperty Name="CraeteDate" ColumnName="CraeteDate" />
                 <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="CraeteDate" ColumnName="CraeteDate" />
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="Viewed" ColumnName="Viewed" />
+                <ScalarProperty Name="Content" ColumnName="Content" />
+                <ScalarProperty Name="CustomerID" ColumnName="CustomerID" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="News">
             <EntityTypeMapping TypeName="TichDiemV99Model.News">
               <MappingFragment StoreEntitySet="News">
-                <ScalarProperty Name="ID" ColumnName="ID" />
-                <ScalarProperty Name="CreateUserID" ColumnName="CreateUserID" />
-                <ScalarProperty Name="CategoryID" ColumnName="CategoryID" />
-                <ScalarProperty Name="Title" ColumnName="Title" />
-                <ScalarProperty Name="Description" ColumnName="Description" />
-                <ScalarProperty Name="Content" ColumnName="Content" />
-                <ScalarProperty Name="UrlImage" ColumnName="UrlImage" />
-                <ScalarProperty Name="Status" ColumnName="Status" />
-                <ScalarProperty Name="Type" ColumnName="Type" />
-                <ScalarProperty Name="TypeSend" ColumnName="TypeSend" />
-                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
-                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="ItemID" ColumnName="ItemID" />
+                <ScalarProperty Name="TimePush" ColumnName="TimePush" />
                 <ScalarProperty Name="DisplayOrder" ColumnName="DisplayOrder" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+                <ScalarProperty Name="TypeSend" ColumnName="TypeSend" />
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="UrlImage" ColumnName="UrlImage" />
+                <ScalarProperty Name="Content" ColumnName="Content" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="CategoryID" ColumnName="CategoryID" />
+                <ScalarProperty Name="CreateUserID" ColumnName="CreateUserID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Notifications">
             <EntityTypeMapping TypeName="TichDiemV99Model.Notification">
               <MappingFragment StoreEntitySet="Notification">
-                <ScalarProperty Name="ID" ColumnName="ID" />
-                <ScalarProperty Name="CustomerID" ColumnName="CustomerID" />
-                <ScalarProperty Name="Content" ColumnName="Content" />
-                <ScalarProperty Name="Viewed" ColumnName="Viewed" />
-                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
-                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
-                <ScalarProperty Name="Title" ColumnName="Title" />
-                <ScalarProperty Name="Type" ColumnName="Type" />
                 <ScalarProperty Name="NewsID" ColumnName="NewsID" />
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+                <ScalarProperty Name="Viewed" ColumnName="Viewed" />
+                <ScalarProperty Name="Content" ColumnName="Content" />
+                <ScalarProperty Name="CustomerID" ColumnName="CustomerID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="NotifiWebs">
             <EntityTypeMapping TypeName="TichDiemV99Model.NotifiWeb">
               <MappingFragment StoreEntitySet="NotifiWeb">
-                <ScalarProperty Name="ID" ColumnName="ID" />
-                <ScalarProperty Name="Content" ColumnName="Content" />
-                <ScalarProperty Name="Type" ColumnName="Type" />
-                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
                 <ScalarProperty Name="Viewed" ColumnName="Viewed" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="Content" ColumnName="Content" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="OrderItems">
             <EntityTypeMapping TypeName="TichDiemV99Model.OrderItem">
               <MappingFragment StoreEntitySet="OrderItems">
-                <ScalarProperty Name="ID" ColumnName="ID" />
-                <ScalarProperty Name="OrderID" ColumnName="OrderID" />
-                <ScalarProperty Name="ItemID" ColumnName="ItemID" />
-                <ScalarProperty Name="QTY" ColumnName="QTY" />
-                <ScalarProperty Name="SumPrice" ColumnName="SumPrice" />
-                <ScalarProperty Name="Status" ColumnName="Status" />
-                <ScalarProperty Name="Discount" ColumnName="Discount" />
-                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
-                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
-                <ScalarProperty Name="Type" ColumnName="Type" />
                 <ScalarProperty Name="UpdateAt" ColumnName="UpdateAt" />
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+                <ScalarProperty Name="Discount" ColumnName="Discount" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="SumPrice" ColumnName="SumPrice" />
+                <ScalarProperty Name="QTY" ColumnName="QTY" />
+                <ScalarProperty Name="ItemID" ColumnName="ItemID" />
+                <ScalarProperty Name="OrderID" ColumnName="OrderID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Orders">
             <EntityTypeMapping TypeName="TichDiemV99Model.Order">
               <MappingFragment StoreEntitySet="Orders">
-                <ScalarProperty Name="ID" ColumnName="ID" />
-                <ScalarProperty Name="Code" ColumnName="Code" />
-                <ScalarProperty Name="CustomerID" ColumnName="CustomerID" />
-                <ScalarProperty Name="Discount" ColumnName="Discount" />
-                <ScalarProperty Name="TotalPrice" ColumnName="TotalPrice" />
-                <ScalarProperty Name="Status" ColumnName="Status" />
-                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
-                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
-                <ScalarProperty Name="BuyerName" ColumnName="BuyerName" />
-                <ScalarProperty Name="BuyerPhone" ColumnName="BuyerPhone" />
-                <ScalarProperty Name="BuyerAddress" ColumnName="BuyerAddress" />
-                <ScalarProperty Name="PointAdd" ColumnName="PointAdd" />
-                <ScalarProperty Name="Type" ColumnName="Type" />
-                <ScalarProperty Name="Note" ColumnName="Note" />
-                <ScalarProperty Name="ProvinceID" ColumnName="ProvinceID" />
-                <ScalarProperty Name="DistrictID" ColumnName="DistrictID" />
-                <ScalarProperty Name="CancelDate" ColumnName="CancelDate" />
-                <ScalarProperty Name="ConfirmDate" ColumnName="ConfirmDate" />
-                <ScalarProperty Name="PaymentDate" ColumnName="PaymentDate" />
                 <ScalarProperty Name="LastRefCode" ColumnName="LastRefCode" />
+                <ScalarProperty Name="PaymentDate" ColumnName="PaymentDate" />
+                <ScalarProperty Name="ConfirmDate" ColumnName="ConfirmDate" />
+                <ScalarProperty Name="CancelDate" ColumnName="CancelDate" />
+                <ScalarProperty Name="DistrictID" ColumnName="DistrictID" />
+                <ScalarProperty Name="ProvinceID" ColumnName="ProvinceID" />
+                <ScalarProperty Name="Note" ColumnName="Note" />
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="PointAdd" ColumnName="PointAdd" />
+                <ScalarProperty Name="BuyerAddress" ColumnName="BuyerAddress" />
+                <ScalarProperty Name="BuyerPhone" ColumnName="BuyerPhone" />
+                <ScalarProperty Name="BuyerName" ColumnName="BuyerName" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="TotalPrice" ColumnName="TotalPrice" />
+                <ScalarProperty Name="Discount" ColumnName="Discount" />
+                <ScalarProperty Name="CustomerID" ColumnName="CustomerID" />
+                <ScalarProperty Name="Code" ColumnName="Code" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Products">
             <EntityTypeMapping TypeName="TichDiemV99Model.Product">
               <MappingFragment StoreEntitySet="Product">
-                <ScalarProperty Name="ID" ColumnName="ID" />
-                <ScalarProperty Name="BatchID" ColumnName="BatchID" />
-                <ScalarProperty Name="CustomerActiveID" ColumnName="CustomerActiveID" />
-                <ScalarProperty Name="ProductCode" ColumnName="ProductCode" />
-                <ScalarProperty Name="ActiveDate" ColumnName="ActiveDate" />
-                <ScalarProperty Name="Status" ColumnName="Status" />
-                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
-                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
                 <ScalarProperty Name="ExpireDate" ColumnName="ExpireDate" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="ActiveDate" ColumnName="ActiveDate" />
+                <ScalarProperty Name="ProductCode" ColumnName="ProductCode" />
+                <ScalarProperty Name="CustomerActiveID" ColumnName="CustomerActiveID" />
+                <ScalarProperty Name="BatchID" ColumnName="BatchID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Provinces">
             <EntityTypeMapping TypeName="TichDiemV99Model.Province">
               <MappingFragment StoreEntitySet="Province">
-                <ScalarProperty Name="Code" ColumnName="Code" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Code" ColumnName="Code" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Rankings">
             <EntityTypeMapping TypeName="TichDiemV99Model.Ranking">
               <MappingFragment StoreEntitySet="Ranking">
-                <ScalarProperty Name="ID" ColumnName="ID" />
-                <ScalarProperty Name="RankName" ColumnName="RankName" />
-                <ScalarProperty Name="Descriptions" ColumnName="Descriptions" />
-                <ScalarProperty Name="CraeteDate" ColumnName="CraeteDate" />
-                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
-                <ScalarProperty Name="MinPoint" ColumnName="MinPoint" />
-                <ScalarProperty Name="MaxPoint" ColumnName="MaxPoint" />
                 <ScalarProperty Name="Level" ColumnName="Level" />
+                <ScalarProperty Name="MaxPoint" ColumnName="MaxPoint" />
+                <ScalarProperty Name="MinPoint" ColumnName="MinPoint" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="CraeteDate" ColumnName="CraeteDate" />
+                <ScalarProperty Name="Descriptions" ColumnName="Descriptions" />
+                <ScalarProperty Name="RankName" ColumnName="RankName" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Requests">
             <EntityTypeMapping TypeName="TichDiemV99Model.Request">
               <MappingFragment StoreEntitySet="Request">
-                <ScalarProperty Name="ID" ColumnName="ID" />
-                <ScalarProperty Name="UserModifiedID" ColumnName="UserModifiedID" />
-                <ScalarProperty Name="CustomerID" ColumnName="CustomerID" />
-                <ScalarProperty Name="GiftID" ColumnName="GiftID" />
-                <ScalarProperty Name="Note" ColumnName="Note" />
-                <ScalarProperty Name="Code" ColumnName="Code" />
-                <ScalarProperty Name="Status" ColumnName="Status" />
-                <ScalarProperty Name="Type" ColumnName="Type" />
-                <ScalarProperty Name="Point" ColumnName="Point" />
-                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
-                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
                 <ScalarProperty Name="BankID" ColumnName="BankID" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+                <ScalarProperty Name="Point" ColumnName="Point" />
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="Code" ColumnName="Code" />
+                <ScalarProperty Name="Note" ColumnName="Note" />
+                <ScalarProperty Name="GiftID" ColumnName="GiftID" />
+                <ScalarProperty Name="CustomerID" ColumnName="CustomerID" />
+                <ScalarProperty Name="UserModifiedID" ColumnName="UserModifiedID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Shops">
             <EntityTypeMapping TypeName="TichDiemV99Model.Shop">
               <MappingFragment StoreEntitySet="Shop">
-                <ScalarProperty Name="ID" ColumnName="ID" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="ProvinceID" ColumnName="ProvinceID" />
-                <ScalarProperty Name="Address" ColumnName="Address" />
-                <ScalarProperty Name="Lati" ColumnName="Lati" />
-                <ScalarProperty Name="Long" ColumnName="Long" />
-                <ScalarProperty Name="PlusCode" ColumnName="PlusCode" />
-                <ScalarProperty Name="ContactName" ColumnName="ContactName" />
-                <ScalarProperty Name="ContactPhone" ColumnName="ContactPhone" />
-                <ScalarProperty Name="AgentID" ColumnName="AgentID" />
-                <ScalarProperty Name="CraeteDate" ColumnName="CraeteDate" />
-                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
                 <ScalarProperty Name="DistrictID" ColumnName="DistrictID" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="CraeteDate" ColumnName="CraeteDate" />
+                <ScalarProperty Name="AgentID" ColumnName="AgentID" />
+                <ScalarProperty Name="ContactPhone" ColumnName="ContactPhone" />
+                <ScalarProperty Name="ContactName" ColumnName="ContactName" />
+                <ScalarProperty Name="PlusCode" ColumnName="PlusCode" />
+                <ScalarProperty Name="Long" ColumnName="Long" />
+                <ScalarProperty Name="Lati" ColumnName="Lati" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="ProvinceID" ColumnName="ProvinceID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="ShopImages">
             <EntityTypeMapping TypeName="TichDiemV99Model.ShopImage">
               <MappingFragment StoreEntitySet="ShopImage">
-                <ScalarProperty Name="ID" ColumnName="ID" />
-                <ScalarProperty Name="ShopID" ColumnName="ShopID" />
-                <ScalarProperty Name="Path" ColumnName="Path" />
-                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
                 <ScalarProperty Name="CraeteDate" ColumnName="CraeteDate" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="Path" ColumnName="Path" />
+                <ScalarProperty Name="ShopID" ColumnName="ShopID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="TichDiemV99Model.sysdiagram">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="definition" ColumnName="definition" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="name" ColumnName="name" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Users">
             <EntityTypeMapping TypeName="TichDiemV99Model.User">
               <MappingFragment StoreEntitySet="Users">
-                <ScalarProperty Name="UserID" ColumnName="UserID" />
-                <ScalarProperty Name="Phone" ColumnName="Phone" />
-                <ScalarProperty Name="Role" ColumnName="Role" />
-                <ScalarProperty Name="PassWord" ColumnName="PassWord" />
-                <ScalarProperty Name="UserName" ColumnName="UserName" />
-                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
                 <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="PassWord" ColumnName="PassWord" />
+                <ScalarProperty Name="Role" ColumnName="Role" />
+                <ScalarProperty Name="Phone" ColumnName="Phone" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Warranties">
             <EntityTypeMapping TypeName="TichDiemV99Model.Warranty">
               <MappingFragment StoreEntitySet="Warranty">
-                <ScalarProperty Name="ID" ColumnName="ID" />
-                <ScalarProperty Name="CreateUserID" ColumnName="CreateUserID" />
-                <ScalarProperty Name="WarrantyCode" ColumnName="WarrantyCode" />
-                <ScalarProperty Name="QTY" ColumnName="QTY" />
-                <ScalarProperty Name="Point" ColumnName="Point" />
-                <ScalarProperty Name="ExpireDate" ColumnName="ExpireDate" />
-                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
                 <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+                <ScalarProperty Name="ExpireDate" ColumnName="ExpireDate" />
+                <ScalarProperty Name="Point" ColumnName="Point" />
+                <ScalarProperty Name="QTY" ColumnName="QTY" />
+                <ScalarProperty Name="WarrantyCode" ColumnName="WarrantyCode" />
+                <ScalarProperty Name="CreateUserID" ColumnName="CreateUserID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="WarrantyCards">
             <EntityTypeMapping TypeName="TichDiemV99Model.WarrantyCard">
               <MappingFragment StoreEntitySet="WarrantyCard">
-                <ScalarProperty Name="ID" ColumnName="ID" />
-                <ScalarProperty Name="CustomerActiveID" ColumnName="CustomerActiveID" />
-                <ScalarProperty Name="WarrantyCardCode" ColumnName="WarrantyCardCode" />
-                <ScalarProperty Name="Status" ColumnName="Status" />
-                <ScalarProperty Name="ActiveDate" ColumnName="ActiveDate" />
-                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
-                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
                 <ScalarProperty Name="WarrantyID" ColumnName="WarrantyID" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+                <ScalarProperty Name="ActiveDate" ColumnName="ActiveDate" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="WarrantyCardCode" ColumnName="WarrantyCardCode" />
+                <ScalarProperty Name="CustomerActiveID" ColumnName="CustomerActiveID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

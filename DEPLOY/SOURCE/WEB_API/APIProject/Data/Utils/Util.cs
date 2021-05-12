@@ -233,6 +233,44 @@ namespace Data.Utils
             else
                 return null;
         }
+        //Convert Datetime 
+        public static Nullable<DateTime> ConvertFromDate(string date, string datepaser = SystemParam.CONVERT_DATETIME_HAVE_HOUR)
+        {
+            try
+            {
+                if (!String.IsNullOrEmpty(date))
+                {
+                    var dateTime = "00:00 " + date;
+                    return DateTime.ParseExact(dateTime, datepaser, null);
+                }
+
+                return null;
+            }
+            catch
+            {
+                return null;
+            }
+
+        }
+        //Convert Datetime 
+        public static Nullable<DateTime> ConvertToDate(string date, string datepaser = SystemParam.CONVERT_DATETIME_HAVE_HOUR)
+        {
+            try
+            {
+                if (!String.IsNullOrEmpty(date))
+                {
+                    var dateTime = "23:59 " + date;
+                    return DateTime.ParseExact(dateTime, datepaser, null);
+                }
+
+                return null;
+            }
+            catch
+            {
+                return null;
+            }
+
+        }
 
         //get name TYPE_ADD 
         public static string GetNameType(int ID)

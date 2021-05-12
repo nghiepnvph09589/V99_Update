@@ -15,6 +15,7 @@
                     <th>Tên sản phẩm</th>
                     <th>Danh mục</th>
                     <th>Giá gốc</th>
+                    <th>Giá VIP</th>
                     <th>Trạng thái</th>
                     <th>Trạng thái hoạt động</th>
                     <th>Ngày tạo</th>
@@ -26,7 +27,7 @@
                     if (Model.Count <= 0)
                     {
                         <tr>
-                            <td colspan="10">Không có dữ liệu.</td>
+                            <td colspan="11">Không có dữ liệu.</td>
                         </tr>
                     }
                     else
@@ -42,6 +43,7 @@
                                 <td>@data.ItemName</td>
                                 <td>@data.Category</td>
                                 <td>@String.Format("{0:n0}", data.Price)</td>
+                                <td>@String.Format("{0:n0}", data.PriceVip)</td>
                                 <td>@data.GetStockStatus</td>
                                 <td>@data.GetNameStatus</td>
                                 <td>@data.GetStringCreateDate</td>
