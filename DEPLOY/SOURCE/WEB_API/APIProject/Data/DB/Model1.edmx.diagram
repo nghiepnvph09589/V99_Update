@@ -5,37 +5,37 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="bb4ed74868eb4c73bc1c6da7aa445f37" Name="Diagram1">
-        <EntityTypeShape EntityType="TichDiemV99Model.Agent" Width="1.5" PointX="7.5" PointY="58.375" />
+        <EntityTypeShape EntityType="TichDiemV99Model.Agent" Width="1.5" PointX="7.5" PointY="65.375" />
         <EntityTypeShape EntityType="TichDiemV99Model.AppVersion" Width="1.5" PointX="0.75" PointY="0.75" />
-        <EntityTypeShape EntityType="TichDiemV99Model.Bank" Width="1.5" PointX="11.25" PointY="40.75" />
-        <EntityTypeShape EntityType="TichDiemV99Model.Batch" Width="1.5" PointX="5.25" PointY="21.75" />
-        <EntityTypeShape EntityType="TichDiemV99Model.Card" Width="1.5" PointX="7.5" PointY="36.75" />
-        <EntityTypeShape EntityType="TichDiemV99Model.CategoryNew" Width="1.5" PointX="14.25" PointY="15.625" />
+        <EntityTypeShape EntityType="TichDiemV99Model.Bank" Width="1.5" PointX="5.25" PointY="39.875" />
+        <EntityTypeShape EntityType="TichDiemV99Model.Batch" Width="1.5" PointX="5.25" PointY="22" />
+        <EntityTypeShape EntityType="TichDiemV99Model.Card" Width="1.5" PointX="10.5" PointY="28" />
+        <EntityTypeShape EntityType="TichDiemV99Model.CategoryNew" Width="1.5" PointX="14.25" PointY="17.75" />
         <EntityTypeShape EntityType="TichDiemV99Model.Config" Width="1.5" PointX="2.75" PointY="0.75" />
-        <EntityTypeShape EntityType="TichDiemV99Model.Customer" Width="1.5" PointX="5.25" PointY="29.25" />
-        <EntityTypeShape EntityType="TichDiemV99Model.CustomerBank" Width="1.5" PointX="13.5" PointY="35.25" />
-        <EntityTypeShape EntityType="TichDiemV99Model.CustomerImage" Width="1.5" PointX="7.5" PointY="68.625" />
-        <EntityTypeShape EntityType="TichDiemV99Model.District" Width="1.5" PointX="3" PointY="37.375" />
-        <EntityTypeShape EntityType="TichDiemV99Model.Gift" Width="1.5" PointX="13.5" PointY="19.75" />
-        <EntityTypeShape EntityType="TichDiemV99Model.GroupItem" Width="1.5" PointX="0.75" PointY="22.125" />
-        <EntityTypeShape EntityType="TichDiemV99Model.Item" Width="1.5" PointX="3" PointY="21.375" />
-        <EntityTypeShape EntityType="TichDiemV99Model.MembersPointHistory" Width="1.5" PointX="12.75" PointY="29.375" />
-        <EntityTypeShape EntityType="TichDiemV99Model.Message" Width="1.5" PointX="13.5" PointY="25.25" />
-        <EntityTypeShape EntityType="TichDiemV99Model.News" Width="1.5" PointX="16.5" PointY="21.75" />
-        <EntityTypeShape EntityType="TichDiemV99Model.Notification" Width="1.5" PointX="7.5" PointY="71.375" />
+        <EntityTypeShape EntityType="TichDiemV99Model.Customer" Width="1.5" PointX="5.25" PointY="29.5" />
+        <EntityTypeShape EntityType="TichDiemV99Model.CustomerBank" Width="1.5" PointX="7.5" PointY="37.375" />
+        <EntityTypeShape EntityType="TichDiemV99Model.CustomerImage" Width="1.5" PointX="7.5" PointY="69.25" />
+        <EntityTypeShape EntityType="TichDiemV99Model.District" Width="1.5" PointX="3" PointY="37.625" />
+        <EntityTypeShape EntityType="TichDiemV99Model.Gift" Width="1.5" PointX="13.5" PointY="22.125" />
+        <EntityTypeShape EntityType="TichDiemV99Model.GroupItem" Width="1.5" PointX="0.75" PointY="22.375" />
+        <EntityTypeShape EntityType="TichDiemV99Model.Item" Width="1.5" PointX="3" PointY="21.5" />
+        <EntityTypeShape EntityType="TichDiemV99Model.MembersPointHistory" Width="1.5" PointX="10.5" PointY="36.625" />
+        <EntityTypeShape EntityType="TichDiemV99Model.Message" Width="1.5" PointX="13.5" PointY="27.375" />
+        <EntityTypeShape EntityType="TichDiemV99Model.News" Width="1.5" PointX="16.5" PointY="21.875" />
+        <EntityTypeShape EntityType="TichDiemV99Model.Notification" Width="1.5" PointX="7.5" PointY="72" />
         <EntityTypeShape EntityType="TichDiemV99Model.NotifiWeb" Width="1.5" PointX="0.75" PointY="3.75" />
-        <EntityTypeShape EntityType="TichDiemV99Model.OrderItem" Width="1.5" PointX="18.75" PointY="31.875" />
+        <EntityTypeShape EntityType="TichDiemV99Model.OrderItem" Width="1.5" PointX="18.75" PointY="32.125" />
         <EntityTypeShape EntityType="TichDiemV99Model.Order" Width="1.5" PointX="16.5" PointY="30.875" />
-        <EntityTypeShape EntityType="TichDiemV99Model.Product" Width="1.5" PointX="7.5" PointY="27" />
-        <EntityTypeShape EntityType="TichDiemV99Model.Province" Width="1.5" PointX="0.75" PointY="27.25" />
+        <EntityTypeShape EntityType="TichDiemV99Model.Product" Width="1.5" PointX="7.5" PointY="27.25" />
+        <EntityTypeShape EntityType="TichDiemV99Model.Province" Width="1.5" PointX="0.75" PointY="27.375" />
         <EntityTypeShape EntityType="TichDiemV99Model.Ranking" Width="1.5" PointX="2.75" PointY="3.75" />
-        <EntityTypeShape EntityType="TichDiemV99Model.Request" Width="1.5" PointX="10.5" PointY="27.875" />
-        <EntityTypeShape EntityType="TichDiemV99Model.Shop" Width="1.5" PointX="8.25" PointY="31.625" />
-        <EntityTypeShape EntityType="TichDiemV99Model.ShopImage" Width="1.5" PointX="10.5" PointY="32.625" />
+        <EntityTypeShape EntityType="TichDiemV99Model.Request" Width="1.5" PointX="13.5" PointY="32" />
+        <EntityTypeShape EntityType="TichDiemV99Model.Shop" Width="1.5" PointX="8.25" PointY="31.875" />
+        <EntityTypeShape EntityType="TichDiemV99Model.ShopImage" Width="1.5" PointX="10.5" PointY="32.75" />
         <EntityTypeShape EntityType="TichDiemV99Model.sysdiagram" Width="1.5" PointX="4.75" PointY="0.75" />
-        <EntityTypeShape EntityType="TichDiemV99Model.User" Width="1.5" PointX="11.25" PointY="22.875" />
-        <EntityTypeShape EntityType="TichDiemV99Model.Warranty" Width="1.5" PointX="8.25" PointY="42.25" />
-        <EntityTypeShape EntityType="TichDiemV99Model.WarrantyCard" Width="1.5" PointX="10.5" PointY="36.25" />
+        <EntityTypeShape EntityType="TichDiemV99Model.User" Width="1.5" PointX="11.25" PointY="23" />
+        <EntityTypeShape EntityType="TichDiemV99Model.Warranty" Width="1.5" PointX="11.25" PointY="42.375" />
+        <EntityTypeShape EntityType="TichDiemV99Model.WarrantyCard" Width="1.5" PointX="13.5" PointY="37.375" />
         <AssociationConnector Association="TichDiemV99Model.FK__Agent__CustomerA__6477ECF3" />
         <AssociationConnector Association="TichDiemV99Model.FK__CustomerB__BankI__6C190EBB" />
         <AssociationConnector Association="TichDiemV99Model.FK__Batch__CreateUse__656C112C" />

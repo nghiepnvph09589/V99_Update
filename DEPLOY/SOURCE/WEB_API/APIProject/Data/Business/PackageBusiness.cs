@@ -21,6 +21,32 @@ namespace Data.Business
         {
         }
 
+        public void PushNotiApp(double point,int type,int statusOrder,int typeNoti,int orderID,string title,string content,int cusID,string deviceID)
+        {
+            Notification ntf = new Notification();
+            ntf.CustomerID = cusID;
+            ntf.Content = title;
+            ntf.Viewed = 0;
+            ntf.CreateDate = DateTime.Now;
+            ntf.IsActive = SystemParam.ACTIVE;
+            ntf.Title = title;
+            ntf.Type = typeNoti;
+            cnn.Notifications.Add(ntf);
+            cnn.SaveChanges();
+            if (deviceID != null && deviceID.Length > 15)
+            {
+                //Tiến hành gửi thông báo
+                NotifyDataModel notifyData = new NotifyDataModel();
+                notifyData.Point = point;
+                notifyData.type = type;
+                notifyData.StatusOrder = statusOrder;
+                notifyData.id = orderID;
+                List<string> listDevice = new List<string>();
+                listDevice.Add(deviceID);
+                string value = StartPushNoti(notifyData, listDevice, title, content);
+                PushOneSignals(value);
+            }
+        }
         public string StartPushNoti(object obj, List<string> deviceID, string title, string contents)
         {
             OneSignalInput input = new OneSignalInput();

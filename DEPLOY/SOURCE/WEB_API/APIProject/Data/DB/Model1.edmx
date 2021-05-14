@@ -329,6 +329,8 @@
           <Property Name="ConfirmDate" Type="datetime" />
           <Property Name="PaymentDate" Type="datetime" />
           <Property Name="LastRefCode" Type="nvarchar" MaxLength="15" />
+          <Property Name="PointRanking" Type="float" />
+          <Property Name="Point" Type="float" />
         </EntityType>
         <EntityType Name="Product">
           <Key>
@@ -1659,6 +1661,8 @@
           <Property Name="ConfirmDate" Type="DateTime" Precision="3" />
           <Property Name="PaymentDate" Type="DateTime" Precision="3" />
           <Property Name="LastRefCode" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
+          <Property Name="PointRanking" Type="Double" />
+          <Property Name="Point" Type="Double" />
           <NavigationProperty Name="Customer" Relationship="TichDiemV99Model.FK_Orders_Customer" FromRole="Order" ToRole="Customer" />
           <NavigationProperty Name="District" Relationship="TichDiemV99Model.FK__Orders__District__7C4F7684" FromRole="Order" ToRole="District" />
           <NavigationProperty Name="OrderItems" Relationship="TichDiemV99Model.FK__OrderItem__Order__123EB7A3" FromRole="Order" ToRole="OrderItem" />
@@ -2273,7 +2277,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-      </Schema>
+        </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
@@ -2602,6 +2606,8 @@
           <EntitySetMapping Name="Orders">
             <EntityTypeMapping TypeName="TichDiemV99Model.Order">
               <MappingFragment StoreEntitySet="Orders">
+                <ScalarProperty Name="Point" ColumnName="Point" />
+                <ScalarProperty Name="PointRanking" ColumnName="PointRanking" />
                 <ScalarProperty Name="LastRefCode" ColumnName="LastRefCode" />
                 <ScalarProperty Name="PaymentDate" ColumnName="PaymentDate" />
                 <ScalarProperty Name="ConfirmDate" ColumnName="ConfirmDate" />

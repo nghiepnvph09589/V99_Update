@@ -65,7 +65,7 @@ namespace Data.Business
             }
         }
 
-        public OrderDetailOutputModel GetOrderDetail(int orderID, double? balance)
+        public OrderDetailOutputModel GetOrderDetail(int orderID, double? balance,double? balanceRanking)
         {
             OrderDetailOutputModel data = new OrderDetailOutputModel();
             var order = cnn.Orders.Find(orderID);
@@ -93,6 +93,7 @@ namespace Data.Business
                 data.Date = order.CreateDate.ToString("dd/MM/yyyy");
                 //Lấy ra số dư người dùng cho app tiện sử dụng
                 data.Point = balance;
+                data.PointRanking = balanceRanking;
 
                 //lấy danh dách sản phẩm trong đơn hàng
                 var listOdItem = (from oi in cnn.OrderItems
@@ -154,7 +155,7 @@ namespace Data.Business
                 cnn.Orders.Add(od);
                 cnn.SaveChanges();
                 int id = cnn.Orders.OrderByDescending(u => u.ID).FirstOrDefault().ID;
-                return GetOrderDetail(id, null);
+                return GetOrderDetail(id, null,null);
             }
             catch
             {

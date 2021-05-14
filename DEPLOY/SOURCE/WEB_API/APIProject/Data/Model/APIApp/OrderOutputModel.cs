@@ -56,6 +56,7 @@ namespace Data.Model.APIApp
         public DateTime CreateDate { get; set; }
         public string LastRefCode { get; set; }
         public double? Point { get; set; }
+        public double? PointRanking { get; set; }
         public string Hour
         {
             get
