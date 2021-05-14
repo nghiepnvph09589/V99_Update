@@ -177,6 +177,14 @@ export class UserScreen extends Component {
             <NumberFormat fonts={theme.fonts.regular18} value={userInfoState.data.pointRanking}
               perfix={R.strings().point} />
           </Block>
+          <Block middle center style={{ borderLeftWidth: 0.5, borderLeftColor: theme.colors.border }}>
+            <Text style={{
+              color: theme.colors.active,
+              ...theme.fonts.regular18
+            }}>Point V</Text>
+            <NumberFormat fonts={theme.fonts.regular18} value={userInfoState.data.pointV}
+              perfix={R.strings().point_V} />
+          </Block>
         </View>}
     </>)
   }

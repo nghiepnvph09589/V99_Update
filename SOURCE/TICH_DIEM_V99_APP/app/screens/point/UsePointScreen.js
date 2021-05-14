@@ -8,7 +8,8 @@ import ListGiftScreen from './ListGiftScreen'
 import CardScreen from './CardScreen'
 import { GIFT_TYPE, REDUCER } from '../../constants/Constant'
 import { getBankSelect, getBank, navigateTab } from "@action";
-import reactotron from 'reactotron-react-native'
+import reactotron from 'reactotron-react-native';
+import PoinVScreen from './PointVScreen';
 
 export class UsePointScreen extends Component {
 
@@ -32,6 +33,7 @@ export class UsePointScreen extends Component {
                     >
                         <ListGiftScreen tabLabel={'Ví Point'} key={GIFT_TYPE.GIFT} />
                         <CardScreen tabLabel={'Ví điểm tích'} key={GIFT_TYPE.CARD} />
+                        <PoinVScreen tabLabel={'Ví V'} key={GIFT_TYPE.POIN_V} />
                     </ScrollableTabView>
                 </SafeAreaView>
             </Block>

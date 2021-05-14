@@ -175,4 +175,5 @@ export default {
   see_more: 'Xem thêm',
   fee_use_app: 'Phí sử dụng ứng dụng',
   introduce_customers: 'Giới thiệu khách hàng',
+  point_V: 'V',
 };
