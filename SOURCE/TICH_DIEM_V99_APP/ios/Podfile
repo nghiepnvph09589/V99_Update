@@ -3,6 +3,7 @@ require_relative '../node_modules/@react-native-community/cli-platform-ios/nativ
 project './TICHDIEMV99.xcodeproj'
 target 'TICHDIEMV99' do
   # Pods for TICHDIEMV99
+  pod 'FBSDKCoreKit', :modular_headers => true
   pod 'FBLazyVector', :path => "../node_modules/react-native/Libraries/FBLazyVector"
   pod 'FBReactNativeSpec', :path => "../node_modules/react-native/Libraries/FBReactNativeSpec"
   pod 'RCTRequired', :path => "../node_modules/react-native/Libraries/RCTRequired"
@@ -48,20 +49,20 @@ target 'TICHDIEMV99' do
 
   pod 'RNFastImage', :path => '../node_modules/react-native-fast-image'
 
-  target 'TICHDIEMV99Tests' do
-    inherit! :search_paths
-    # Pods for testing
-  end
+  # target 'TICHDIEMV99Tests' do
+  #   inherit! :search_paths
+  #   # Pods for testing
+  # end
 
   use_native_modules!
 end
 
-target 'TICHDIEMV99-tvOS' do
-  # Pods for TICHDIEMV99-tvOS
+# target 'TICHDIEMV99-tvOS' do
+#   # Pods for TICHDIEMV99-tvOS
 
-  target 'TICHDIEMV99-tvOSTests' do
-    inherit! :search_paths
-    # Pods for testing
-  end
+#   target 'TICHDIEMV99-tvOSTests' do
+#     inherit! :search_paths
+#     # Pods for testing
+#   end
 
-end
+# end

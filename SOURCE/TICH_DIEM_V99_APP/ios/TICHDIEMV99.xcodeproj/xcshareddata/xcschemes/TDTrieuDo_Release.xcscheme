@@ -46,10 +46,19 @@
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
             BuildableName = "Tra&#x300; Tie&#x302;n Tha&#x309;o.app"
+            BlueprintName = "TICHDIEMV99"
+            ReferencedContainer = "container:TICHDIEMV99.xcodeproj">
+         </BuildableReference>
+      </BuildableProductRunnable>
+      <MacroExpansion>
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
+            BuildableName = "Tra&#x300; Tie&#x302;n Tha&#x309;o.app"
             BlueprintName = "TDTrieuDo"
             ReferencedContainer = "container:TDTrieuDo.xcodeproj">
          </BuildableReference>
-      </BuildableProductRunnable>
+      </MacroExpansion>
    </LaunchAction>
    <ProfileAction
       buildConfiguration = "Release"
