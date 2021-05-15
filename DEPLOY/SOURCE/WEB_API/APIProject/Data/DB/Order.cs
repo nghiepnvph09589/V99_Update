@@ -40,6 +40,8 @@ namespace Data.DB
         public Nullable<System.DateTime> ConfirmDate { get; set; }
         public Nullable<System.DateTime> PaymentDate { get; set; }
         public string LastRefCode { get; set; }
+        public Nullable<double> PointRanking { get; set; }
+        public Nullable<double> Point { get; set; }
     
         public virtual Customer Customer { get; set; }
         public virtual District District { get; set; }

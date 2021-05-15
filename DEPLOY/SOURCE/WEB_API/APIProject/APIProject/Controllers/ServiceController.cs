@@ -327,9 +327,9 @@ namespace APIProject.Controllers
                     return response(SystemParam.ERROR, SystemParam.FAIL, SystemParam.MESSAGE_INVALID_INPUT_POINT, "");
                 }
                 var balanceV = cus.PointV - input.point;
-                var balancePoint = cus.PointRanking + input.point;
+                var balancePoint = cus.PointRanking + (input.point/4);
                 cus.PointV -= input.point;
-                cus.PointRanking += input.point;
+                cus.PointRanking += (input.point / 4);
                 //Tạo lịch sử chuyển điểm ví V
                 MembersPointHistory mv = new MembersPointHistory();
                 mv.CustomerID = cus.ID;
@@ -346,14 +346,14 @@ namespace APIProject.Controllers
                 //Tạo lịch sử rút điểm
                 MembersPointHistory m = new MembersPointHistory();
                 m.CustomerID = cus.ID;
-                m.Point = input.point;
+                m.Point = (input.point / 4);
                 m.Type = SystemParam.TYPE_CONVERT_POINT_V_TO_POINT_RANKING;
                 m.AddPointCode = Util.CreateMD5(DateTime.Now.ToString()).Substring(0, 6);
                 m.TypeAdd = SystemParam.TYPE_POINT_RANKING;
                 m.CraeteDate = DateTime.Now;
                 m.IsActive = SystemParam.ACTIVE;
                 m.Comment = "Chuyển điểm từ ví V sang ví tích điểm";
-                m.Title = "Ví tích điểm đã được cộng" + input.point + "điểm";
+                m.Title = "Ví tích điểm đã được cộng" + (input.point / 4) + "điểm";
                 m.Balance = balancePoint;
 
                 //Tạo thông báo cho người nhận
@@ -408,21 +408,21 @@ namespace APIProject.Controllers
                 {
                     return response(SystemParam.ERROR, SystemParam.FAIL, SystemParam.MESSAGE_INVALID_INPUT_POINT, "");
                 }
-                var balanceV = cus.PointV + input.point;
+                var balanceV = cus.PointV + (input.point *4);
                 var balancePoint = cus.PointRanking - input.point;
-                cus.PointV += input.point;
+                cus.PointV += (input.point * 4);
                 cus.PointRanking -= input.point;
                 //Tạo lịch sử chuyển điểm ví V
                 MembersPointHistory mv = new MembersPointHistory();
                 mv.CustomerID = cus.ID;
-                mv.Point = input.point;
+                mv.Point = (input.point * 4);
                 mv.Type = SystemParam.TYPE_CONVERT_POINT_RANKING_TO_POINT_V;
                 mv.AddPointCode = Util.CreateMD5(DateTime.Now.ToString()).Substring(0, 6);
                 mv.TypeAdd = SystemParam.TYPE_POINT_V;
                 mv.CraeteDate = DateTime.Now;
                 mv.IsActive = SystemParam.ACTIVE;
                 mv.Comment = "Chuyển điểm từ ví điểm tích lũy sang ví V";
-                mv.Title = "Ví V đã được cộng " + input.point + "điểm";
+                mv.Title = "Ví V đã được cộng " + (input.point * 4) + "điểm";
                 mv.Balance = balanceV;
 
                 //Tạo lịch sử rút điểm
@@ -1031,7 +1031,7 @@ namespace APIProject.Controllers
                 if (cusID == null)
                     return response(SystemParam.ERROR, SystemParam.ERROR_PASS_API, SystemParam.TOKEN_INVALID, "");
 
-                var query = orderBus.GetOrderDetail(orderID, null);
+                var query = orderBus.GetOrderDetail(orderID, null,null);
                 return response(query != null ? SystemParam.SUCCESS : SystemParam.ERROR, query != null ? SystemParam.SUCCESS_CODE : SystemParam.PROCESS_ERROR, query != null ? "Thành công" : "Đơn hàng không tồn tại", query);
             }
             catch (Exception ex)
@@ -1068,8 +1068,17 @@ namespace APIProject.Controllers
 
                 //Kiểm tra số điểm hiện có có đủ để mua hàng hay không
                 var totalPrice = data.listOrderItem.Select(p => p.SumPrice).Sum();
-                if (checkCus.Point < Math.Round(Convert.ToDouble(totalPrice / 1000), 2))
-                    return response(SystemParam.ERROR, SystemParam.ERROR_CONDITION_POINT, SystemParam.MESSAGE_ERROR_CONDITION_POINT_CREATE_ORDER_FAIL, "");
+                if(checkCus.PointRanking >= Math.Round(Convert.ToDouble(totalPrice / 10000), 2))
+                {
+                    if ((checkCus.Point * 0.9) + (checkCus.PointRanking * 0.1) < Math.Round(Convert.ToDouble(totalPrice / 1000), 2))
+                        return response(SystemParam.ERROR, SystemParam.ERROR_CONDITION_POINT, SystemParam.MESSAGE_ERROR_CONDITION_POINT_CREATE_ORDER_FAIL, "");
+                }
+                else
+                {
+                    if (checkCus.Point < Math.Round(Convert.ToDouble(totalPrice / 1000), 2))
+                        return response(SystemParam.ERROR, SystemParam.ERROR_CONDITION_POINT, SystemParam.MESSAGE_ERROR_CONDITION_POINT_CREATE_ORDER_FAIL, "");
+                }
+                
 
                 ////Kiểm  tra mã giới thiệu có hợp lệ hay không
                 //if (!String.IsNullOrEmpty(data.LastRefCode))
@@ -1132,13 +1141,13 @@ namespace APIProject.Controllers
             {
 
                 //tạo một đơn hàng mới
+
                 Order od = new Order();
                 var cus = cnn.Customers.Where(c => c.ID == cusID).FirstOrDefault();
                 var code = Util.CreateMD5(DateTime.Now.ToString()).Substring(0, 6);
                 List<OrderItem> listOI = CreateOrderItem(input.listOrderItem);
                 var point = Math.Round(Convert.ToDouble(listOI.Select(u => u.SumPrice).Sum()) / 1000, 2);
-                //Tính toán lại số dư ki mua hàng
-                var balance = cus.Point - point;
+                //Tính toán lại số dư khi mua hàng
                 od.Code = code;
                 od.Status = SystemParam.STATUS_ORDER_PENDING;
                 od.Type = SystemParam.TYPE_ORDER;
@@ -1157,61 +1166,89 @@ namespace APIProject.Controllers
                 od.BuyerAddress = input.Address.Trim();
                 od.LastRefCode = lastRefCode;
 
-                //Lưu lại số dư sau khi đã được tính toán
-                cus.Point = balance;
+                string content = "Hệ thống trừ điểm khi mua hàng";
+                var type = SystemParam.NOTIFY_NAVIGATE_ORDER;
+                var typeNoti = SystemParam.NOTIFY_NAVIGATE_HISTORY;
+                var statusOrder = SystemParam.STATUS_ORDER_PENDING;
+                if (cus.PointRanking >= point * 0.1)
+                {
+                    var PointCus = point * 0.9;
+                    var PointRankingCus = point * 0.1;
+                    //Lưu lại số dư sau khi đã được tính toán
 
-                //Tạo lịch sử mua hàng
-                MembersPointHistory m = new MembersPointHistory();
-                m.CustomerID = cusID;
-                m.Point = point;
-                m.Type = SystemParam.TYPE_MINUS_POINT_ORDER;
-                m.AddPointCode = Util.CreateMD5(DateTime.Now.ToString()).Substring(0, 6);
-                m.TypeAdd = SystemParam.TYPE_POINT;
-                m.CraeteDate = DateTime.Now;
-                m.IsActive = SystemParam.ACTIVE;
-                m.Comment = "Hệ thống trừ điểm khi mua hàng";
-                m.Title = "Bạn vừa bị trừ " + point + " điểm từ đơn hàng " + code;
-                m.Balance = balance;
-                m.ProductID = null;
-                m.UserSendID = null;
+                    od.Point = PointCus;
+                    od.PointRanking = PointRankingCus;
 
-                //Tạo thông báo cho người nhận
-                Notification ntf = new Notification();
-                ntf.CustomerID = cusID;
-                ntf.Content = "Bạn vừa bị trừ " + point + " điểm từ đơn hàng " + code;
-                ntf.Viewed = 0;
-                ntf.CreateDate = DateTime.Now;
-                ntf.IsActive = SystemParam.ACTIVE;
-                ntf.Title = "Bạn vừa bị trừ " + point + " điểm từ đơn hàng " + code;
-                ntf.Type = SystemParam.NOTIFY_NAVIGATE_HISTORY;
-                ntf.NewsID = null;
+                    MembersPointHistory m = new MembersPointHistory();
+                    MembersPointHistory mr = new MembersPointHistory();
+                    //Tạo lịch sử mua hàng
+                    string title = "Bạn vừa bị trừ " + point + " điểm ví Point từ đơn hàng " + code;
+                    string titleRank = "Bạn vừa bị trừ " + point + " điểm ví tích điểm từ đơn hàng " + code;
+                    m.CustomerID = cusID;
+                    m.Point = PointCus;
+                    m.Type = SystemParam.TYPE_MINUS_POINT_ORDER;
+                    m.AddPointCode = Util.CreateMD5(DateTime.Now.ToString()).Substring(0, 6);
+                    m.TypeAdd = SystemParam.TYPE_POINT;
+                    m.CraeteDate = DateTime.Now;
+                    m.IsActive = SystemParam.ACTIVE;
+                    m.Comment = "Hệ thống trừ điểm ví Point khi mua hàng";
+                    m.Title = title;
+                    m.Balance = cus.Point - PointCus;               
+                    //Tạo lịch sử mua hàng
 
-                cnn.Notifications.Add(ntf);
-                cnn.MembersPointHistories.Add(m);
-                cnn.Orders.Add(od);
-                cnn.SaveChanges();
+                    mr.CustomerID = cusID;
+                    mr.Point = PointRankingCus;
+                    mr.Type = SystemParam.TYPE_MINUS_POINT_ORDER;
+                    mr.AddPointCode = Util.CreateMD5(DateTime.Now.ToString()).Substring(0, 6);
+                    mr.TypeAdd = SystemParam.TYPE_POINT_RANKING;
+                    mr.CraeteDate = DateTime.Now;
+                    mr.IsActive = SystemParam.ACTIVE;
+                    mr.Comment = "Hệ thống trừ điểm ví tích điểm khi mua hàng";
+                    mr.Title = titleRank;
+                    mr.Balance = cus.PointRanking - PointRankingCus;
+                    
+                    cus.Point -= PointCus;
+                    cus.PointRanking -= PointRankingCus;
+                    cnn.MembersPointHistories.Add(m);
+                    cnn.MembersPointHistories.Add(mr);
+                    cnn.Orders.Add(od);
+                    cnn.SaveChanges();
+
+                    //Tạo thông báo cho người nhận
+                    packageBusiness.PushNotiApp(PointCus, type, statusOrder, typeNoti, od.ID, title, content,cus.ID, cus.DeviceID);
+                    packageBusiness.PushNotiApp(PointRankingCus, type, statusOrder, typeNoti, od.ID, titleRank, content,cus.ID, cus.DeviceID);
+                }
+                else
+                {
+                    cus.Point -= point;
+                    od.Point = point;
+                    MembersPointHistory m = new MembersPointHistory();
+                    //Tạo lịch sử mua hàng
+                    string title = "Bạn vừa bị trừ " + point + " điểm ví Point từ đơn hàng " + code;
+                    m.CustomerID = cusID;
+                    m.Point = point;
+                    m.Type = SystemParam.TYPE_MINUS_POINT_ORDER;
+                    m.AddPointCode = Util.CreateMD5(DateTime.Now.ToString()).Substring(0, 6);
+                    m.TypeAdd = SystemParam.TYPE_POINT;
+                    m.CraeteDate = DateTime.Now;
+                    m.IsActive = SystemParam.ACTIVE;
+                    m.Comment = "Hệ thống trừ điểm ví Point khi mua hàng";
+                    m.Title = title;
+                    m.Balance = cus.Point - point;
+                    cnn.MembersPointHistories.Add(m);
+                    cnn.Orders.Add(od);
+                    cnn.SaveChanges();
+                    packageBusiness.PushNotiApp(point, type, statusOrder, typeNoti, od.ID, title, content, cus.ID, cus.DeviceID);
+                }
                 conect.Commit();
                 conect.Dispose();
 
                 //Tiến hành gửi thông báo đến web admin
                 var url = SystemParam.URL_WEB_SOCKET + "?content=" + "Đơn hàng " + code + " đang chờ xác nhận&type=" + SystemParam.TYPE_NOTI_ORDER;
                 packageBusiness.GetJson(url);
-                if (cus.DeviceID != null && cus.DeviceID.Length > 15)
-                {
-                    //Tiến hành gửi thông báo
-                    NotifyDataModel notifyData = new NotifyDataModel();
-                    notifyData.Point = balance;
-                    notifyData.type = SystemParam.NOTIFY_NAVIGATE_ORDER;
-                    notifyData.StatusOrder = SystemParam.STATUS_ORDER_PENDING;
-                    notifyData.id = od.ID;
-                    string titleNoti = "Bạn vừa bị trừ " + point + " điểm từ đơn hàng " + code;
-                    List<string> listDevice = new List<string>();
-                    listDevice.Add(cus.DeviceID);
-                    string value = packageBusiness.StartPushNoti(notifyData, listDevice, titleNoti, "Hệ thống trừ điểm khi mua hàng");
-                    packageBusiness.PushOneSignals(value);
-                }
+                
                 int id = cnn.Orders.OrderByDescending(u => u.ID).FirstOrDefault().ID;
-                return orderBus.GetOrderDetail(id, balance);
+                return orderBus.GetOrderDetail(id, cus.Point,cus.PointRanking);
             }
             catch
             {
@@ -1276,9 +1313,35 @@ namespace APIProject.Controllers
 
                     if (order.Status == SystemParam.STATUS_ORDER_PENDING)
                     {
-                        point = (double)order.TotalPrice / 1000;
                         order.Status = SystemParam.STATUS_ORDER_CANCEL;
-                        order.CancelDate = DateTime.Now;
+                        order.CancelDate = DateTime.Now;                       
+                        if (order.PointRanking.HasValue)
+                        {
+                            
+                            var pointRanking = order.PointRanking.Value;
+                            var titleRank = "Bạn vừa được hoàn " + pointRanking + " điểm vào ví tích điểm từ đơn hàng " + order.Code;
+                            var contentRank = "Hệ thống hoàn điểm ví Point khi đơn hàng bị hủy";
+                            //Hoàn lại điểm cho người mua
+                            var balanceRanking = Math.Round(Convert.ToDouble(cus.Point + pointRanking), 2);
+                            cus.PointRanking = balanceRanking;
+                            //Tạo lịch sử hoàn tiền từ đơn hàng
+                            MembersPointHistory mr = new MembersPointHistory();
+                            mr.CustomerID = customerID;
+                            mr.Point = pointRanking;
+                            mr.Type = SystemParam.TYPEADD_POINT_FROM_BILL;
+                            mr.AddPointCode = Util.CreateMD5(DateTime.Now.ToString()).Substring(0, 6);
+                            mr.TypeAdd = SystemParam.TYPE_POINT;
+                            mr.CraeteDate = DateTime.Now;
+                            mr.IsActive = SystemParam.ACTIVE;
+                            mr.Comment = "Hệ thống hoàn điểm khi đơn hàng bị hủy";
+                            mr.Title = "Bạn vừa được hoàn " + point + " điểm vào ví tích điểm từ đơn hàng " + order.Code;
+                            mr.Balance = balanceRanking;
+                            cnn.MembersPointHistories.Add(mr);
+                            cnn.SaveChanges();
+                        }                       
+                        point = order.Point.GetValueOrDefault();
+                        var title = "Bạn vừa được hoàn " + point + " điểm từ đơn hàng " + order.Code;
+                        var content = "Hệ thống hoàn điểm ví tích điểm khi đơn hàng bị hủy";
                         //Hoàn lại điểm cho người mua
                         var balance = Math.Round(Convert.ToDouble(cus.Point + point), 2);
                         cus.Point = balance;
@@ -1291,39 +1354,16 @@ namespace APIProject.Controllers
                         m.TypeAdd = SystemParam.TYPE_POINT;
                         m.CraeteDate = DateTime.Now;
                         m.IsActive = SystemParam.ACTIVE;
-                        m.Comment = "Hệ thống hoàn điểm khi đơn hàng bị hủy";
-                        m.Title = "Bạn vừa được hoàn " + point + " điểm từ đơn hàng " + order.Code;
+                        m.Comment = content;
+                        m.Title = title;
                         m.Balance = balance;
-                        m.ProductID = null;
-                        m.UserSendID = null;
-                        //Tạo thông báo cho người nhận
-                        Notification ntf = new Notification();
-                        ntf.CustomerID = cus.ID;
-                        ntf.Content = "Hệ thống hoàn điểm khi đơn hàng bị hủy";
-                        ntf.Viewed = 0;
-                        ntf.CreateDate = DateTime.Now;
-                        ntf.IsActive = SystemParam.ACTIVE;
-                        ntf.Title = "Bạn vừa được hoàn " + point + " điểm từ đơn hàng " + order.Code;
-                        ntf.Type = SystemParam.NOTIFY_NAVIGATE_HISTORY;
-                        ntf.NewsID = null;
-                        cnn.Notifications.Add(ntf);
                         cnn.MembersPointHistories.Add(m);
                         cnn.SaveChanges();
-                        var query = orderBus.GetOrderDetail(orderID, balance);
-                        if (cus.DeviceID.Length > 15 && cus.DeviceID != null)
-                        {
-                            //Tiến hành gửi thông báo
-                            NotifyDataModel notifyData = new NotifyDataModel();
-                            notifyData.type = SystemParam.NOTIFY_NAVIGATE_ORDER;
-                            notifyData.StatusOrder = SystemParam.STATUS_ORDER_CANCEL;
-                            notifyData.Point = balance;
-                            notifyData.id = orderID;
-                            string titleNoti = "Bạn vừa được hoàn " + point + " điểm từ đơn hàng " + order.Code;
-                            List<string> listDevice = new List<string>();
-                            listDevice.Add(cus.DeviceID);
-                            string value = packageBusiness.StartPushNoti(notifyData, listDevice, titleNoti, "Hệ thống hoàn điểm khi đơn hàng bị hủy");
-                            packageBusiness.PushOneSignals(value);
-                        }
+                        var type = SystemParam.NOTIFY_NAVIGATE_ORDER;
+                        var typeNoti = SystemParam.NOTIFY_NAVIGATE_HISTORY;
+                        var statusOrder = SystemParam.STATUS_ORDER_CANCEL;
+                        var query = orderBus.GetOrderDetail(orderID, cus.Point,cus.PointRanking);
+                        packageBusiness.PushNotiApp(point, type, statusOrder, typeNoti, orderID, title, content, cus.ID, cus.DeviceID);
                         return response(SystemParam.SUCCESS, SystemParam.SUCCESS_CODE, "Bạn đã hủy thành công đơn hàng.", query);
                     }
                     else
