@@ -66,6 +66,16 @@ export const TitleWalletPointsEnum = {
         title: R.strings().add_point,
         sign: '+',
     },
+    [ACTION_POINTS_TYPE.REFERENCE]: {
+        color: '#00C48C',
+        title: R.strings().add_point,
+        sign: '+',
+    },
+    [ACTION_POINTS_TYPE.REGISTER]: {
+        color: '#00C48C',
+        title: R.strings().add_point,
+        sign: '+',
+    },
 }
 
 class WalletPointsItem extends Component {
