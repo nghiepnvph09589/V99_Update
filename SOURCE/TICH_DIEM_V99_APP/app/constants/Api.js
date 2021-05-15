@@ -308,3 +308,11 @@ export const requestUpdateNoti = payload => {
 export const requestGetListLastRefCode = () => {
   return handleResult(getAxios.get(`/api/Service/GetListLastRefCode`));
 };
+
+export const requestVtoPoint = point => {
+  return handleResult(getAxios.post(`/api/Service/ConvertPointVtoPointRanking`,{point}));
+};
+
+export const requestPointToV = point => {
+  return handleResult(getAxios.post(`/api/service/convertPointRankingtoPointV`,{point}));
+};

@@ -25,6 +25,7 @@ import BankSelectReducer from './BankSelectReducer';
 import BankReducer from './BankReducer';
 import HistoryMovingPointsReducer from './HistoryMovingPointsReducer';
 import NavigateTabReducer from './NavigateTabReducer';
+import GetListPointVReducer from './GetListPointVReducer';
 
 appReducer = combineReducers({
   [REDUCER.USER]: UserReducer,
@@ -51,6 +52,8 @@ appReducer = combineReducers({
   notificationReducer: NotificationReducer,
   warrantyReducer: WarrantyReducer,
   imageReducer: GetImageReducer,
+  getListPointVReducer: GetListPointVReducer,
+
 });
 
 const initialState = appReducer({}, {})

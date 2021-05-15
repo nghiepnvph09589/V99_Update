@@ -7,9 +7,10 @@ import { NumberFormat } from '.'
 import Dash from 'react-native-dash';
 import DateUtil from '@app/utils/DateUtil'
 import NavigationUtil from '@app/navigation/NavigationUtil'
+import reactotron from 'reactotron-react-native'
 
 
-export const TitleWalletPointsEnum = {
+ const TitleWalletPointsEnum = {
     [ACTION_POINTS_TYPE.ADD_POINTS]: {
         color: '#00C48C',
         title: R.strings().add_point,
@@ -50,11 +51,23 @@ export const TitleWalletPointsEnum = {
         title: R.strings().minus_point,
         sign: '-',
     },
+    [ACTION_POINTS_TYPE.POINT_V]: {
+        color: '#00C48C',
+        title: R.strings().add_point,
+        sign: '+',
+    },
+    [ACTION_POINTS_TYPE.V_POINT]: {
+        color: '#F39C12',
+        title: R.strings().minus_point,
+        sign: '-',
+    },
 }
 
 class WalletPointsItem extends Component {
+    
     render() {
         const { item, index, onPress } = this.props
+        // reactotron.logImportant('item',item.type+"")
         return (
             <TouchableOpacity
                 onPress={onPress}
@@ -80,7 +93,10 @@ class WalletPointsItem extends Component {
                             color: TitleWalletPointsEnum[item.type].color,
                             marginBottom: 10,
                             ...theme.fonts.regular16
-                        }}>{TitleWalletPointsEnum[item.type].title}</Text>
+                        }}>
+                            {TitleWalletPointsEnum[item.type].title}
+                         
+                            </Text>
                         <NumberFormat
                             title={'Số dư'}
                             value={item.balance}

@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import {
     View, Text, ImageBackground,
-    ScrollView, TouchableOpacity, RefreshControl, StyleSheet, Keyboard
+    ScrollView, TouchableOpacity,TextInput,Button, RefreshControl, StyleSheet, Keyboard
 } from 'react-native'
 import { connect } from 'react-redux'
 import { getListGift, exchangeGift } from '../../redux/actions'
@@ -24,6 +24,9 @@ import R from '@app/assets/R'
 import ScrollableTabView, { DefaultTabBar, ScrollableTabBar } from 'react-native-scrollable-tab-view'
 import PolicyScreen from './PolicyScreen'
 import WalletAccumulatePointsScreen from './WalletAccumulatePointsScreen'
+import Modal from 'react-native-modal'
+import callAPI from '@app/utils/CallApiHelper'
+import { requestPointToV } from '@app/constants/Api'
 
 const bottomButton = 25
 const padding_horizontal = 10
@@ -93,16 +96,137 @@ export class CardScreen extends Component {
             </Block>
         )
     }
+    renderViewOptions = () => {
+        const { userState } = this.props;
+        return (
+            <View style={{
+                padding: '2%',
+                paddingLeft: 240,
+                marginHorizontal: '4%',
+                marginTop: -50,
+            }}>
+                <Option
+                    text={R.strings().moving_point}
+                />
+            </View>)
+    }
 
     render() {
         return (
             <Block color={theme.colors.primary_background}>
                 {this.renderViewPoint()}
+                {this.renderViewOptions()}
                 {this.renderScrollableTabView()}
+                
             </Block>
         )
     }
 }
+class Option extends Component {
+    onChangeText = (text) => {
+        this.setState({ point: text })
+    }
+
+
+    state = {
+        modalVisible: false
+    };
+
+    setModalVisible = (visible) => {
+        this.setState({ modalVisible: visible });
+    }
+    postDataVtoPoint = (point) => {
+        this.setState({ error: null, isLoading: true })
+        callAPI({
+            API: requestPointToV(point),
+            onSuccess: (res) => {
+                this.setState({ data: res.data })
+                this.setModalVisible(!modalVisible)
+            },
+            onError: (err) => {
+                this.setState({ error: JSON.stringify(err) })
+            },
+            onFinaly: () => {
+                this.setState({ isLoading: false })
+            }
+        })
+    }
+
+    render() {
+        const { text } = this.props;
+        const { modalVisible } = this.state;
+        const { point, isPoint } = this.state
+        return (
+            <View style={styles.centeredView}>
+
+
+                <Modal
+
+                    style={styles.modalStyle}
+                    animationType="slide"
+                    visible={modalVisible}
+                    // transparent={true}
+                    onRequestClose={() => {
+                        this.setModalVisible(!modalVisible);
+                    }}
+                >
+                    <View style={styles.centeredView}>
+                        <View style={styles.modalView}>
+                            <Text style={styles.modalText}>Số điểm muốn chuyển?</Text>
+                            <TextInput
+                                style={styles.input}
+                                keyboardType='number-pad'
+                                value={point}
+                                placeholder='0'
+                                onChangeText={this.onChangeText}
+                            />
+                            <View style={{
+                                width: 100,
+                                flexDirection: 'row',
+                                justifyContent: 'space-between',
+                            }}>
+                                <Button
+                                    title="Huỷ"
+                                    onPress={() => this.setModalVisible(!modalVisible)}
+                                />
+                                <Button
+                                    title="Ok"
+                                    onPress={() => {
+                                        this.setModalVisible(!modalVisible)
+                                        this.postDataVtoPoint(point)
+                                    }
+                                    }
+                                />
+                            </View>
+                        </View>
+                    </View>
+                </Modal>
+
+
+
+                <TouchableOpacity
+                    style={{
+                        alignItems: "center",
+                        backgroundColor: "#00bfff",
+                        padding: 8,
+                        width: 100,
+                        height: 35,
+                        paddingTop: 7,
+                        paddingEnd: 7,
+                        borderRadius: 8
+                    }}
+                    underlayColor='tomato'
+                    onPress={() => this.setModalVisible(true)}>
+                    <Text style={{ color: 'white' }}>{text}</Text>
+                </TouchableOpacity>
+            </View>
+
+
+
+        );
+    }
+}
+
 
 
 const styles = StyleSheet.create({
@@ -110,6 +234,50 @@ const styles = StyleSheet.create({
         marginVertical: 10,
         marginLeft: 5,
         ...theme.fonts.robotoMedium16,
+    },
+
+    input: {
+        height: 40,
+        width: 250,
+        margin: 12,
+        borderWidth: 1,
+    },
+    centeredView: {
+        // flex: 1,
+        // justifyContent: "center",
+        // alignItems: "center",
+        // // marginTop: 22
+    },
+    modalStyle:{
+        justifyContent: 'center',
+        borderRadius: Platform.OS === 'ios' ? 30 : 0,
+        shadowRadius: 10,
+        height: 280,
+        // backgroundColor: '#898989'
+    },
+    modalView: {
+        margin: 20,
+        backgroundColor: "white",
+        borderRadius: 20,
+        padding: 35,
+        alignItems: "center",
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 2
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 4,
+        elevation: 5
+    },
+    textStyle: {
+        color: "white",
+        fontWeight: "bold",
+        textAlign: "center"
+    },
+    modalText: {
+        marginBottom: 15,
+        textAlign: "center"
     }
 })
 
