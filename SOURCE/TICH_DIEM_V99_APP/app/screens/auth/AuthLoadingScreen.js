@@ -40,8 +40,8 @@ export class AuthLoadingScreen extends Component {
     if (__DEV__) {
       this.checkAccount();
     } else {
-      // this.checkAccount();
-      this.checkCodePushVer();
+      this.checkAccount();
+      // this.checkCodePushVer();
     }
   }
 
