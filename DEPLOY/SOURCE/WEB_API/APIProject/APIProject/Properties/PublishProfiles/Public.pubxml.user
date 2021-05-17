@@ -82,13 +82,13 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>02/25/2021 08:50:20</publishTime>
     </File>
     <File Include="bin/APIProject.dll">
-      <publishTime>05/17/2021 08:48:13</publishTime>
+      <publishTime>05/17/2021 09:19:41</publishTime>
     </File>
     <File Include="bin/APIProject.dll.config">
       <publishTime>11/25/2019 14:00:55</publishTime>
     </File>
     <File Include="bin/APIProject.pdb">
-      <publishTime>05/17/2021 08:48:13</publishTime>
+      <publishTime>05/17/2021 09:19:41</publishTime>
     </File>
     <File Include="bin/ApplicationInsights.config">
       <publishTime>02/25/2021 08:50:19</publishTime>
@@ -112,13 +112,13 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>04/22/2019 10:55:47</publishTime>
     </File>
     <File Include="bin/Data.dll">
-      <publishTime>05/17/2021 08:48:09</publishTime>
+      <publishTime>05/17/2021 09:09:26</publishTime>
     </File>
     <File Include="bin/Data.dll.config">
       <publishTime>04/19/2021 12:04:37</publishTime>
     </File>
     <File Include="bin/Data.pdb">
-      <publishTime>05/17/2021 08:48:09</publishTime>
+      <publishTime>05/17/2021 09:09:26</publishTime>
     </File>
     <File Include="bin/Debug/Data.dll">
       <publishTime>05/29/2019 10:03:14</publishTime>

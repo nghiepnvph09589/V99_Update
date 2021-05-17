@@ -44,7 +44,7 @@ namespace Data.Business
             vnpay.AddRequestData("vnp_TxnRef", transaction.ID.ToString());
             vnpay.AddRequestData("vnp_OrderInfo", transaction.Title);
             vnpay.AddRequestData("vnp_OrderType", "insurance"); //default value: other
-            vnpay.AddRequestData("vnp_Amount", (transaction.Point * 100).ToString());
+            vnpay.AddRequestData("vnp_Amount", (transaction.Point * 1000 * 100).ToString());
             vnpay.AddRequestData("vnp_ReturnUrl", SystemParam.vnp_Return_url);
             vnpay.AddRequestData("vnp_IpAddr", GetIpAddress());
             vnpay.AddRequestData("vnp_CreateDate", DateTime.Now.ToString("yyyyMMddHHmmss"));

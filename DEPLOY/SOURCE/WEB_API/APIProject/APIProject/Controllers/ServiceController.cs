@@ -23,6 +23,7 @@ namespace APIProject.Controllers
     {
         TichDiemTrieuDo cnn;
         OrderBusiness orderBus = new OrderBusiness();
+        VNPayBusiness vnPayBus = new VNPayBusiness();
         public ServiceController()
         {
             if (cnn == null)
@@ -312,6 +313,42 @@ namespace APIProject.Controllers
                 return serverError();
             }
         }
+
+        public JsonResultModel ChargeMoneyToPoint([FromBody] ConvertPointInputModel input)
+        {
+            string token = getTokenApp();
+            if (token.Length == 0)
+                return response(SystemParam.ERROR, SystemParam.ERROR_PASS_API, SystemParam.TOKEN_NOT_FOUND, "");
+            int? cusID = checkTokenApp(token);
+            if (cusID == null)
+                return response(SystemParam.ERROR, SystemParam.ERROR_PASS_API, SystemParam.TOKEN_INVALID, "");
+            var cus = cnn.Customers.FirstOrDefault(x => x.ID == cusID);
+            if(input.point < SystemParam.CHARGE_MIN_POINT)
+            {
+                return response(SystemParam.ERROR, SystemParam.FAIL, SystemParam.INVALID_CHARGE_MIN_POINT, "");
+            }
+            if(input.point > SystemParam.CHARGE_MAX_POINT)
+            {
+                return response(SystemParam.ERROR, SystemParam.FAIL, SystemParam.INVALID_CHARGE_MAX_POINT, "");
+            }
+            //Tạo lịch sử rút điểm
+            MembersPointHistory m = new MembersPointHistory();
+            m.CustomerID = cus.ID;
+            m.Point = input.point;
+            m.Type = SystemParam.TYPE_ADD_POINT_VNPAY;
+            m.AddPointCode = Util.CreateMD5(DateTime.Now.ToString()).Substring(0, 6);
+            m.TypeAdd = SystemParam.TYPE_POINT;
+            m.CraeteDate = DateTime.Now;
+            m.IsActive = SystemParam.ACTIVE;
+            m.Comment = "Nạp tiền vào ví Point";
+            m.Title = "Nạp " + input.point + " điểm vào ví Point" ;
+            m.Balance = cus.Point + input.point;
+            m.Status = SystemParam.STATUS_TRANSACTION_WAITING;
+            cnn.MembersPointHistories.Add(m);
+            cnn.SaveChanges();
+            var VnPayUrl = vnPayBus.GetUrl(m.ID);
+            return response(SystemParam.SUCCESS, SystemParam.SUCCESS_CODE, SystemParam.SUCCESS_MESSAGE, "");
+        }
         [HttpPost]
         public JsonResultModel ConvertPointVtoPointRanking([FromBody] ConvertPointInputModel input)
         {
@@ -392,6 +429,7 @@ namespace APIProject.Controllers
                 return serverError();
             }
         }
+
 
 
         [HttpPost]
@@ -1134,6 +1172,24 @@ namespace APIProject.Controllers
                 return serverError();
             }
         }
+        [HttpGet]
+        public VNPayOutputModel vnp_ipn(string vnp_Amount, string vnp_BankCode, string vnp_CardType, string vnp_OrderInfo, string vnp_PayDate, string vnp_ResponseCode, string vnp_TmnCode, string vnp_TransactionNo, string vnp_TxnRef, string vnp_SecureHashType, string vnp_SecureHash, string vnp_BankTranNo = "")
+        {
+            VnpOutputModel vnp = new VnpOutputModel();
+            vnp.vnp_Amount = vnp_Amount;
+            vnp.vnp_BankCode = vnp_BankCode;
+            vnp.vnp_BankTranNo = vnp_BankTranNo;
+            vnp.vnp_CardType = vnp_CardType;
+            vnp.vnp_OrderInfo = vnp_OrderInfo;
+            vnp.vnp_PayDate = vnp_PayDate;
+            vnp.vnp_ResponseCode = vnp_ResponseCode;
+            vnp.vnp_TmnCode = vnp_TmnCode;
+            vnp.vnp_TransactionNo = vnp_TransactionNo;
+            vnp.vnp_TxnRef = vnp_TxnRef;
+            vnp.vnp_SecureHashType = vnp_SecureHashType;
+            vnp.vnp_SecureHash = vnp_SecureHash;
+            return vnPayBus.GetVnpIpn(vnp);
+        }
 
         //public OrderOutputModel CreateOrder(OrderDetailOutputModel input, int cusID, string lastRefCode)
         //{
@@ -1208,7 +1264,7 @@ namespace APIProject.Controllers
         //            mr.Comment = "Hệ thống trừ điểm ví tích điểm khi mua hàng";
         //            mr.Title = titleRank;
         //            mr.Balance = cus.PointRanking - PointRankingCus;
-                    
+
         //            cus.Point -= PointCus;
         //            cus.PointRanking -= PointRankingCus;
         //            cnn.MembersPointHistories.Add(m);
@@ -1248,7 +1304,7 @@ namespace APIProject.Controllers
         //        //Tiến hành gửi thông báo đến web admin
         //        var url = SystemParam.URL_WEB_SOCKET + "?content=" + "Đơn hàng " + code + " đang chờ xác nhận&type=" + SystemParam.TYPE_NOTI_ORDER;
         //        packageBusiness.GetJson(url);
-                
+
         //        int id = cnn.Orders.OrderByDescending(u => u.ID).FirstOrDefault().ID;
         //        return orderBus.GetOrderDetail(id, cus.Point,cus.PointRanking);
         //    }
@@ -1324,7 +1380,7 @@ namespace APIProject.Controllers
                             var titleRank = "Bạn vừa được hoàn " + pointRanking + " điểm vào ví tích điểm từ đơn hàng " + order.Code;
                             var contentRank = "Hệ thống hoàn điểm ví Point khi đơn hàng bị hủy";
                             //Hoàn lại điểm cho người mua
-                            var balanceRanking = Math.Round(Convert.ToDouble(cus.Point + pointRanking), 2);
+                            var balanceRanking = Math.Round(Convert.ToDouble(cus.PointRanking + pointRanking), 2);
                             cus.PointRanking = balanceRanking;
                             //Tạo lịch sử hoàn tiền từ đơn hàng
                             MembersPointHistory mr = new MembersPointHistory();
@@ -1490,14 +1546,21 @@ namespace APIProject.Controllers
         {
             try
             {
-                //string token = getTokenApp();
+                string token = getTokenApp();
+                int? cusID = checkTokenApp(token);
+                int isVip = SystemParam.CUSTOMER_NORMAL;
                 //if (token.Length == 0)
                 //    return response(SystemParam.ERROR, SystemParam.ERROR_PASS_API, SystemParam.TOKEN_NOT_FOUND, "");
-                //int? cusID = Util.checkTokenApp(token);
+
                 //if (cusID == null)
                 //    return response(SystemParam.ERROR, SystemParam.ERROR_PASS_API, SystemParam.TOKEN_INVALID, "");
 
                 List<ListItemModel> data = new List<ListItemModel>();
+                
+                if (cusID.HasValue)
+                {
+                    isVip = cnn.Customers.Where(x => x.ID.Equals(cusID.Value)).Select(x => x.IsVip).FirstOrDefault();
+                }
                 var query = (from i in cnn.Items
                              where i.IsActive == SystemParam.ACTIVE && i.Status == SystemParam.ACTIVE && (CateID.HasValue ? i.GroupItemID == CateID.Value : true)
                              orderby i.ID descending
@@ -1508,8 +1571,7 @@ namespace APIProject.Controllers
                     Code = i.Code,
                     Name = i.Name,
                     Image = i.ImageUrl.Split(',').ToList(),
-                    Price = i.Price,
-                    PriceVip = i.PriceVIP,
+                    Price = isVip == SystemParam.CUSTOMER_NORMAL ? i.Price : i.PriceVIP ,
                     Description = i.Description,
                     Technical = i.Technical,
                     Warranty = i.Warranty,
@@ -1557,7 +1619,9 @@ namespace APIProject.Controllers
                 //int? cusID = Util.checkTokenApp(token);
                 //if (cusID == null)
                 //    return response(SystemParam.ERROR, SystemParam.ERROR_PASS_API, SystemParam.TOKEN_INVALID, "");
-
+                string token = getTokenApp();
+                int? cusID = checkTokenApp(token);
+                int isVip = SystemParam.CUSTOMER_NORMAL;
                 var products = from i in cnn.Items
                                where i.IsActive == SystemParam.ACTIVE && i.ID == ProductID
                                orderby i.ID descending
@@ -1567,8 +1631,7 @@ namespace APIProject.Controllers
                                    Code = i.Code,
                                    Name = i.Name,
                                    Image = i.ImageUrl,
-                                   Price = i.Price,
-                                   PriceVip = i.PriceVIP,
+                                   Price = isVip == SystemParam.CUSTOMER_NORMAL ? i.Price : i.PriceVIP,
                                    Description = i.Description,
                                    Technical = i.Technical,
                                    StockStatus = i.StockStatus.Value
@@ -1592,6 +1655,9 @@ namespace APIProject.Controllers
         {
             try
             {
+                string token = getTokenApp();
+                int? cusID = checkTokenApp(token);
+                int isVip = SystemParam.CUSTOMER_NORMAL;
                 List<ListItemModel> data = new List<ListItemModel>();
                 var listProduct = from i in cnn.Items
                                   where i.IsActive == SystemParam.ACTIVE && i.Special == SystemParam.SHOW_HOME_SCREEN
@@ -1602,8 +1668,7 @@ namespace APIProject.Controllers
                                       Code = i.Code,
                                       Name = i.Name,
                                       Image = i.ImageUrl.Split(',').ToList(),
-                                      Price = i.Price,
-                                      PriceVip = i.PriceVIP,
+                                      Price = isVip == SystemParam.CUSTOMER_NORMAL ? i.Price : i.PriceVIP,
                                       Description = i.Description,
                                       Technical = i.Technical,
                                       Warranty = i.Warranty,
@@ -2341,6 +2406,9 @@ namespace APIProject.Controllers
 
         public ActiveWarrantyModel getItemWarranty(string code)
         {
+            string token = getTokenApp();
+            int? cusID = checkTokenApp(token);
+            int isVip = SystemParam.CUSTOMER_NORMAL;
             var product = cnn.Products.Where(u => u.IsActive.Equals(SystemParam.ACTIVE) && u.ProductCode.Equals(code));
             if (product != null && product.Count() > 0)
             {
@@ -2354,8 +2422,7 @@ namespace APIProject.Controllers
                                Name = i.Name,
                                Description = i.Description,
                                Warranty = i.Warranty,
-                               Price = i.Price,
-                               PriceVip = i.PriceVIP,
+                               Price =  isVip == SystemParam.CUSTOMER_NORMAL ? i.Price : i.PriceVIP,
                                Technical = i.Technical,
                                Image = i.ImageUrl.Split(',').ToList()
                            };
@@ -2441,6 +2508,7 @@ namespace APIProject.Controllers
                     return response(SystemParam.ERROR, SystemParam.ERROR_PASS_API, SystemParam.TOKEN_INVALID, "");
 
                 string customerName = cnn.Customers.Find(cusID.Value).Name;
+                var cus = cnn.Customers.Find(cusID.Value);
                 List<ListWarrantyModel> data = new List<ListWarrantyModel>();
                 var listWarranty = from p in cnn.Products
                                    where p.IsActive.Equals(SystemParam.ACTIVE) && p.CustomerActiveID.Value.Equals(cusID.Value)
@@ -2477,8 +2545,7 @@ namespace APIProject.Controllers
                         warranty.Name = item.Name;
                         warranty.Description = item.Description;
                         warranty.Warranty = item.Warranty;
-                        warranty.Price = item.Price;
-                        warranty.PriceVip = item.PriceVIP;
+                        warranty.Price = cus.IsVip == SystemParam.CUSTOMER_NORMAL ? item.Price : item.PriceVIP;
                         warranty.Technical = item.Technical;
                         warranty.Image = item.ImageUrl.Split(',').ToList();
                         warranty.categoryName = item.GroupItem.Name;

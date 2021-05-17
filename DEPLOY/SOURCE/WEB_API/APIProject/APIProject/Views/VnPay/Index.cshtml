@@ -1,0 +1,98 @@
+﻿
+@using Data.DB
+@using Data.Model
+@model VnpViewModel
+
+@{ Layout = null; }
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>WeShip</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="~/Scripts/jquery.undoCountdown.js"></script>
+</head>
+
+<body>
+
+    <div class="container">
+        <div class="row mt-5 mb-3">
+            <div class="col-sm-4 col-md-4 offset-sm-4 text-center">
+                <img src="~/Content/images/logo-weship.png" style="width: 300px;" />
+            </div>
+        </div>
+
+        <div class="col-sm-12">
+            <label for="test1">Thông tin kết quả giao dịch:</label>
+        </div>
+        <div class="col-sm-12">
+            <label for="test1">+ Mã đơn hàng qua VNPAY: @Model.vnp_TxnRef</label>
+        </div>
+        <div class="col-sm-12">
+            <label for="test1">+ Số tiền: @Model.vnp_money</label>
+        </div>
+        <div class="col-sm-12">
+            <label for="test1">+ Thời gian: @Model.vnp_time</label>
+        </div>
+        <div class="col-sm-12">
+            <label for="test1">+ Trạng thái thanh toán: @Model.vnp_type</label>
+        </div>
+        <div class=" row mt-3">
+            <div class="col-md-12 text-center" id="buttonDiv"><button class="btn btn-success" id="btnContinue">Tiếp tục</button></div>
+        </div>
+    </div>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#btnContinue').click();
+        })
+
+
+        $("#btnContinue").undoCountdown({
+            seconds: 5,
+            onComplete: function () {
+                $("#btnContinue").addClass('count');
+                $('#btnContinue').prop('disabled', false);
+                $("#btnContinue").removeAttr('id');
+                window.location = '@Model.vnp_url';
+                $('.count').html('Tiếp tục').click(function () {
+                    window.location = '@Model.vnp_url';
+                })
+
+
+            }
+        });
+
+        $('.count').click(function () {
+            window.location = '@Model.vnp_url';
+        });
+            // $('#btnContinue').one('click', function() {
+            //     countDown();
+            // });
+
+            // // $('#btnContinue').click(function() {
+            // //     countDown();
+            // // });
+
+            // function countDown() {
+            //     var t = 5;
+
+            //     $("#btnContinue").html('Quay lại app sau (' + t + ') giây');
+
+            //     var ev = setInterval(function() {
+            //         if (t > 0) {
+            //             t = t - 1;
+            //             $("#btnContinue").html('Quay lại app sau (' + t + ') giây');
+            //         }
+            //         if (t <= 0) {
+            //             alert("Success");
+            //             clearInterval(ev);
+            //         }
+            //     }, 1000);
+            // }
+    </script>
+</body>
+
+</html>

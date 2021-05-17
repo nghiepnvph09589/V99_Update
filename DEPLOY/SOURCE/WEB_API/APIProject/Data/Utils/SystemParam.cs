@@ -34,11 +34,11 @@ namespace Data.Utils
         public const string ANDROID_CHANNEL_ID = "958b57c5-9726-4c2e-b4ac-0e3f085a957b";
 
         // config VNPAY
-        public const string vnp_Return_url = "http://weship.winds.vn/VnPay/Index";
-        public const string vnpay_api_url = "http://weship.winds.vn/api/Payment/vnp_ipn";
+        public const string vnp_Return_url = "http://tichdiemv99.winds.vn/VnPay/Index";
+        public const string vnpay_api_url = "http://tichdiemv99.winds.vn/api/Payment/vnp_ipn";
         public const string vnp_Url = "http://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
-        public const string vnp_TmnCode = "WESHIP01";
-        public const string vnp_HashSecret = "LRKPTTMKJNEKREDJVXCKGGRXYTJBPVPA";
+        public const string vnp_TmnCode = "V99GROUP";
+        public const string vnp_HashSecret = "CPJTEKIYPHZUVOMMTDFQRGMXBIOBEDPW";
         public const string Transaction_False = "Giao dịch thất bại";
         public const string Transaction_Success = "Giao dịch thành công";
         public const string customer_failed = "tichdiemv99://failed/";
@@ -512,6 +512,12 @@ namespace Data.Utils
         //public const int TYPE_ORDER_NOTIFY = 7;
         
         public const int MAX_PEOPLE = 90;
+
+        //Số điểm tối thiểu để nạp vào ví Point VNpay
+        public const int CHARGE_MIN_POINT = 10;
+        public const string INVALID_CHARGE_MIN_POINT = "Số điểm mỗi lần nạp phải từ 10 điểm trở lên";
+        public const int CHARGE_MAX_POINT = 10000;
+        public const string INVALID_CHARGE_MAX_POINT = "Số điểm mỗi lần nạp phải từ 10000 điểm trở xuống";
 
         //Số điểm tối thiểu để có thể rút
         public const string MinPoint = "MinPoint";
