@@ -16,7 +16,8 @@ import OneSignal from "react-native-onesignal"; // Import package from node modu
 import codePush from "react-native-code-push";
 import AsyncStorage from "@react-native-community/async-storage";
 import reactotron from "reactotron-react-native";
-import AppContainer from './app/AppContainer'
+import AppContainer from "./app/AppContainer";
+import "react-native-gesture-handler";
 
 class App extends Component {
   render() {
@@ -39,7 +40,7 @@ class App extends Component {
 }
 
 let codePushOptions = {
-  checkFrequency: codePush.CheckFrequency.MANUAL,
+  checkFrequency: codePush.CheckFrequency.MANUAL
 };
 
 MyApp = codePush(codePushOptions)(App);

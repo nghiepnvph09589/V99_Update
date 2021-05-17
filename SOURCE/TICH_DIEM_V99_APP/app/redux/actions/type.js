@@ -131,3 +131,7 @@ export const GET_BANK_SUCCESS = "td_trieudo/get_bank_success";
 export const GET_BANK_FAIL = "td_trieudo/get_bank_fail";
 
 export const NAVIGATE_TAB = "td_trieudo/navigate_tab"
+
+export const GET_LIST_POINT_V = "td_trieudo/get_list_point_v"
+export const GET_LIST_POINT_V_SCUCCESS = "td_trieudo/get_list_point_v_success"
+export const GET_LIST_POINT_V_FAIL = "td_trieudo/get_list_point_v_fail"

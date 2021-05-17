@@ -57,13 +57,23 @@ export const TitleWalletPointsEnum = {
         sign: '+',
     },
     [ACTION_POINTS_TYPE.POINT_V]: {
-        color: '#00C48C',
-        title: R.strings().reward_points,
-        sign: '+',
+        color: '#F39C12',
+        title: R.strings().minus_point,
+        sign: '-',
     },
     [ACTION_POINTS_TYPE.V_POINT]: {
         color: '#00C48C',
-        title: R.strings().reward_points,
+        title: R.strings().add_point,
+        sign: '+',
+    },
+    [ACTION_POINTS_TYPE.REFERENCE]: {
+        color: '#00C48C',
+        title: R.strings().add_point,
+        sign: '+',
+    },
+    [ACTION_POINTS_TYPE.REGISTER]: {
+        color: '#00C48C',
+        title: R.strings().add_point,
         sign: '+',
     },
 }
@@ -84,7 +94,8 @@ class WalletPointsItem extends Component {
                 <Text style={{
                     color: theme.colors.black_title,
                     ...theme.fonts.regular16
-                }}>{DateUtil.formatTime(item.createDate)} {DateUtil.formatShortDate(item.createDate)}</Text>
+                }}>
+                    {DateUtil.formatTime(item.createDate)} {DateUtil.formatShortDate(item.createDate)}</Text>
                 <View style={[{
                     flex: 1,
                     borderWidth: 0.5,
@@ -120,7 +131,7 @@ class WalletPointsItem extends Component {
                         minWidth: width * 0.2,
                     }}>
                         <Text style={{
-                            // color: TitleWalletPointsEnum[item.type].color,
+                            color: TitleWalletPointsEnum[item.type].color,
                             ...theme.fonts.regular16
                         }}>
                             {TitleWalletPointsEnum[item.type].sign}
@@ -128,7 +139,7 @@ class WalletPointsItem extends Component {
                         <NumberFormat
                             value={item.point}
                             perfix='đ'
-                            // color={TitleWalletPointsEnum[item.type].color}
+                            color={TitleWalletPointsEnum[item.type].color}
                             fonts={theme.fonts.regular16}
                         />
                     </View>

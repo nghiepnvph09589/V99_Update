@@ -29,7 +29,8 @@ import {
   watchFetchGetHistoryDrawPoints,
   watchFetchGetBankSelect,
   watchFetchGetBank,
-  watchFetchGetHistoryMovingPoints
+  watchFetchGetHistoryMovingPoints,
+  watchFetchGetListPontV,
 } from "./NetworkSaga";
 
 export default function* rootSaga() {
@@ -63,4 +64,5 @@ export default function* rootSaga() {
   yield watchFetchGetBankSelect
   yield watchFetchGetBank
   yield watchFetchGetHistoryMovingPoints
+  yield watchFetchGetListPontV
 }

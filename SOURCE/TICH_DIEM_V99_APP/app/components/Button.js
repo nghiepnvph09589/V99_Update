@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import { Text, View, TouchableOpacity, StyleSheet } from "react-native";
 import { ThemeColors } from "react-navigation";
 import * as Theme from "../constants/Theme";
-import { tsExpressionWithTypeArguments } from "@babel/types";
 export default class Button extends Component {
   render() {
     const { onPress, text, top } = this.props;
@@ -19,7 +18,9 @@ export default class Button extends Component {
           marginTop: top
         }}
       >
-        <Text style={[Theme.fonts.semibold18, { color: Theme.colors.white }]}>{text}</Text>
+        <Text style={[Theme.fonts.semibold18, { color: Theme.colors.white }]}>
+          {text}
+        </Text>
       </TouchableOpacity>
     );
   }

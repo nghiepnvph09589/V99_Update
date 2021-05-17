@@ -105,7 +105,6 @@ export class HistoryScreen extends Component {
 
   _renderBody() {
     const { historyState } = this.props;
-    reactotron.log(historyState);
     if (historyState.isLoading) return <Loading />;
     if (historyState.error)
       return (

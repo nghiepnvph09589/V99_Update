@@ -6,7 +6,8 @@ import {
   SafeAreaView,
   StatusBar,
   ActivityIndicator,
-  ImageBackground, Platform
+  ImageBackground,
+  Platform
 } from "react-native";
 import NavigationUtil from "../../navigation/NavigationUtil";
 import { ASYNCSTORAGE_KEY, SCREEN_ROUTER } from "../../constants/Constant";
@@ -17,9 +18,9 @@ import reactotron from "reactotron-react-native";
 import OneSignal from "react-native-onesignal";
 import { connect } from "react-redux";
 import { setIsLogin } from "../../redux/actions";
-import SplashScreen from 'react-native-splash-screen'
-import DeviceInfo from 'react-native-device-info';
-import { requestGetAppVersion } from '@api'
+import SplashScreen from "react-native-splash-screen";
+import DeviceInfo from "react-native-device-info";
+import { requestGetAppVersion } from "@api";
 import theme from "@app/constants/Theme";
 
 export class AuthLoadingScreen extends Component {
@@ -35,17 +36,17 @@ export class AuthLoadingScreen extends Component {
 
     // this.checkAccount()
     // return
-    
+
     if (__DEV__) {
-      this.checkAccount()
+      this.checkAccount();
+    } else {
+      this.checkAccount();
+      // this.checkCodePushVer();
     }
-    else
-      this.checkCodePushVer()
   }
 
   checkCodePushVer = async () => {
-
-    const appVersion = DeviceInfo.getVersion()
+    const appVersion = DeviceInfo.getVersion();
 
     const code_push_version = await AsyncStorage.getItem(
       ASYNCSTORAGE_KEY.CODE_PUSH
@@ -55,59 +56,59 @@ export class AuthLoadingScreen extends Component {
 
     const payload = {
       typeOS: os
-    }
+    };
 
     try {
-      const res = await requestGetAppVersion(payload)
+      const res = await requestGetAppVersion(payload);
 
       const searchIndex = res.data
         .map(elem => elem.versionApp)
         .indexOf(appVersion);
 
-      if (searchIndex == -1 || res.data[searchIndex].codePushVersion == code_push_version) {
-        reactotron.log('not update')
-        this.checkAccount()
-        return
+      if (
+        searchIndex == -1 ||
+        res.data[searchIndex].codePushVersion == code_push_version
+      ) {
+        reactotron.log("not update");
+        this.checkAccount();
+        return;
       }
 
-      const itemSelect = res.data[searchIndex]
-      reactotron.log(itemSelect, 'itemSelect')
+      const itemSelect = res.data[searchIndex];
+      reactotron.log(itemSelect, "itemSelect");
 
       if (itemSelect.forceUpdate == 1) {
-        reactotron.log('checkUpdate');
+        reactotron.log("checkUpdate");
         this._checkUpdate(itemSelect.codePushVersion);
-      }
-      else this._checkUpdateNotForceUpdate(itemSelect.codePushVersion);
-
+      } else this._checkUpdateNotForceUpdate(itemSelect.codePushVersion);
     } catch (error) {
-      this.checkAccount()
-      reactotron.log(error)
+      this.checkAccount();
+      reactotron.log(error);
     }
   };
 
-  _checkUpdateNotForceUpdate = async (codePushVersion) => {
-    reactotron.log('_checkUpdateNotForceUpdate');
+  _checkUpdateNotForceUpdate = async codePushVersion => {
+    reactotron.log("_checkUpdateNotForceUpdate");
     codePush
       .checkForUpdate()
       .then(update => {
         if (!update) {
           this.checkAccount();
         } else {
-          codePush.sync(
-            {
-              updateDialog: null,
-              installMode: codePush.InstallMode.ON_NEXT_RESTART
-            },
-            status => {
-              this.checkAccount();
-            },
-            progress => { }
-          ).then(() => {
-            AsyncStorage.setItem(
-              ASYNCSTORAGE_KEY.CODE_PUSH,
-              codePushVersion
-            );
-          })
+          codePush
+            .sync(
+              {
+                updateDialog: null,
+                installMode: codePush.InstallMode.ON_NEXT_RESTART
+              },
+              status => {
+                this.checkAccount();
+              },
+              progress => {}
+            )
+            .then(() => {
+              AsyncStorage.setItem(ASYNCSTORAGE_KEY.CODE_PUSH, codePushVersion);
+            });
         }
       })
       .catch(err => {
@@ -116,7 +117,7 @@ export class AuthLoadingScreen extends Component {
       });
   };
 
-  _checkUpdate = async (codePushVersion) => {
+  _checkUpdate = async codePushVersion => {
     this.setState(
       {
         ...this.state,
@@ -134,37 +135,39 @@ export class AuthLoadingScreen extends Component {
               this.setState({ update: false }, () => this.checkAccount());
             } else {
               codePush.notifyAppReady();
-              codePush.sync(
-                {
-                  updateDialog: null,
-                  installMode: codePush.InstallMode.IMMEDIATE
-                },
-                status => {
-                  reactotron.log(status);
-                  if (
-                    status == codePush.SyncStatus.DOWNLOADING_PACKAGE ||
-                    status == codePush.SyncStatus.CHECKING_FOR_UPDATE ||
-                    status == codePush.SyncStatus.SYNC_IN_PROGRESS ||
-                    status == codePush.SyncStatus.INSTALLING_UPDATE
-                  ) {
-                    this.setState({
-                      update: true
-                    });
-                  } else {
-                    this.setState({
-                      update: false
-                    });
+              codePush
+                .sync(
+                  {
+                    updateDialog: null,
+                    installMode: codePush.InstallMode.IMMEDIATE
+                  },
+                  status => {
+                    reactotron.log(status);
+                    if (
+                      status == codePush.SyncStatus.DOWNLOADING_PACKAGE ||
+                      status == codePush.SyncStatus.CHECKING_FOR_UPDATE ||
+                      status == codePush.SyncStatus.SYNC_IN_PROGRESS ||
+                      status == codePush.SyncStatus.INSTALLING_UPDATE
+                    ) {
+                      this.setState({
+                        update: true
+                      });
+                    } else {
+                      this.setState({
+                        update: false
+                      });
+                    }
+                  },
+                  progress => {
+                    reactotron.log(progress);
                   }
-                },
-                progress => {
-                  reactotron.log(progress);
-                }
-              ).then((res) => {
-                AsyncStorage.setItem(
-                  ASYNCSTORAGE_KEY.CODE_PUSH,
-                  codePushVersion
-                );
-              })
+                )
+                .then(res => {
+                  AsyncStorage.setItem(
+                    ASYNCSTORAGE_KEY.CODE_PUSH,
+                    codePushVersion
+                  );
+                });
             }
           })
           .catch(err => {
@@ -173,7 +176,7 @@ export class AuthLoadingScreen extends Component {
       }
     );
     codePush.notifyAppReady();
-  }
+  };
 
   checkAccount = async () => {
     SplashScreen.hide();
@@ -205,4 +208,7 @@ const mapDispatchToProps = {
   setIsLogin
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(AuthLoadingScreen);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(AuthLoadingScreen);
