@@ -46,6 +46,32 @@ namespace Data.Business
                 string value = StartPushNoti(notifyData, listDevice, title, content);
                 PushOneSignals(value);
             }
+        } 
+        public void PushNotiAppCNN(double point,int type,int statusOrder,int typeNoti,int orderID,string title,string content,int cusID,string deviceID, TichDiemTrieuDo cnn)
+        {
+            Notification ntf = new Notification();
+            ntf.CustomerID = cusID;
+            ntf.Content = title;
+            ntf.Viewed = 0;
+            ntf.CreateDate = DateTime.Now;
+            ntf.IsActive = SystemParam.ACTIVE;
+            ntf.Title = title;
+            ntf.Type = typeNoti;
+            cnn.Notifications.Add(ntf);
+            cnn.SaveChanges();
+            if (deviceID != null && deviceID.Length > 15)
+            {
+                //Tiến hành gửi thông báo
+                NotifyDataModel notifyData = new NotifyDataModel();
+                notifyData.Point = point;
+                notifyData.type = type;
+                notifyData.StatusOrder = statusOrder;
+                notifyData.id = orderID;
+                List<string> listDevice = new List<string>();
+                listDevice.Add(deviceID);
+                string value = StartPushNoti(notifyData, listDevice, title, content);
+                PushOneSignals(value);
+            }
         }
         public string StartPushNoti(object obj, List<string> deviceID, string title, string contents)
         {
@@ -109,6 +135,18 @@ namespace Data.Business
                 jsonString = reader.ReadToEnd();
             }
             return jsonString;
+        }
+        public void SaveLog(string content, string body)
+        {
+            var reportDirectory = string.Format("~/text/{0}/", DateTime.Now.ToString("yyyy-MM-dd"));
+            reportDirectory = System.Web.Hosting.HostingEnvironment.MapPath(reportDirectory);
+            if (!Directory.Exists(reportDirectory))
+            {
+                Directory.CreateDirectory(reportDirectory);
+            }
+            var dailyReportFullPath = string.Format("{0}text_{1}.log", reportDirectory, DateTime.Now.Day);
+            var logContent = string.Format("{0}-{1}-{2}", DateTime.Now, "noti: " + content + " / " + body, Environment.NewLine);
+            File.AppendAllText(dailyReportFullPath, logContent);
         }
     }
 }

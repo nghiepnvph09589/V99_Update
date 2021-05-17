@@ -18,6 +18,7 @@ namespace Data.Model.APIApp
         public int ItemID { get; set; }
         public string ItemName { get; set; }
         public double ItemPrice { get; set; }
+        public double ItemPriceVip { get; set; }
         public long SumPrice { get; set; }
         public int Qty { get; set; }
         public int Warranty { get; set; }

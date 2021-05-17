@@ -622,6 +622,7 @@ namespace Data.Business
                     sheet.Cells[row, 4].Value = item.Email;
                     sheet.Cells[row, 5].Value = item.Point;
                     sheet.Cells[row, 6].Value = item.PointRanking;
+                    sheet.Cells[row, 7].Value = item.PointV;
                     //if (item.TypeGift == SystemParam.TYPE_GIFT_GIFT)
                     //{
                     //    sheet.Cells[row, 3].Value = "Quà tặng";
@@ -634,10 +635,10 @@ namespace Data.Business
                     //{
                     //    sheet.Cells[row, 3].Value = "Thẻ cào";
                     //}
-                    sheet.Cells[row, 7].Value = item.Status == SystemParam.ACTIVE ? "Hoạt động" : "Dừng hoạt động";
+                    sheet.Cells[row, 8].Value = item.Status == SystemParam.ACTIVE ? "Hoạt động" : "Dừng hoạt động";
 
 
-                    sheet.Cells[row, 8].Value = item.CreateDate.Value.ToString("dd/MM/yyyy");
+                    sheet.Cells[row, 9].Value = item.CreateDate.Value.ToString("dd/MM/yyyy");
                     row++;
                     stt++;
                 }

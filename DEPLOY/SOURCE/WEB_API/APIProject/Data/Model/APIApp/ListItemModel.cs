@@ -15,6 +15,7 @@ namespace Data.Model.APIApp
         public string Code { get; set; }
         public List<string> Image { get; set; }
         public long Price { get; set; }
+        public long PriceVip { get; set; }
         public string Description { get; set; }
         public string Technical { get; set; }
         public int Warranty { get; set; }

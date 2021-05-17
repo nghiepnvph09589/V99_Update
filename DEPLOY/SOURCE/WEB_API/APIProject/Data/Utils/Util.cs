@@ -233,6 +233,7 @@ namespace Data.Utils
             else
                 return null;
         }
+
         //Convert Datetime 
         public static Nullable<DateTime> ConvertFromDate(string date, string datepaser = SystemParam.CONVERT_DATETIME_HAVE_HOUR)
         {
@@ -271,7 +272,10 @@ namespace Data.Utils
             }
 
         }
-
+        public static string ConvertCurrency(double Price)
+        {
+            return Price.ToString("N0", System.Globalization.CultureInfo.GetCultureInfo("is"));
+        }
         //get name TYPE_ADD 
         public static string GetNameType(int ID)
         {

@@ -22,6 +22,7 @@ namespace APIProject.Controllers
     public class ServiceController : BaseAPIController
     {
         TichDiemTrieuDo cnn;
+        OrderBusiness orderBus = new OrderBusiness();
         public ServiceController()
         {
             if (cnn == null)
@@ -284,6 +285,7 @@ namespace APIProject.Controllers
                                 CreateDate = m.CraeteDate,
                                 Title = m.Title,
                                 Type = m.Type,
+                                TypeAdd = m.TypeAdd,
                                 Point = m.Point,
                                 Comment = m.Comment,
                                 Balance = Math.Round(m.Balance, 2),
@@ -1117,7 +1119,7 @@ namespace APIProject.Controllers
                 if (res == SystemParam.ERROR)
                     return response(SystemParam.ERROR, SystemParam.ERROR, SystemParam.MESSAGE_ERROR, "");
 
-                var order = CreateOrder(data, cusID.Value, data.LastRefCode);
+                var order = orderBus.CreateOrder(data, cusID.Value, data.LastRefCode);
                 if (order != null && order.OrderID > 0)
                 {
                     //EmailBusiness email = new EmailBusiness();
@@ -1133,130 +1135,130 @@ namespace APIProject.Controllers
             }
         }
 
-        public OrderOutputModel CreateOrder(OrderDetailOutputModel input, int cusID, string lastRefCode)
-        {
-            TichDiemTrieuDo cnn = new TichDiemTrieuDo();
-            var conect = cnn.Database.BeginTransaction();
-            try
-            {
+        //public OrderOutputModel CreateOrder(OrderDetailOutputModel input, int cusID, string lastRefCode)
+        //{
+        //    TichDiemTrieuDo cnn = new TichDiemTrieuDo();
+        //    var conect = cnn.Database.BeginTransaction();
+        //    try
+        //    {
 
-                //tạo một đơn hàng mới
+        //        //tạo một đơn hàng mới
 
-                Order od = new Order();
-                var cus = cnn.Customers.Where(c => c.ID == cusID).FirstOrDefault();
-                var code = Util.CreateMD5(DateTime.Now.ToString()).Substring(0, 6);
-                List<OrderItem> listOI = CreateOrderItem(input.listOrderItem);
-                var point = Math.Round(Convert.ToDouble(listOI.Select(u => u.SumPrice).Sum()) / 1000, 2);
-                //Tính toán lại số dư khi mua hàng
-                od.Code = code;
-                od.Status = SystemParam.STATUS_ORDER_PENDING;
-                od.Type = SystemParam.TYPE_ORDER;
-                od.PointAdd = 0;
-                od.IsActive = SystemParam.ACTIVE;
-                od.CreateDate = DateTime.Now;
-                od.CustomerID = cusID;
-                od.ProvinceID = input.ProvinceID;
-                od.DistrictID = input.DistrictID;
-                od.Note = input.Note;
-                od.TotalPrice = Convert.ToInt64(listOI.Select(u => u.SumPrice).Sum());
-                od.Discount = 0;
-                od.OrderItems = listOI;
-                od.BuyerName = input.BuyerName.Trim();
-                od.BuyerPhone = input.BuyerPhone;
-                od.BuyerAddress = input.Address.Trim();
-                od.LastRefCode = lastRefCode;
+        //        Order od = new Order();
+        //        var cus = cnn.Customers.Where(c => c.ID == cusID).FirstOrDefault();
+        //        var code = Util.CreateMD5(DateTime.Now.ToString()).Substring(0, 6);
+        //        List<OrderItem> listOI = CreateOrderItem(input.listOrderItem);
+        //        var point = Math.Round(Convert.ToDouble(listOI.Select(u => u.SumPrice).Sum()) / 1000, 2);
+        //        //Tính toán lại số dư khi mua hàng
+        //        od.Code = code;
+        //        od.Status = SystemParam.STATUS_ORDER_PENDING;
+        //        od.Type = SystemParam.TYPE_ORDER;
+        //        od.PointAdd = 0;
+        //        od.IsActive = SystemParam.ACTIVE;
+        //        od.CreateDate = DateTime.Now;
+        //        od.CustomerID = cusID;
+        //        od.ProvinceID = input.ProvinceID;
+        //        od.DistrictID = input.DistrictID;
+        //        od.Note = input.Note;
+        //        od.TotalPrice = Convert.ToInt64(listOI.Select(u => u.SumPrice).Sum());
+        //        od.Discount = 0;
+        //        od.OrderItems = listOI;
+        //        od.BuyerName = input.BuyerName.Trim();
+        //        od.BuyerPhone = input.BuyerPhone;
+        //        od.BuyerAddress = input.Address.Trim();
+        //        od.LastRefCode = lastRefCode;
 
-                string content = "Hệ thống trừ điểm khi mua hàng";
-                var type = SystemParam.NOTIFY_NAVIGATE_ORDER;
-                var typeNoti = SystemParam.NOTIFY_NAVIGATE_HISTORY;
-                var statusOrder = SystemParam.STATUS_ORDER_PENDING;
-                if (cus.PointRanking >= point * 0.1)
-                {
-                    var PointCus = point * 0.9;
-                    var PointRankingCus = point * 0.1;
-                    //Lưu lại số dư sau khi đã được tính toán
+        //        string content = "Hệ thống trừ điểm khi mua hàng";
+        //        var type = SystemParam.NOTIFY_NAVIGATE_ORDER;
+        //        var typeNoti = SystemParam.NOTIFY_NAVIGATE_HISTORY;
+        //        var statusOrder = SystemParam.STATUS_ORDER_PENDING;
+        //        if (cus.PointRanking >= point * 0.1)
+        //        {
+        //            var PointCus = point * 0.9;
+        //            var PointRankingCus = point * 0.1;
+        //            //Lưu lại số dư sau khi đã được tính toán
 
-                    od.Point = PointCus;
-                    od.PointRanking = PointRankingCus;
+        //            od.Point = PointCus;
+        //            od.PointRanking = PointRankingCus;
 
-                    MembersPointHistory m = new MembersPointHistory();
-                    MembersPointHistory mr = new MembersPointHistory();
-                    //Tạo lịch sử mua hàng
-                    string title = "Bạn vừa bị trừ " + point + " điểm ví Point từ đơn hàng " + code;
-                    string titleRank = "Bạn vừa bị trừ " + point + " điểm ví tích điểm từ đơn hàng " + code;
-                    m.CustomerID = cusID;
-                    m.Point = PointCus;
-                    m.Type = SystemParam.TYPE_MINUS_POINT_ORDER;
-                    m.AddPointCode = Util.CreateMD5(DateTime.Now.ToString()).Substring(0, 6);
-                    m.TypeAdd = SystemParam.TYPE_POINT;
-                    m.CraeteDate = DateTime.Now;
-                    m.IsActive = SystemParam.ACTIVE;
-                    m.Comment = "Hệ thống trừ điểm ví Point khi mua hàng";
-                    m.Title = title;
-                    m.Balance = cus.Point - PointCus;               
-                    //Tạo lịch sử mua hàng
+        //            MembersPointHistory m = new MembersPointHistory();
+        //            MembersPointHistory mr = new MembersPointHistory();
+        //            //Tạo lịch sử mua hàng
+        //            string title = "Bạn vừa bị trừ " + point + " điểm ví Point từ đơn hàng " + code;
+        //            string titleRank = "Bạn vừa bị trừ " + point + " điểm ví tích điểm từ đơn hàng " + code;
+        //            m.CustomerID = cusID;
+        //            m.Point = PointCus;
+        //            m.Type = SystemParam.TYPE_MINUS_POINT_ORDER;
+        //            m.AddPointCode = Util.CreateMD5(DateTime.Now.ToString()).Substring(0, 6);
+        //            m.TypeAdd = SystemParam.TYPE_POINT;
+        //            m.CraeteDate = DateTime.Now;
+        //            m.IsActive = SystemParam.ACTIVE;
+        //            m.Comment = "Hệ thống trừ điểm ví Point khi mua hàng";
+        //            m.Title = title;
+        //            m.Balance = cus.Point - PointCus;               
+        //            //Tạo lịch sử mua hàng
 
-                    mr.CustomerID = cusID;
-                    mr.Point = PointRankingCus;
-                    mr.Type = SystemParam.TYPE_MINUS_POINT_ORDER;
-                    mr.AddPointCode = Util.CreateMD5(DateTime.Now.ToString()).Substring(0, 6);
-                    mr.TypeAdd = SystemParam.TYPE_POINT_RANKING;
-                    mr.CraeteDate = DateTime.Now;
-                    mr.IsActive = SystemParam.ACTIVE;
-                    mr.Comment = "Hệ thống trừ điểm ví tích điểm khi mua hàng";
-                    mr.Title = titleRank;
-                    mr.Balance = cus.PointRanking - PointRankingCus;
+        //            mr.CustomerID = cusID;
+        //            mr.Point = PointRankingCus;
+        //            mr.Type = SystemParam.TYPE_MINUS_POINT_ORDER;
+        //            mr.AddPointCode = Util.CreateMD5(DateTime.Now.ToString()).Substring(0, 6);
+        //            mr.TypeAdd = SystemParam.TYPE_POINT_RANKING;
+        //            mr.CraeteDate = DateTime.Now;
+        //            mr.IsActive = SystemParam.ACTIVE;
+        //            mr.Comment = "Hệ thống trừ điểm ví tích điểm khi mua hàng";
+        //            mr.Title = titleRank;
+        //            mr.Balance = cus.PointRanking - PointRankingCus;
                     
-                    cus.Point -= PointCus;
-                    cus.PointRanking -= PointRankingCus;
-                    cnn.MembersPointHistories.Add(m);
-                    cnn.MembersPointHistories.Add(mr);
-                    cnn.Orders.Add(od);
-                    cnn.SaveChanges();
+        //            cus.Point -= PointCus;
+        //            cus.PointRanking -= PointRankingCus;
+        //            cnn.MembersPointHistories.Add(m);
+        //            cnn.MembersPointHistories.Add(mr);
+        //            cnn.Orders.Add(od);
+        //            cnn.SaveChanges();
 
-                    //Tạo thông báo cho người nhận
-                    packageBusiness.PushNotiApp(PointCus, type, statusOrder, typeNoti, od.ID, title, content,cus.ID, cus.DeviceID);
-                    packageBusiness.PushNotiApp(PointRankingCus, type, statusOrder, typeNoti, od.ID, titleRank, content,cus.ID, cus.DeviceID);
-                }
-                else
-                {
-                    cus.Point -= point;
-                    od.Point = point;
-                    MembersPointHistory m = new MembersPointHistory();
-                    //Tạo lịch sử mua hàng
-                    string title = "Bạn vừa bị trừ " + point + " điểm ví Point từ đơn hàng " + code;
-                    m.CustomerID = cusID;
-                    m.Point = point;
-                    m.Type = SystemParam.TYPE_MINUS_POINT_ORDER;
-                    m.AddPointCode = Util.CreateMD5(DateTime.Now.ToString()).Substring(0, 6);
-                    m.TypeAdd = SystemParam.TYPE_POINT;
-                    m.CraeteDate = DateTime.Now;
-                    m.IsActive = SystemParam.ACTIVE;
-                    m.Comment = "Hệ thống trừ điểm ví Point khi mua hàng";
-                    m.Title = title;
-                    m.Balance = cus.Point - point;
-                    cnn.MembersPointHistories.Add(m);
-                    cnn.Orders.Add(od);
-                    cnn.SaveChanges();
-                    packageBusiness.PushNotiApp(point, type, statusOrder, typeNoti, od.ID, title, content, cus.ID, cus.DeviceID);
-                }
-                conect.Commit();
-                conect.Dispose();
+        //            //Tạo thông báo cho người nhận
+        //            packageBusiness.PushNotiAppCNN(PointCus, type, statusOrder, typeNoti, od.ID, title, content,cus.ID, cus.DeviceID,cnn);
+        //            packageBusiness.PushNotiAppCNN(PointRankingCus, type, statusOrder, typeNoti, od.ID, titleRank, content,cus.ID, cus.DeviceID,cnn);
+        //        }
+        //        else
+        //        {
+        //            cus.Point -= point;
+        //            od.Point = point;
+        //            MembersPointHistory m = new MembersPointHistory();
+        //            //Tạo lịch sử mua hàng
+        //            string title = "Bạn vừa bị trừ " + point + " điểm ví Point từ đơn hàng " + code;
+        //            m.CustomerID = cusID;
+        //            m.Point = point;
+        //            m.Type = SystemParam.TYPE_MINUS_POINT_ORDER;
+        //            m.AddPointCode = Util.CreateMD5(DateTime.Now.ToString()).Substring(0, 6);
+        //            m.TypeAdd = SystemParam.TYPE_POINT;
+        //            m.CraeteDate = DateTime.Now;
+        //            m.IsActive = SystemParam.ACTIVE;
+        //            m.Comment = "Hệ thống trừ điểm ví Point khi mua hàng";
+        //            m.Title = title;
+        //            m.Balance = cus.Point - point;
+        //            cnn.MembersPointHistories.Add(m);
+        //            cnn.Orders.Add(od);
+        //            cnn.SaveChanges();
+        //            packageBusiness.PushNotiAppCNN(point, type, statusOrder, typeNoti, od.ID, title, content, cus.ID, cus.DeviceID,cnn);
+        //        }
+        //        //conect.Commit();
+        //        //conect.Dispose();
 
-                //Tiến hành gửi thông báo đến web admin
-                var url = SystemParam.URL_WEB_SOCKET + "?content=" + "Đơn hàng " + code + " đang chờ xác nhận&type=" + SystemParam.TYPE_NOTI_ORDER;
-                packageBusiness.GetJson(url);
+        //        //Tiến hành gửi thông báo đến web admin
+        //        var url = SystemParam.URL_WEB_SOCKET + "?content=" + "Đơn hàng " + code + " đang chờ xác nhận&type=" + SystemParam.TYPE_NOTI_ORDER;
+        //        packageBusiness.GetJson(url);
                 
-                int id = cnn.Orders.OrderByDescending(u => u.ID).FirstOrDefault().ID;
-                return orderBus.GetOrderDetail(id, cus.Point,cus.PointRanking);
-            }
-            catch
-            {
-                conect.Rollback();
-                conect.Dispose();
-                return null;
-            }
-        }
+        //        int id = cnn.Orders.OrderByDescending(u => u.ID).FirstOrDefault().ID;
+        //        return orderBus.GetOrderDetail(id, cus.Point,cus.PointRanking);
+        //    }
+        //    catch(Exception ex)
+        //    {
+        //        //conect.Rollback();
+        //        //conect.Dispose();
+        //        return null;
+        //    }
+        //}
 
         public List<OrderItem> CreateOrderItem(List<OrderDetailModel> lsOrderItem)
         {
@@ -1507,6 +1509,7 @@ namespace APIProject.Controllers
                     Name = i.Name,
                     Image = i.ImageUrl.Split(',').ToList(),
                     Price = i.Price,
+                    PriceVip = i.PriceVIP,
                     Description = i.Description,
                     Technical = i.Technical,
                     Warranty = i.Warranty,
@@ -1565,6 +1568,7 @@ namespace APIProject.Controllers
                                    Name = i.Name,
                                    Image = i.ImageUrl,
                                    Price = i.Price,
+                                   PriceVip = i.PriceVIP,
                                    Description = i.Description,
                                    Technical = i.Technical,
                                    StockStatus = i.StockStatus.Value
@@ -1599,6 +1603,7 @@ namespace APIProject.Controllers
                                       Name = i.Name,
                                       Image = i.ImageUrl.Split(',').ToList(),
                                       Price = i.Price,
+                                      PriceVip = i.PriceVIP,
                                       Description = i.Description,
                                       Technical = i.Technical,
                                       Warranty = i.Warranty,
@@ -1659,6 +1664,7 @@ namespace APIProject.Controllers
                     ItemID = c.ItemID,
                     ItemName = c.Item.Name,
                     ItemPrice = c.Item.Price,
+                    ItemPriceVip = c.Item.PriceVIP,
                     Image = c.Item.ImageUrl.Split(',').FirstOrDefault(),
                     Qty = c.QTY,
                     Warranty = c.Item.Warranty,
@@ -1770,7 +1776,7 @@ namespace APIProject.Controllers
             }
         }
 
-        public int CreateOrderItem(List<int> lstOrderIdtem, int? orderID)
+        public int CreateOrderItem(List<int> lstOrderIdtem, int orderID)
         {
             try
             {
@@ -1783,37 +1789,53 @@ namespace APIProject.Controllers
                     return SystemParam.ADD_TO_CART_FAIL;
                 var item = cnn.Items.Where(i => i.IsActive.Equals(SystemParam.ACTIVE)).ToList();
                 var orderItems = cnn.OrderItems.Where(i => i.IsActive.Equals(SystemParam.ACTIVE)).ToList();
+                var customer = cnn.Orders.Where(o => o.ID == orderID).Select(x => x.Customer).FirstOrDefault();
                 foreach (var dt in lstItemID)
                 {
 
                     Item it = item.Where(i => i.ID.Equals(dt)).FirstOrDefault();
-                    OrderItem odit = orderItems.Where(i => i.ItemID.Equals(dt) && (orderID.HasValue ? i.OrderID.Equals(orderID.Value) : false)).FirstOrDefault();
+                    OrderItem odit = orderItems.Where(i => i.ItemID.Equals(dt) &&  i.OrderID.Equals(orderID)).FirstOrDefault();
                     if (odit == null)
                     {
                         OrderItem oi = new OrderItem();
                         oi.ItemID = dt;
                         oi.QTY = SystemParam.QTY_DEFAULT_ADD_TO_CART;
-                        oi.SumPrice = it.Price * oi.QTY;
+                        if (customer.IsVip == SystemParam.CUSTOMER_VIP)
+                        {
+                            oi.SumPrice = it.Price * oi.QTY;
+                        }
+                        else
+                        {
+                            oi.SumPrice = it.PriceVIP * oi.QTY;
+                        }
+                        
                         oi.Status = SystemParam.STATUS_CART_PENDING;
                         oi.Type = SystemParam.TYPE_CART;
                         oi.Discount = 0;
                         oi.IsActive = SystemParam.ACTIVE;
                         oi.CreateDate = DateTime.Now;
                         oi.UpdateAt = DateTime.Now;
-                        oi.OrderID = orderID.Value;
+                        oi.OrderID = orderID;
                         lsOI.Add(oi);
                     }
                     else
                     {
                         odit.QTY += SystemParam.QTY_DEFAULT_ADD_TO_CART;
-                        odit.SumPrice = it.Price * odit.QTY;
+                        if (customer.IsVip == SystemParam.CUSTOMER_VIP)
+                        {
+                            odit.SumPrice = it.Price * odit.QTY;
+                        }
+                        else
+                        {
+                            odit.SumPrice = it.PriceVIP * odit.QTY;
+                        }
                         odit.UpdateAt = DateTime.Now;
                         odit.Order.TotalPrice += Convert.ToInt64(odit.SumPrice);
                     }
                 }
                 if (lsOI.Count() > 0)
                 {
-                    Order odit = cnn.Orders.Find(orderID.Value);
+                    Order odit = cnn.Orders.Find(orderID);
                     odit.TotalPrice = Convert.ToInt64(lsOI.Select(o => o.SumPrice).Sum());
                 }
 
@@ -2333,6 +2355,7 @@ namespace APIProject.Controllers
                                Description = i.Description,
                                Warranty = i.Warranty,
                                Price = i.Price,
+                               PriceVip = i.PriceVIP,
                                Technical = i.Technical,
                                Image = i.ImageUrl.Split(',').ToList()
                            };
@@ -2455,6 +2478,7 @@ namespace APIProject.Controllers
                         warranty.Description = item.Description;
                         warranty.Warranty = item.Warranty;
                         warranty.Price = item.Price;
+                        warranty.PriceVip = item.PriceVIP;
                         warranty.Technical = item.Technical;
                         warranty.Image = item.ImageUrl.Split(',').ToList();
                         warranty.categoryName = item.GroupItem.Name;
@@ -2823,6 +2847,7 @@ namespace APIProject.Controllers
                 UserPhone = m.Type == SystemParam.TYPE_REQUEST_GIFT_POINT ? cnn.Customers.Where(c => c.ID == m.CustomerID).FirstOrDefault().Phone : "",
                 CusID = m.CustomerID.Value,
                 Point = m.Point,
+                
                 Comment = m.Comment,
                 Title = m.Title,
                 Balance = m.Balance

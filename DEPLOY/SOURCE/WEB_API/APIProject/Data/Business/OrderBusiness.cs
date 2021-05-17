@@ -25,9 +25,134 @@ namespace Data.Business
         }
         RequestAPIBusiness apiBus = new RequestAPIBusiness();
         AgentBusiness agentBusiness = new AgentBusiness();
-
+        PackageBusiness packageBusiness = new PackageBusiness();
         MembersPointHistory hisPoint = new MembersPointHistory();
         PointBusiness pointBus = new PointBusiness();
+
+
+        public OrderOutputModel CreateOrder(OrderDetailOutputModel input, int cusID, string lastRefCode)
+        {
+            var conect = cnn.Database.BeginTransaction();
+            try
+            {
+
+                //tạo một đơn hàng mới
+
+                Order od = new Order();
+                var cus = cnn.Customers.Where(c => c.ID == cusID).FirstOrDefault();
+                var code = Util.CreateMD5(DateTime.Now.ToString()).Substring(0, 6);
+                List<OrderItem> listOI = CreateOrderItem(input.listOrderItem);
+                var point = Math.Round(Convert.ToDouble(listOI.Select(u => u.SumPrice).Sum()) / 1000, 2);
+                //Tính toán lại số dư khi mua hàng
+                od.Code = code;
+                od.Status = SystemParam.STATUS_ORDER_PENDING;
+                od.Type = SystemParam.TYPE_ORDER;
+                od.PointAdd = 0;
+                od.IsActive = SystemParam.ACTIVE;
+                od.CreateDate = DateTime.Now;
+                od.CustomerID = cusID;
+                od.ProvinceID = input.ProvinceID;
+                od.DistrictID = input.DistrictID;
+                od.Note = input.Note;
+                od.TotalPrice = Convert.ToInt64(listOI.Select(u => u.SumPrice).Sum());
+                od.Discount = 0;
+                od.OrderItems = listOI;
+                od.BuyerName = input.BuyerName.Trim();
+                od.BuyerPhone = input.BuyerPhone;
+                od.BuyerAddress = input.Address.Trim();
+                od.LastRefCode = lastRefCode;
+
+                string content = "Hệ thống trừ điểm khi mua hàng";
+                var type = SystemParam.NOTIFY_NAVIGATE_ORDER;
+                var typeNoti = SystemParam.NOTIFY_NAVIGATE_HISTORY;
+                var statusOrder = SystemParam.STATUS_ORDER_PENDING;
+                if (cus.PointRanking >= point * 0.1)
+                {
+                    var PointCus = point * 0.9;
+                    var PointRankingCus = point * 0.1;
+                    //Lưu lại số dư sau khi đã được tính toán
+
+                    od.Point = PointCus;
+                    od.PointRanking = PointRankingCus;
+
+                    MembersPointHistory m = new MembersPointHistory();
+                    MembersPointHistory mr = new MembersPointHistory();
+                    //Tạo lịch sử mua hàng
+                    string title = "Bạn vừa bị trừ " + PointCus + " điểm ví Point từ đơn hàng " + code;
+                    string titleRank = "Bạn vừa bị trừ " + PointRankingCus + " điểm ví tích điểm từ đơn hàng " + code;
+                    m.CustomerID = cusID;
+                    m.Point = PointCus;
+                    m.Type = SystemParam.TYPE_MINUS_POINT_ORDER;
+                    m.AddPointCode = Util.CreateMD5(DateTime.Now.ToString()).Substring(0, 6);
+                    m.TypeAdd = SystemParam.TYPE_POINT;
+                    m.CraeteDate = DateTime.Now;
+                    m.IsActive = SystemParam.ACTIVE;
+                    m.Comment = "Hệ thống trừ điểm ví Point khi mua hàng";
+                    m.Title = title;
+                    m.Balance = cus.Point - PointCus;
+                    //Tạo lịch sử mua hàng
+
+                    mr.CustomerID = cusID;
+                    mr.Point = PointRankingCus;
+                    mr.Type = SystemParam.TYPE_MINUS_POINT_ORDER;
+                    mr.AddPointCode = Util.CreateMD5(DateTime.Now.ToString()).Substring(0, 6);
+                    mr.TypeAdd = SystemParam.TYPE_POINT_RANKING;
+                    mr.CraeteDate = DateTime.Now;
+                    mr.IsActive = SystemParam.ACTIVE;
+                    mr.Comment = "Hệ thống trừ điểm ví tích điểm khi mua hàng";
+                    mr.Title = titleRank;
+                    mr.Balance = cus.PointRanking - PointRankingCus;
+
+                    cus.Point -= PointCus;
+                    cus.PointRanking -= PointRankingCus;
+                    cnn.MembersPointHistories.Add(m);
+                    cnn.MembersPointHistories.Add(mr);
+                    cnn.Orders.Add(od);
+                    cnn.SaveChanges();
+
+                    //Tạo thông báo cho người nhận
+                    packageBusiness.PushNotiAppCNN(PointCus, type, statusOrder, typeNoti, od.ID, title, content, cus.ID, cus.DeviceID, cnn);
+                    packageBusiness.PushNotiAppCNN(PointRankingCus, type, statusOrder, typeNoti, od.ID, titleRank, content, cus.ID, cus.DeviceID, cnn);
+                }
+                else
+                {
+                    cus.Point -= point;
+                    od.Point = point;
+                    MembersPointHistory m = new MembersPointHistory();
+                    //Tạo lịch sử mua hàng
+                    string title = "Bạn vừa bị trừ " + point + " điểm ví Point từ đơn hàng " + code;
+                    m.CustomerID = cusID;
+                    m.Point = point;
+                    m.Type = SystemParam.TYPE_MINUS_POINT_ORDER;
+                    m.AddPointCode = Util.CreateMD5(DateTime.Now.ToString()).Substring(0, 6);
+                    m.TypeAdd = SystemParam.TYPE_POINT;
+                    m.CraeteDate = DateTime.Now;
+                    m.IsActive = SystemParam.ACTIVE;
+                    m.Comment = "Hệ thống trừ điểm ví Point khi mua hàng";
+                    m.Title = title;
+                    m.Balance = cus.Point - point;
+                    cnn.MembersPointHistories.Add(m);
+                    cnn.Orders.Add(od);
+                    cnn.SaveChanges();
+                    packageBusiness.PushNotiAppCNN(point, type, statusOrder, typeNoti, od.ID, title, content, cus.ID, cus.DeviceID, cnn);
+                }
+                conect.Commit();
+                conect.Dispose();
+
+                //Tiến hành gửi thông báo đến web admin
+                var url = SystemParam.URL_WEB_SOCKET + "?content=" + "Đơn hàng " + code + " đang chờ xác nhận&type=" + SystemParam.TYPE_NOTI_ORDER;
+                packageBusiness.GetJson(url);
+
+                int id = cnn.Orders.OrderByDescending(u => u.ID).FirstOrDefault().ID;
+                return GetOrderDetail(id, cus.Point, cus.PointRanking);
+            }
+            catch (Exception ex)
+            {
+                conect.Rollback();
+                conect.Dispose();
+                return null;
+            }
+        }
         // tìm kiếm đơn hàng
         public List<Order> Search(int? Status, string FromDate, string ToDate, string Phone)
         {
@@ -78,8 +203,8 @@ namespace Data.Business
                 data.Code = order.Code;
                 data.ProvinceID = order.ProvinceID;
                 data.DistrictID = order.DistrictID;
-                data.ProvinceName = order.Province.Name;
-                data.DistrictName = order.District.Name;
+                data.ProvinceName = order.Province != null ? order.Province.Name : "";
+                data.DistrictName = order.District != null ? order.District.Name : "";
                 data.Address = order.BuyerAddress;
                 data.Note = order.Note;
                 data.BuyerName = order.BuyerName;

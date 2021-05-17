@@ -133,7 +133,7 @@ namespace APIProject.Controllers
             ViewBag.FromDateHis = FromDate;
             ViewBag.ToDateHis = ToDate;
             IPagedList<GetListHistoryMemberPointInputModel> list = cusBusiness.SearchHistoryPointV(cusID, FromDate, ToDate).ToPagedList(Page, SystemParam.MAX_ROW_IN_LIST_WEB);
-            return PartialView("_ListRequest", list);
+            return PartialView("_ListHistoryPointV", list);
         }
 
         [UserAuthenticationFilter]

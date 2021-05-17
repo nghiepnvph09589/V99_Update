@@ -22,7 +22,8 @@ namespace Data.Utils
         public const string EMAIL_CONFIG = "tichdiemtrieudo123@gmail.com";
         public const string PASS_CONFIG = "gfneiwfxmzdbpvhr";
         public const string PASS_EMAIL = "TichDiemTrieuDo@123";
-        public const string URL_WEB_SOCKET = "http://tdtd.winds.vn:8090/socketio/";
+        //public const string URL_WEB_SOCKET = "http://tdtd.winds.vn:8090/socketio/";
+        public const string URL_WEB_SOCKET = "http://tichdiemv99.winds.vn:8090/socketio/";
         //public const string PASS_CONFIG = "sqsusteaeaztongt";
         //public const string PASS_EMAIL = "windsoft123456a@";
 
@@ -31,6 +32,23 @@ namespace Data.Utils
         public const string URL_ONESIGNAL = "https://onesignal.com/api/v1/notifications";
         public const string URL_BASE_https = "Basic ://onesignal.com/api/v1/notifications";
         public const string ANDROID_CHANNEL_ID = "958b57c5-9726-4c2e-b4ac-0e3f085a957b";
+
+        // config VNPAY
+        public const string vnp_Return_url = "http://weship.winds.vn/VnPay/Index";
+        public const string vnpay_api_url = "http://weship.winds.vn/api/Payment/vnp_ipn";
+        public const string vnp_Url = "http://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
+        public const string vnp_TmnCode = "WESHIP01";
+        public const string vnp_HashSecret = "LRKPTTMKJNEKREDJVXCKGGRXYTJBPVPA";
+        public const string Transaction_False = "Giao dịch thất bại";
+        public const string Transaction_Success = "Giao dịch thành công";
+        public const string customer_failed = "tichdiemv99://failed/";
+        public const string customer_success = "tichdiemv99://success/";
+        public const string vnp_CodeSuccess = "00";
+
+        public const int STATUS_TRANSACTION_SUCCESS = 1;//Giao dịch thành công
+        public const int STATUS_TRANSACTION_WAITING = 0;//Chờ xác nhận
+        public const int STATUS_TRANSACTION_FALSE = -1;//Từ chối
+
 
         public const int TIME_DELAY = 30000;
 
@@ -43,10 +61,14 @@ namespace Data.Utils
         public const int ONESIGNAL_NOTIFY_POINT_HISTORY = 6;//Push onsignal tới màn hình lịch sử tích điểm
         public const int ONESIGNAL_NOTIFY_REQUEST_DETAIL = 7;//push onsignal tới màn hình chi tiết yêu cầu
         public const int ONESIGNAL_NOTIFY_HISTORY_POINT_RANKING = 8;//Lịch sử tích điểm ví tích điểm
+        public const int NOTIFY_ADD_POINT_VNPAY = 9;//Nạp điểm ví Point VNPAY
 
         // Customer
         public const int CUSTOMER_VIP = 1;
         public const int CUSTOMER_NORMAL = 0;
+
+        public const int POINT_NEW_MEMBER = 500;
+        public const int POINT_NEW_MEMBER_REF = 1000;
 
         public const int CONFIG_TIME = 5;
         public const int ROLL_ADMIN = 1;
@@ -302,6 +324,12 @@ namespace Data.Utils
         public const int TYPE_CONVERT_POINT_V_TO_POINT_RANKING = 11;
         //Type chuyển điểm ví tích điểm sang ví V 
         public const int TYPE_CONVERT_POINT_RANKING_TO_POINT_V = 12;
+        //Type cộng điểm ví V khi đăng ký tài khoản
+        public const int TYPE_ADD_POINT_NEW_MEMBER = 13;
+        //Type cộng điểm ví V khi giới thiệu thành viên mới
+        public const int TYPE_ADD_POINT_NEW_MEMBER_REF = 14;
+        //Type nạp tiền ví Point VNPAY
+        public const int TYPE_ADD_POINT_VNPAY = 15;
 
 
         //Type ví điểm tích

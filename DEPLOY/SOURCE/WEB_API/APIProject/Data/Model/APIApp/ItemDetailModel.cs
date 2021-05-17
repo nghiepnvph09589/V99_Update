@@ -12,6 +12,7 @@ namespace Data.Model.APIApp
         public string Name { get; set; }
         public string Code { get; set; }
         public long Price { get; set; }
+        public long PriceVip { get; set; }
         public string Image { get; set; }
         // mô tả sản phẩm
         public string Description { get; set; }
