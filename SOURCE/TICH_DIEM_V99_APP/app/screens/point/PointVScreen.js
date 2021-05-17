@@ -58,7 +58,7 @@ import WalletPointsItem from "@app/components/WalleVItem";
 import { getListPointV } from "../../redux/actions";
 import callAPI, { callAPIHook } from "@app/utils/CallApiHelper";
 import { requestVtoPoint } from "@app/constants/Api";
-
+import NumberFormatTextInput from "react-number-format";
 export class PointVScreen extends Component {
   componentDidMount() {
     this.getData();
@@ -168,13 +168,13 @@ export class PointVScreen extends Component {
 }
 class Option extends Component {
   onChangeText = text => {
-    this.setState({ point: text });
+    this.setState({ point: text, inputvalue: text });
   };
 
   state = {
     modalVisible: false,
     isLoading: false,
-    error: null
+    error: null,
   };
 
   setModalVisible = visible => {
@@ -184,7 +184,7 @@ class Option extends Component {
   postDataVtoPoint = async point => {
     this.setState({ error: null, isLoading: true });
     try {
-      const res = await requestVtoPoint(point);
+      const res = await requestVtoPoint(parseFloat(point));
       await this.props.callBack();
       if (res) {
         this.setState({ isLoading: false, point: "" }, () => {
@@ -238,15 +238,31 @@ class Option extends Component {
         >
           <View style={styles.modalView}>
             <Text style={styles.modalText}>
-              Chuyển từ "Ví V" sang "Ví tích điểm"
+              Chuyển sang Ví tích điểm
             </Text>
-            <TextInput
+            <NumberFormatTextInput
+              value={this.state.inputvalue}
+              displayType={"text"}
+              thousandSeparator={true}
+              renderText={inputvalue =>
+                <TextInput
+                  style={styles.input}
+                  keyboardType="number-pad"
+                  thousandSeparator={true}
+                  // value={inputvalue}
+                  placeholder="Nhập số điểm"
+                  onChangeText={(text) => this.onChangeText(text)}
+                />
+              }
+            />
+
+            {/* <TextInput
               style={styles.input}
               keyboardType="number-pad"
               value={point}
               placeholder="Nhập số điểm"
               onChangeText={this.onChangeText}
-            />
+            /> */}
             <View
               style={{
                 flexDirection: "row",
@@ -297,7 +313,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     borderWidth: 1,
     paddingLeft: 8,
-    borderColor: "#DDD"
+    borderColor: "#DDD",
   },
   centeredView: {
     // flex: 1,
