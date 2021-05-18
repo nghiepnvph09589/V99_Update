@@ -248,7 +248,7 @@ class Option extends Component {
           }}
         >
           <View style={styles.modalView}>
-            <Text style={styles.modalText}>Chuyển từ sang Ví V</Text>
+            <Text style={styles.modalText}>Chuyển sang Ví V</Text>
             <NumberFormatTextInput
               value={this.state.inputvalue}
               displayType={"text"}
