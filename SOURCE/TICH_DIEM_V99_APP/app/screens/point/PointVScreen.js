@@ -184,7 +184,8 @@ class Option extends Component {
   postDataVtoPoint = async point => {
     this.setState({ error: null, isLoading: true });
     try {
-      const res = await requestVtoPoint(parseFloat(point));
+      const res = await requestVtoPoint(parseFloat(point.replace(/,/g, '')));
+      console.log(parseFloat(point.replace(/,/g, '')))
       await this.props.callBack();
       if (res) {
         this.setState({ isLoading: false, point: "" }, () => {
@@ -249,7 +250,7 @@ class Option extends Component {
                   style={styles.input}
                   keyboardType="number-pad"
                   thousandSeparator={true}
-                  // value={inputvalue}
+                  value={inputvalue}
                   placeholder="Nhập số điểm"
                   onChangeText={(text) => this.onChangeText(text)}
                 />

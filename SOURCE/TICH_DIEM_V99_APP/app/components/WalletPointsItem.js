@@ -120,7 +120,7 @@ class WalletPointsItem extends Component {
                         minWidth: width * 0.2,
                     }}>
                         <Text style={{
-                            // color: TitleWalletPointsEnum[item.type].color,
+                            color: TitleWalletPointsEnum[item.type].color,
                             ...theme.fonts.regular16
                         }}>
                             {TitleWalletPointsEnum[item.type].sign}
@@ -128,7 +128,7 @@ class WalletPointsItem extends Component {
                         <NumberFormat
                             value={item.point}
                             perfix='đ'
-                            // color={TitleWalletPointsEnum[item.type].color}
+                            color={TitleWalletPointsEnum[item.type].color}
                             fonts={theme.fonts.regular16}
                         />
                     </View>
