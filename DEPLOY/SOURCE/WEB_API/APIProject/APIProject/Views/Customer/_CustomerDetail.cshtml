@@ -431,13 +431,13 @@
         @* Ví điểm V *@
         <div id="PointV" class="tab-pane">
             <div class="row mb-2 mt-2 ml-2">
-                <p class="mt-3 mb-0" style="font-size:25px;">Số điểm: &nbsp;<span class="text-danger text-bold">@String.Format("{0:0.00}", CusDetail.PointV)</span> điểm</p>
+                <p class="mt-3 mb-0" style="font-size:25px;">Số điểm: &nbsp;<span class="text-danger text-bold">@String.Format("{0:0.00}", CusDetail.PointV)</span> V</p>
             </div>
             <div class="row mb-2 mt-2 ml-2">
                 <p>Lịch sử ví V</p>
             </div>
 
-            <div class="row" id="ListRequest">
+            <div class="row" id="ListHistoryPointV">
                 @{Html.RenderAction("SearchHistoryPointV", "Customer", new { Page = 1, cusID = CusDetail.ID }); }
             </div>
         </div>

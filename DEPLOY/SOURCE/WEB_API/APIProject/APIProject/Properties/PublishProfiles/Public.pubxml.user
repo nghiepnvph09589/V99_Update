@@ -82,13 +82,13 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>02/25/2021 08:50:20</publishTime>
     </File>
     <File Include="bin/APIProject.dll">
-      <publishTime>05/14/2021 16:30:22</publishTime>
+      <publishTime>05/17/2021 09:19:41</publishTime>
     </File>
     <File Include="bin/APIProject.dll.config">
       <publishTime>11/25/2019 14:00:55</publishTime>
     </File>
     <File Include="bin/APIProject.pdb">
-      <publishTime>05/14/2021 16:30:22</publishTime>
+      <publishTime>05/17/2021 09:19:41</publishTime>
     </File>
     <File Include="bin/ApplicationInsights.config">
       <publishTime>02/25/2021 08:50:19</publishTime>
@@ -112,13 +112,13 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>04/22/2019 10:55:47</publishTime>
     </File>
     <File Include="bin/Data.dll">
-      <publishTime>05/14/2021 16:30:18</publishTime>
+      <publishTime>05/17/2021 09:09:26</publishTime>
     </File>
     <File Include="bin/Data.dll.config">
       <publishTime>04/19/2021 12:04:37</publishTime>
     </File>
     <File Include="bin/Data.pdb">
-      <publishTime>05/14/2021 16:30:18</publishTime>
+      <publishTime>05/17/2021 09:09:26</publishTime>
     </File>
     <File Include="bin/Debug/Data.dll">
       <publishTime>05/29/2019 10:03:14</publishTime>
@@ -3721,7 +3721,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>02/25/2021 08:50:19</publishTime>
     </File>
     <File Include="Scripts/ajax.js">
-      <publishTime>05/12/2021 11:50:21</publishTime>
+      <publishTime>05/15/2021 09:31:43</publishTime>
     </File>
     <File Include="Scripts/angular-animate.js">
       <publishTime>02/25/2021 08:50:19</publishTime>
@@ -7537,7 +7537,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>02/25/2021 08:50:20</publishTime>
     </File>
     <File Include="Template/List_Customer.xlsx">
-      <publishTime>02/25/2021 08:50:20</publishTime>
+      <publishTime>05/15/2021 11:28:12</publishTime>
     </File>
     <File Include="Template/List_Order.xlsx">
       <publishTime>02/25/2021 08:50:20</publishTime>
@@ -7627,7 +7627,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>05/12/2021 10:37:24</publishTime>
     </File>
     <File Include="Views/Customer/_CustomerDetail.cshtml">
-      <publishTime>05/12/2021 10:46:54</publishTime>
+      <publishTime>05/15/2021 08:33:42</publishTime>
     </File>
     <File Include="Views/Customer/_ListCustomer.cshtml">
       <publishTime>05/12/2021 10:41:45</publishTime>
@@ -7639,13 +7639,16 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>02/25/2021 08:50:20</publishTime>
     </File>
     <File Include="Views/Customer/_ListHistoryPoint.cshtml">
-      <publishTime>02/25/2021 08:50:20</publishTime>
+      <publishTime>05/15/2021 09:48:03</publishTime>
+    </File>
+    <File Include="Views/Customer/_ListHistoryPointV.cshtml">
+      <publishTime>05/15/2021 09:47:59</publishTime>
     </File>
     <File Include="Views/Customer/_ListOrderHistory.cshtml">
       <publishTime>09/08/2020 10:29:15</publishTime>
     </File>
     <File Include="Views/Customer/_ListRequest.cshtml">
-      <publishTime>02/25/2021 08:50:20</publishTime>
+      <publishTime>05/15/2021 09:43:02</publishTime>
     </File>
     <File Include="Views/Home/Index.cshtml">
       <publishTime>02/25/2021 08:50:20</publishTime>

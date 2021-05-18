@@ -1,0 +1,75 @@
+﻿@using Data.DB
+@using Data.Model.APIWeb
+@using PagedList.Mvc
+@using PagedList
+@using Data.Utils
+@model IPagedList<GetListHistoryMemberPointInputModel>
+@* Ví tích điểm  *@
+<div class="col-md-12">
+    <table class="table table-light table-bordered table-hover table-responsive-sm table-responsive-md">
+        <thead class="text-center text-white bg-thead">
+            <tr>
+                <th class="width-stt">STT</th>
+                <th>Tác vụ</th>
+                <th>Số điểm</th>
+                <th>Ngày tạo</th>
+            </tr>
+        </thead>
+        <tbody class="text-center">
+            @{ if (Model.Count() <= 0)
+                {
+                    <tr>
+                        <td colspan="10">Không có dữ liệu.</td>
+                    </tr>
+                }
+                else
+                {
+                    int stt = ((Model.PageNumber - 1) * Model.PageSize) + 1;
+                    foreach (var data in Model)
+                    {
+                        <tr>
+                            <td>@stt</td>
+                            @{ if (@data.Type == SystemParam.TYPE_CONVERT_POINT_V_TO_POINT_RANKING)
+                                {
+                                    <td>Chuyển điểm từ ví Point sang ví tích điểm</td>
+                                    <td>- @String.Format("{0:0.00}", data.Point)</td>
+                                }
+                                else if (@data.Type == SystemParam.TYPE_CONVERT_POINT_RANKING_TO_POINT_V)
+                                {
+                                    <td>Chuyển điểm từ ví tích điểm sang ví Point</td>
+                                    <td>+ @String.Format("{0:0.00}", data.Point)</td>
+                                }else if (@data.Type == SystemParam.TYPE_ADD_POINT_NEW_MEMBER)
+                                {
+                                    <td>Tặng điểm thành viên mới </td>
+                                    <td>+ @String.Format("{0:0.00}", data.Point)</td>
+                                }else if (@data.Type == SystemParam.TYPE_ADD_POINT_NEW_MEMBER_REF)
+                                {
+                                    <td>Tặng điểm giới thiệu thành viên mới </td>
+                                    <td>+ @String.Format("{0:0.00}", data.Point)</td>
+                                }
+                             }
+
+                            
+
+                            <td>@data.CreateDate.Value.ToString("dd/MM/yyyy hh:mm")</td>
+
+                        </tr>
+                    stt++;
+                    }
+                } }
+        </tbody>
+    </table>
+</div>
+
+
+
+<div class="col-md-12">
+    <div class="row float-right mr-1">
+        @*phân trang*@
+        @Html.PagedListPager(
+            Model,
+            page => Url.Action("SearchHistoryPointR", "Customer", new { Page = page, FromDate = ViewBag.FromDateRQ, ToDate = ViewBag.ToDateRQ, cusID = ViewBag.cusID }),
+            PagedListRenderOptions.EnableUnobtrusiveAjaxReplacing(new AjaxOptions() { HttpMethod = "GET", UpdateTargetId = "ListRequest" })
+            )
+    </div>
+</div>

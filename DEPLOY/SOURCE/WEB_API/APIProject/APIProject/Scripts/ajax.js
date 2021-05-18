@@ -3043,6 +3043,13 @@ function CreateItem() {
             icon: "warning"
         })
         return;
+    } else if (PriceVip > Price) {
+        swal({
+            title: "Thông báo",
+            text: "Giá VIP phải nhỏ hơn hoặc bằng giá gốc!",
+            icon: "warning"
+        })
+        return;
     }
     else {
         if (!isNumeric(Price)) {
@@ -3192,6 +3199,13 @@ function SaveEditItem() {
         swal({
             title: "Thông báo",
             text: "Vui lòng nhập đầy đủ thông tin!",
+            icon: "warning"
+        })
+        return;
+    }else if (PriceVip > Price) {
+        swal({
+            title: "Thông báo",
+            text: "Giá VIP phải nhỏ hơn hoặc bằng giá gốc!",
             icon: "warning"
         })
         return;

@@ -25,9 +25,134 @@ namespace Data.Business
         }
         RequestAPIBusiness apiBus = new RequestAPIBusiness();
         AgentBusiness agentBusiness = new AgentBusiness();
-
+        PackageBusiness packageBusiness = new PackageBusiness();
         MembersPointHistory hisPoint = new MembersPointHistory();
         PointBusiness pointBus = new PointBusiness();
+
+
+        public OrderOutputModel CreateOrder(OrderDetailOutputModel input, int cusID, string lastRefCode)
+        {
+            var conect = cnn.Database.BeginTransaction();
+            try
+            {
+
+                //tạo một đơn hàng mới
+
+                Order od = new Order();
+                var cus = cnn.Customers.Where(c => c.ID == cusID).FirstOrDefault();
+                var code = Util.CreateMD5(DateTime.Now.ToString()).Substring(0, 6);
+                List<OrderItem> listOI = CreateOrderItem(input.listOrderItem);
+                var point = Math.Round(Convert.ToDouble(listOI.Select(u => u.SumPrice).Sum()) / 1000, 2);
+                //Tính toán lại số dư khi mua hàng
+                od.Code = code;
+                od.Status = SystemParam.STATUS_ORDER_PENDING;
+                od.Type = SystemParam.TYPE_ORDER;
+                od.PointAdd = 0;
+                od.IsActive = SystemParam.ACTIVE;
+                od.CreateDate = DateTime.Now;
+                od.CustomerID = cusID;
+                od.ProvinceID = input.ProvinceID;
+                od.DistrictID = input.DistrictID;
+                od.Note = input.Note;
+                od.TotalPrice = Convert.ToInt64(listOI.Select(u => u.SumPrice).Sum());
+                od.Discount = 0;
+                od.OrderItems = listOI;
+                od.BuyerName = input.BuyerName.Trim();
+                od.BuyerPhone = input.BuyerPhone;
+                od.BuyerAddress = input.Address.Trim();
+                od.LastRefCode = lastRefCode;
+
+                string content = "Hệ thống trừ điểm khi mua hàng";
+                var type = SystemParam.NOTIFY_NAVIGATE_ORDER;
+                var typeNoti = SystemParam.NOTIFY_NAVIGATE_HISTORY;
+                var statusOrder = SystemParam.STATUS_ORDER_PENDING;
+                if (cus.PointRanking >= point * 0.1)
+                {
+                    var PointCus = point * 0.9;
+                    var PointRankingCus = point * 0.1;
+                    //Lưu lại số dư sau khi đã được tính toán
+
+                    od.Point = PointCus;
+                    od.PointRanking = PointRankingCus;
+
+                    MembersPointHistory m = new MembersPointHistory();
+                    MembersPointHistory mr = new MembersPointHistory();
+                    //Tạo lịch sử mua hàng
+                    string title = "Bạn vừa bị trừ " + PointCus + " điểm ví Point từ đơn hàng " + code;
+                    string titleRank = "Bạn vừa bị trừ " + PointRankingCus + " điểm ví tích điểm từ đơn hàng " + code;
+                    m.CustomerID = cusID;
+                    m.Point = PointCus;
+                    m.Type = SystemParam.TYPE_MINUS_POINT_ORDER;
+                    m.AddPointCode = Util.CreateMD5(DateTime.Now.ToString()).Substring(0, 6);
+                    m.TypeAdd = SystemParam.TYPE_POINT;
+                    m.CraeteDate = DateTime.Now;
+                    m.IsActive = SystemParam.ACTIVE;
+                    m.Comment = "Hệ thống trừ điểm ví Point khi mua hàng";
+                    m.Title = title;
+                    m.Balance = cus.Point - PointCus;
+                    //Tạo lịch sử mua hàng
+
+                    mr.CustomerID = cusID;
+                    mr.Point = PointRankingCus;
+                    mr.Type = SystemParam.TYPE_MINUS_POINT_ORDER;
+                    mr.AddPointCode = Util.CreateMD5(DateTime.Now.ToString()).Substring(0, 6);
+                    mr.TypeAdd = SystemParam.TYPE_POINT_RANKING;
+                    mr.CraeteDate = DateTime.Now;
+                    mr.IsActive = SystemParam.ACTIVE;
+                    mr.Comment = "Hệ thống trừ điểm ví tích điểm khi mua hàng";
+                    mr.Title = titleRank;
+                    mr.Balance = cus.PointRanking - PointRankingCus;
+
+                    cus.Point -= PointCus;
+                    cus.PointRanking -= PointRankingCus;
+                    cnn.MembersPointHistories.Add(m);
+                    cnn.MembersPointHistories.Add(mr);
+                    cnn.Orders.Add(od);
+                    cnn.SaveChanges();
+
+                    //Tạo thông báo cho người nhận
+                    packageBusiness.PushNotiAppCNN(PointCus, type, statusOrder, typeNoti, od.ID, title, content, cus.ID, cus.DeviceID, cnn);
+                    packageBusiness.PushNotiAppCNN(PointRankingCus, type, statusOrder, typeNoti, od.ID, titleRank, content, cus.ID, cus.DeviceID, cnn);
+                }
+                else
+                {
+                    cus.Point -= point;
+                    od.Point = point;
+                    MembersPointHistory m = new MembersPointHistory();
+                    //Tạo lịch sử mua hàng
+                    string title = "Bạn vừa bị trừ " + point + " điểm ví Point từ đơn hàng " + code;
+                    m.CustomerID = cusID;
+                    m.Point = point;
+                    m.Type = SystemParam.TYPE_MINUS_POINT_ORDER;
+                    m.AddPointCode = Util.CreateMD5(DateTime.Now.ToString()).Substring(0, 6);
+                    m.TypeAdd = SystemParam.TYPE_POINT;
+                    m.CraeteDate = DateTime.Now;
+                    m.IsActive = SystemParam.ACTIVE;
+                    m.Comment = "Hệ thống trừ điểm ví Point khi mua hàng";
+                    m.Title = title;
+                    m.Balance = cus.Point - point;
+                    cnn.MembersPointHistories.Add(m);
+                    cnn.Orders.Add(od);
+                    cnn.SaveChanges();
+                    packageBusiness.PushNotiAppCNN(point, type, statusOrder, typeNoti, od.ID, title, content, cus.ID, cus.DeviceID, cnn);
+                }
+                conect.Commit();
+                conect.Dispose();
+
+                //Tiến hành gửi thông báo đến web admin
+                var url = SystemParam.URL_WEB_SOCKET + "?content=" + "Đơn hàng " + code + " đang chờ xác nhận&type=" + SystemParam.TYPE_NOTI_ORDER;
+                packageBusiness.GetJson(url);
+
+                int id = cnn.Orders.OrderByDescending(u => u.ID).FirstOrDefault().ID;
+                return GetOrderDetail(id, cus.Point, cus.PointRanking);
+            }
+            catch (Exception ex)
+            {
+                conect.Rollback();
+                conect.Dispose();
+                return null;
+            }
+        }
         // tìm kiếm đơn hàng
         public List<Order> Search(int? Status, string FromDate, string ToDate, string Phone)
         {
@@ -65,7 +190,7 @@ namespace Data.Business
             }
         }
 
-        public OrderDetailOutputModel GetOrderDetail(int orderID, double? balance,double? balanceRanking)
+        public OrderDetailOutputModel GetOrderDetail(int orderID, double? balance, double? balanceRanking)
         {
             OrderDetailOutputModel data = new OrderDetailOutputModel();
             var order = cnn.Orders.Find(orderID);
@@ -78,8 +203,8 @@ namespace Data.Business
                 data.Code = order.Code;
                 data.ProvinceID = order.ProvinceID;
                 data.DistrictID = order.DistrictID;
-                data.ProvinceName = order.Province.Name;
-                data.DistrictName = order.District.Name;
+                data.ProvinceName = order.Province != null ? order.Province.Name : "";
+                data.DistrictName = order.District != null ? order.District.Name : "";
                 data.Address = order.BuyerAddress;
                 data.Note = order.Note;
                 data.BuyerName = order.BuyerName;
@@ -155,7 +280,7 @@ namespace Data.Business
                 cnn.Orders.Add(od);
                 cnn.SaveChanges();
                 int id = cnn.Orders.OrderByDescending(u => u.ID).FirstOrDefault().ID;
-                return GetOrderDetail(id, null,null);
+                return GetOrderDetail(id, null, null);
             }
             catch
             {
@@ -309,12 +434,15 @@ namespace Data.Business
                 var customer = cnn.Customers.Find(itemEdit.CustomerID);
                 //var PointNow = cnn.Customers.Find(itemEdit.CustomerID).Point;
                 var statusCurrent = itemEdit.Status;
-                var returnPoint = Math.Round(Convert.ToDouble(Convert.ToDouble(cnn.Orders.Find(ID).TotalPrice) / 1000),2);
-                var plusPoint = Math.Round(Convert.ToDouble((Convert.ToDouble(cnn.Orders.Find(ID).TotalPrice) / 1000) * SystemParam.PARAM_PLUS),2);
+                var returnPoint = Math.Round(Convert.ToDouble(Convert.ToDouble(cnn.Orders.Find(ID).Point.GetValueOrDefault()) / 1000), 2);
+                var returnPointRanking = Math.Round(Convert.ToDouble(Convert.ToDouble(cnn.Orders.Find(ID).PointRanking.GetValueOrDefault()) / 1000), 2);
+                var totalPoint = returnPoint + returnPointRanking;
+                var plusPoint = Math.Round(Convert.ToDouble((Convert.ToDouble(cnn.Orders.Find(ID).TotalPrice) / 1000) * SystemParam.PARAM_PLUS), 2);
                 double? cusPoint = customer.Point;
                 double? cusPointRanking = customer.PointRanking;
                 double? pointUserTake = null;
                 double? PointRankingUserTake = null;
+                double? AddPointRanking = null;
                 //if (AddPoint == null)
                 //{
                 //    AddPoint = 0;
@@ -350,9 +478,13 @@ namespace Data.Business
                 //else 
                 if (itemEdit.Status == SystemParam.STATUS_ORDER_CANCEL || itemEdit.Status == SystemParam.STATUS_ORDER_REFUSE)
                 {
+
                     AddPoint = Convert.ToDouble(returnPoint);
-                    cusPointRanking = AddPoint.Value + customer.Point;
+                    AddPointRanking = Convert.ToDouble(returnPointRanking);
+                    cusPoint = AddPoint.Value + customer.Point;
+                    cusPointRanking = AddPointRanking.GetValueOrDefault() + customer.PointRanking;
                     customer.Point = AddPoint.Value + customer.Point;
+                    customer.PointRanking = AddPointRanking.GetValueOrDefault() + customer.PointRanking;
                 }
                 else if (itemEdit.Status == SystemParam.STATUS_ORDER_PAID)
                 {
@@ -366,9 +498,9 @@ namespace Data.Business
                         //Lấy id của mã giới thiệu
                         Customer customerRecommend = null;
                         int? idcr = (from c in cnn.Customers
-                                    where c.Phone.Equals(LastRefCode) && c.IsActive.Equals(1) && c.Status.Equals(SystemParam.ACTIVE)
-                                    select c.ID).FirstOrDefault();
-                        if(idcr.HasValue && idcr > 0 )
+                                     where c.Phone.Equals(LastRefCode) && c.IsActive.Equals(1) && c.Status.Equals(SystemParam.ACTIVE)
+                                     select c.ID).FirstOrDefault();
+                        if (idcr.HasValue && idcr > 0)
                         {
                             customerRecommend = cnn.Customers.Find(idcr.Value);
                             //var PointNowRecommend = cnn.Customers.Find(from c in cnn.Customers
@@ -379,7 +511,7 @@ namespace Data.Business
                                               where config.ID.Equals(SystemParam.TYPE_POINT_RANKING)
                                               select config.Value).FirstOrDefault();
                             //Cộng điểm cho khách giới thiệu
-                            customerRecommend.Point = customerRecommend.Point + Math.Round(Convert.ToDouble(returnPoint * Convert.ToDouble(addPointcr) / 100),2);
+                            customerRecommend.Point = customerRecommend.Point + Math.Round(Convert.ToDouble(totalPoint * Convert.ToDouble(addPointcr) / 100), 2);
                             //pointUserTake = customerRecommend.PointRanking + (returnPoint * Convert.ToDouble(addPointcr)) / 100;
                             //PointRankingUserTake = customerRecommend.PointRanking;
                             //customerRecommend.Point = pointUserTake;//điểm + thêm cho sđt giới thiệu
@@ -393,6 +525,7 @@ namespace Data.Business
                 cnn.SaveChanges();
                 string titleNotify = "";
                 string contentNoti = "";
+                string contentNotiRanking = "";
                 int typeNotify = 0;
                 //thông báo cho khách giới thiệu
                 string titleNotifyR = "";
@@ -437,8 +570,8 @@ namespace Data.Business
                             //Lấy id của mã giới thiệu
                             Customer customerRecommend = null;
                             int? idcr = (from c in cnn.Customers
-                                        where c.Phone.Equals(LastRefCode) && c.IsActive.Equals(1) && c.Status.Equals(SystemParam.ACTIVE)
-                                        select c.ID).FirstOrDefault();
+                                         where c.Phone.Equals(LastRefCode) && c.IsActive.Equals(1) && c.Status.Equals(SystemParam.ACTIVE)
+                                         select c.ID).FirstOrDefault();
                             if (idcr.HasValue && idcr > 0)
                             {
                                 customerRecommend = cnn.Customers.Find(idcr.Value);
@@ -452,15 +585,22 @@ namespace Data.Business
                                 notifyBusiness.CreateNoti(idcr.Value, SystemParam.TYPE_ADD_POINT, contentNotiR, contentNotiR, ID);
                                 pointBus.CreateHistoryes(idcr.Value, Convert.ToDouble(addPointcrplus), SystemParam.TYPE_ADD_POINT_PRODUCT_INTRODUCTION, SystemParam.TYPE_POINT, itemEdit.Code, "Bạn vừa được cộng " + addPointcrplus + " điểm từ đơn hàng giới thiệu vào ví Point " + itemEdit.Code, 0);
                             }
-                            
+
                         }
                     }
                     else if (Status == SystemParam.STATUS_ORDER_REFUSE || Status == SystemParam.STATUS_ORDER_CANCEL)
                     {
 
-                        contentNoti = "Đơn hàng " + itemEdit.Code + " của bạn " + titleNotify + " và bạn được hoàn trả " + AddPoint + " điểm ";
+                        contentNoti = "Đơn hàng " + itemEdit.Code + " của bạn " + titleNotify + " và bạn được hoàn trả " + AddPoint + " điểm vào ví Point";
                         notifyBusiness.CreateNoti(itemEdit.CustomerID, SystemParam.TYPE_ADD_POINT, contentNoti, contentNoti, ID);
                         pointBus.CreateHistoryes(itemEdit.CustomerID, AddPoint.Value, SystemParam.TYPEADD_POINT_FROM_BILL, SystemParam.TYPE_POINT, itemEdit.Code, "Bạn vừa được hoàn trả " + AddPoint + " điểm từ đơn hàng vào ví point" + itemEdit.Code, 0);
+                        if (itemEdit.PointRanking.HasValue)
+                        {
+                            contentNotiRanking = "Đơn hàng " + itemEdit.Code + " của bạn " + titleNotify + " và bạn được hoàn trả " + AddPointRanking + " điểm vào ví Tích điểm";
+                            notifyBusiness.CreateNoti(itemEdit.CustomerID, SystemParam.TYPE_ADD_POINT, contentNotiRanking, contentNotiRanking, ID);
+                            pointBus.CreateHistoryes(itemEdit.CustomerID, AddPointRanking.Value, SystemParam.TYPEADD_POINT_FROM_BILL, SystemParam.TYPE_POINT_RANKING, itemEdit.Code, "Bạn vừa được hoàn trả " + AddPointRanking + " điểm từ đơn hàng vào ví tích điểm" + itemEdit.Code, 0);
+
+                        }
                     }
 
                     else
@@ -480,7 +620,12 @@ namespace Data.Business
                         List<string> listDevice = new List<string>();
                         listDevice.Add(customer.DeviceID);
                         string value = packageBusiness.StartPushNoti(notifyData, listDevice, SystemParam.TICHDIEM_NOTI, contentNoti);
-                       packageBusiness.PushOneSignals(value);
+                        packageBusiness.PushOneSignals(value);
+                        if (itemEdit.PointRanking.HasValue)
+                        {
+                            string valueRanking = packageBusiness.StartPushNoti(notifyData, listDevice, SystemParam.TICHDIEM_NOTI, contentNotiRanking);
+                            packageBusiness.PushOneSignals(valueRanking);
+                        }
                         if (Status == SystemParam.STATUS_ORDER_PAID)
                         {
 
@@ -489,8 +634,8 @@ namespace Data.Business
                                 //Lấy id của mã giới thiệu
                                 Customer customerRecommend = null;
                                 int? idcr = (from c in cnn.Customers
-                                            where c.Phone.Equals(LastRefCode) && c.IsActive.Equals(SystemParam.ACTIVE) && c.Status.Equals(SystemParam.ACTIVE)
-                                            select c.ID).FirstOrDefault();
+                                             where c.Phone.Equals(LastRefCode) && c.IsActive.Equals(SystemParam.ACTIVE) && c.Status.Equals(SystemParam.ACTIVE)
+                                             select c.ID).FirstOrDefault();
                                 if (idcr.HasValue && idcr > 0)
                                 {
                                     customerRecommend = cnn.Customers.Find(idcr.Value);
@@ -513,7 +658,7 @@ namespace Data.Business
                                         packageBusiness.PushOneSignals(valueR);
                                     }
                                 }
-                                
+
                             }
                         }
                     }
@@ -548,7 +693,7 @@ namespace Data.Business
         {
             int isDone = cnn.Orders.Count(x => x.Status == 0 && x.IsActive == 1);
             int orderCount = cnn.Orders.Where(x => x.IsActive == 1).Count();
-            int isActive = cnn.Orders.Where(x => x.IsActive == SystemParam.ACTIVE&& x.Type==SystemParam.TYPE_ORDER).Count();
+            int isActive = cnn.Orders.Where(x => x.IsActive == SystemParam.ACTIVE && x.Type == SystemParam.TYPE_ORDER).Count();
             //return "" + isDone + " / " + orderCount;
             return "" + isActive;
         }

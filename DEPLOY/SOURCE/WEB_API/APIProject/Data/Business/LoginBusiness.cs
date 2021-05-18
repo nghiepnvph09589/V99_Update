@@ -425,16 +425,39 @@ namespace Data.Business
                     cus.ExpireTocken = DateTime.Now.AddYears(1);
                     cus.Token = Util.CreateMD5(DateTime.Now.ToString());
                     cus.IsVip = SystemParam.CUSTOMER_NORMAL;
-                    cus.PointV = 500;
+                    cus.PointV = SystemParam.POINT_NEW_MEMBER;                   
                     cus.LastRefCode = input.LastRefCode;
-                    cus.Phone = input.Phone;
-                    cnn.SaveChanges();
+                    cus.Phone = input.Phone;                    
                     data.UserID = cus.ID;
+                    MembersPointHistory m = new MembersPointHistory();
+                    m.CustomerID = cus.ID;
+                    m.Point = SystemParam.POINT_NEW_MEMBER;
+                    m.Type = SystemParam.TYPE_ADD_POINT_NEW_MEMBER;
+                    m.AddPointCode = Util.CreateMD5(DateTime.Now.ToString()).Substring(0, 6);
+                    m.TypeAdd = SystemParam.TYPE_POINT_V;
+                    m.CraeteDate = DateTime.Now;
+                    m.IsActive = SystemParam.ACTIVE;
+                    m.Comment = "Thưởng điểm cho thành viên mới ";
+                    m.Title = "Ví V đã được cộng" + SystemParam.POINT_NEW_MEMBER + "điểm";
+                    m.Balance = SystemParam.POINT_NEW_MEMBER;
+                    var customerRef = cnn.Customers.FirstOrDefault(x => x.Phone == input.LastRefCode);
+                    customerRef.PointV += SystemParam.POINT_NEW_MEMBER_REF;
+                    MembersPointHistory mr = new MembersPointHistory();
+                    mr.CustomerID = cus.ID;
+                    mr.Point = SystemParam.POINT_NEW_MEMBER_REF;
+                    mr.Type = SystemParam.TYPE_ADD_POINT_NEW_MEMBER_REF;
+                    mr.AddPointCode = Util.CreateMD5(DateTime.Now.ToString()).Substring(0, 6);
+                    mr.TypeAdd = SystemParam.TYPE_POINT_V;
+                    mr.CraeteDate = DateTime.Now;
+                    mr.IsActive = SystemParam.ACTIVE;
+                    mr.Comment = "Thưởng điểm cho người giới thiệu thành viên mới ";
+                    mr.Title = "Ví V đã được cộng" + SystemParam.POINT_NEW_MEMBER_REF + "điểm";
+                    mr.Balance = customerRef.PointV;
+                    cnn.MembersPointHistories.Add(m);
+                    cnn.SaveChanges();
                     return data;
                 }
-                var customerRef = cnn.Customers.FirstOrDefault(x => x.Phone == input.LastRefCode);
-                customerRef.PointV += 1000;
-                cnn.SaveChanges();
+                
                 data.UserID = 0;
                 return data;
 
