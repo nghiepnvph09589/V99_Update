@@ -13,8 +13,8 @@
     "pod": "cd ios && pod install && cd..",
     "li": "dot_clean -n . && node generateAssetResource.js",
     "reverse": "adb reverse tcp:9090 tcp:9090; adb reverse tcp:19001 tcp:19001;",
-    "cpi": "appcenter codepush release-react -a Apps-Windsoft/TD_TRIEUDO_IOS -d Production",
-    "cpa": "appcenter codepush release-react -a Apps-Windsoft/TD_TRIEUDO_ANDROID -d Production",
+    "cpi": "appcenter codepush release-react -a Apps-Windsoft/TICH_DIEM_V99 -d Production",
+    "cpa": "appcenter codepush release-react -a Apps-Windsoft/TICH_DIEM_V99_ANDROID -d Production",
     "postinstall": "patch-package"
   },
   "dependencies": {

@@ -19,11 +19,11 @@
 		2346FF3F03304C28A3FC5156 /* Roboto-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 3EA787AE8C3648D3B4D915EF /* Roboto-Bold.ttf */; };
 		2CB0E17E23D44C798B19377E /* SourceSansPro-BoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B1B1FE6DD1694AEFADA931F0 /* SourceSansPro-BoldItalic.ttf */; };
 		2D02E4BC1E0B4A80006451C7 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
-		2D02E4BD1E0B4A84006451C7 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		2D02E4BF1E0B4AB3006451C7 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		2DCD954D1E0B4F2C00145EB5 /* TICHDIEMV99Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* TICHDIEMV99Tests.m */; };
 		304EB0FDD33047DAA1327298 /* SourceSansPro-Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 183FCC13E39B4A64A8A112C0 /* SourceSansPro-Black.ttf */; };
 		3F5DB20ED728461FB51511F0 /* Roboto-ThinItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = BA36CB479A87411A9E7AB3F0 /* Roboto-ThinItalic.ttf */; };
+		4605073F2653645700930FB4 /* MyLaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4605073E2653645700930FB4 /* MyLaunchScreen.storyboard */; };
 		5C23BEA5164742889495F980 /* SourceSansPro-ExtraLight.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9A4ADBF31FA840148F00A97B /* SourceSansPro-ExtraLight.ttf */; };
 		67BE55D1FDB84D68F3D7FB15 /* libPods-TICHDIEMV99Tests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8CC268B64B09317A8C7D1435 /* libPods-TICHDIEMV99Tests.a */; };
 		6AF988758736489C8E8E0AD3 /* SourceSansPro-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6E17FC802E6A476AAAB8FCD3 /* SourceSansPro-Light.ttf */; };
@@ -85,7 +85,7 @@
 		0F9B3C9D235A0039008C6EA5 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		0FCE9088236D34CF008A3E74 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		11779F9B7F7320692F9FAC5D /* Pods-TICHDIEMV99.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TICHDIEMV99.release.xcconfig"; path = "Target Support Files/Pods-TICHDIEMV99/Pods-TICHDIEMV99.release.xcconfig"; sourceTree = "<group>"; };
-		13B07F961A680F5B00A75B9A /* Trà Tiên Thảo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Trà Tiên Thảo.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		13B07F961A680F5B00A75B9A /* Tích điểm v99.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Tích điểm v99.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = TICHDIEMV99/AppDelegate.h; sourceTree = "<group>"; };
 		13B07FB01A68108700A75B9A /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppDelegate.m; path = TICHDIEMV99/AppDelegate.m; sourceTree = "<group>"; };
 		13B07FB21A68108700A75B9A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
@@ -110,6 +110,7 @@
 		4030A2C302D74C9EB20E4292 /* FontAwesome.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome.ttf"; sourceTree = "<group>"; };
 		429A036D270648CAE1D281DA /* Pods-TICHDIEMV99Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TICHDIEMV99Tests.debug.xcconfig"; path = "Target Support Files/Pods-TICHDIEMV99Tests/Pods-TICHDIEMV99Tests.debug.xcconfig"; sourceTree = "<group>"; };
 		4328E95D1B7941FBA5BB872A /* SourceSansPro-BlackItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "SourceSansPro-BlackItalic.ttf"; path = "../app/assets/fonts/SourceSansPro-BlackItalic.ttf"; sourceTree = "<group>"; };
+		4605073E2653645700930FB4 /* MyLaunchScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = MyLaunchScreen.storyboard; sourceTree = "<group>"; };
 		4FDBC33669384178B076A35D /* SourceSansPro-ExtraLight.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "SourceSansPro-ExtraLight.ttf"; path = "../assets/fonts/SourceSansPro-ExtraLight.ttf"; sourceTree = "<group>"; };
 		5004A93FAE174CD79DB275EB /* Roboto-ThinItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Roboto-ThinItalic.ttf"; path = "../assets/fonts/Roboto-ThinItalic.ttf"; sourceTree = "<group>"; };
 		5531C09A36F048F7AA3E56BA /* Roboto-BlackItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Roboto-BlackItalic.ttf"; path = "../app/assets/fonts/Roboto-BlackItalic.ttf"; sourceTree = "<group>"; };
@@ -226,6 +227,7 @@
 				13B07FB61A68108700A75B9A /* Info.plist */,
 				13B07FB11A68108700A75B9A /* LaunchScreen.xib */,
 				13B07FB71A68108700A75B9A /* main.m */,
+				4605073E2653645700930FB4 /* MyLaunchScreen.storyboard */,
 			);
 			name = TICHDIEMV99;
 			sourceTree = "<group>";
@@ -279,7 +281,7 @@
 		83CBBA001A601CBA00E9B192 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				13B07F961A680F5B00A75B9A /* Trà Tiên Thảo.app */,
+				13B07F961A680F5B00A75B9A /* Tích điểm v99.app */,
 				00E356EE1AD99517003FC87E /* TICHDIEMV99Tests.xctest */,
 				2D02E47B1E0B4A5D006451C7 /* TICHDIEMV99-tvOS.app */,
 				2D02E4901E0B4A5D006451C7 /* TICHDIEMV99-tvOSTests.xctest */,
@@ -398,7 +400,7 @@
 			);
 			name = TICHDIEMV99;
 			productName = TICHDIEMV99;
-			productReference = 13B07F961A680F5B00A75B9A /* Trà Tiên Thảo.app */;
+			productReference = 13B07F961A680F5B00A75B9A /* Tích điểm v99.app */;
 			productType = "com.apple.product-type.application";
 		};
 		2D02E47A1E0B4A5D006451C7 /* TICHDIEMV99-tvOS */ = {
@@ -540,6 +542,7 @@
 				6AF988758736489C8E8E0AD3 /* SourceSansPro-Light.ttf in Resources */,
 				F18C02C3504F4859887D5EAF /* SourceSansPro-LightItalic.ttf in Resources */,
 				AF71301CC9644921ACEC759B /* SourceSansPro-Regular.ttf in Resources */,
+				4605073F2653645700930FB4 /* MyLaunchScreen.storyboard in Resources */,
 				7EB24BA297F741ADBD0C8FDB /* SourceSansPro-SemiBold.ttf in Resources */,
 				744F0945664E495DB5917E00 /* SourceSansPro-SemiBoldItalic.ttf in Resources */,
 			);
@@ -549,7 +552,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2D02E4BD1E0B4A84006451C7 /* Images.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -822,7 +824,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				"PROVISIONING_PROFILE_SPECIFIER[sdk=macosx*]" = "";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Trà Tiên Thảo.app/Trà Tiên Thảo";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Tích điểm v99.app/Tích điểm v99";
 			};
 			name = Debug;
 		};
@@ -849,7 +851,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				"PROVISIONING_PROFILE_SPECIFIER[sdk=macosx*]" = "";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Trà Tiên Thảo.app/Trà Tiên Thảo";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Tích điểm v99.app/Tích điểm v99";
 			};
 			name = Release;
 		};
@@ -861,23 +863,23 @@
 				CODE_SIGN_ENTITLEMENTS = TICHDIEMV99/TICHDIEMV99.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 3;
 				DEAD_CODE_STRIPPING = NO;
 				DEVELOPMENT_TEAM = 7G476N269U;
 				ENABLE_BITCODE = NO;
 				EXCLUDED_ARCHS = "";
-				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = "arm64,armv7";
+				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = arm64;
 				INFOPLIST_FILE = TICHDIEMV99/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.0.0;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
 					"-lc++",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = vn.com.tichdiemv99;
-				PRODUCT_NAME = "Trà Tiên Thảo";
+				PRODUCT_NAME = "Tích điểm v99";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				TARGETED_DEVICE_FAMILY = 1;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -892,22 +894,22 @@
 				CODE_SIGN_ENTITLEMENTS = TICHDIEMV99/TICHDIEMV99.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 3;
 				DEVELOPMENT_TEAM = 7G476N269U;
 				ENABLE_BITCODE = NO;
 				EXCLUDED_ARCHS = "";
-				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = "arm64,armv7";
+				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = arm64;
 				INFOPLIST_FILE = TICHDIEMV99/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.0.0;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
 					"-lc++",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = vn.com.tichdiemv99;
-				PRODUCT_NAME = "Trà Tiên Thảo";
+				PRODUCT_NAME = "Tích điểm v99";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				TARGETED_DEVICE_FAMILY = 1;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -941,7 +943,7 @@
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = appletvos;
 				TARGETED_DEVICE_FAMILY = 3;
-				TVOS_DEPLOYMENT_TARGET = 9.2;
+				TVOS_DEPLOYMENT_TARGET = 11.0;
 			};
 			name = Debug;
 		};
@@ -972,7 +974,7 @@
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = appletvos;
 				TARGETED_DEVICE_FAMILY = 3;
-				TVOS_DEPLOYMENT_TARGET = 9.2;
+				TVOS_DEPLOYMENT_TARGET = 11.0;
 			};
 			name = Release;
 		};
@@ -999,7 +1001,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.facebook.REACT.TICHDIEMV99-tvOSTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = appletvos;
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Trà Tiên Thảo.app/Trà Tiên Thảo";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Tích điểm v99.app/Tích điểm v99";
 				TVOS_DEPLOYMENT_TARGET = 10.1;
 			};
 			name = Debug;
@@ -1027,7 +1029,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.facebook.REACT.TICHDIEMV99-tvOSTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = appletvos;
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Trà Tiên Thảo.app/Trà Tiên Thảo";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Tích điểm v99.app/Tích điểm v99";
 				TVOS_DEPLOYMENT_TARGET = 10.1;
 			};
 			name = Release;
@@ -1082,7 +1084,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = NO;
 				SDKROOT = iphoneos;
@@ -1132,7 +1134,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;

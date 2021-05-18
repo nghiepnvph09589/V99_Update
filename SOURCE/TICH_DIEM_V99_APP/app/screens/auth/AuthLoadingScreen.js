@@ -23,6 +23,10 @@ import DeviceInfo from "react-native-device-info";
 import { requestGetAppVersion } from "@api";
 import theme from "@app/constants/Theme";
 
+// key code push
+// ios_pro:'QpNDLfGOBo4u7kN9rnVUCnOwbLInSjj5Rq_6S'
+// android_pro:'9CkAHOb-Ks_P0nKtkOGmIYiQ2uNoByPBlah49'
+
 export class AuthLoadingScreen extends Component {
   constructor(props) {
     super(props);
@@ -40,8 +44,8 @@ export class AuthLoadingScreen extends Component {
     if (__DEV__) {
       this.checkAccount();
     } else {
-      this.checkAccount();
-      // this.checkCodePushVer();
+      // this.checkAccount();
+      this.checkCodePushVer();
     }
   }
 
