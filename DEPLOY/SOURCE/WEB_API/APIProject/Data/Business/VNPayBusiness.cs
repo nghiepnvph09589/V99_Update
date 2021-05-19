@@ -84,11 +84,12 @@ namespace Data.Business
             try
             {
                 MembersPointHistory transaction = cnn.MembersPointHistories.Find(int.Parse(vnp.vnp_TxnRef));
+                var transactionMoney = transaction.Point * 1000;
                 int money;
                 try
                 {
                     money = int.Parse(vnp.vnp_Amount) / 100;
-                    if (money != transaction.Point)
+                    if (money != transactionMoney)
                     {
                         vnpOutput.getVnpModel(vnp.vnp_TxnRef, string.Format("{0:#,0}", money), transaction.CraeteDate.ToString("HH:mm:ss dd/MM/yyyy"), Transaction_False, SystemParam.customer_failed);
                         return vnpOutput;
@@ -98,7 +99,7 @@ namespace Data.Business
                 {
                     string jsonEx = JsonConvert.SerializeObject(ex);
                     oneSignalBus.SaveLog("Exepcion", jsonEx);
-                    vnpOutput.getVnpModel(vnp.vnp_TxnRef, string.Format("{0:#,0}", transaction.Point), transaction.CraeteDate.ToString("HH:mm:ss dd/MM/yyyy"), Transaction_False, SystemParam.customer_failed);
+                    vnpOutput.getVnpModel(vnp.vnp_TxnRef, string.Format("{0:#,0}", transactionMoney), transaction.CraeteDate.ToString("HH:mm:ss dd/MM/yyyy"), Transaction_False, SystemParam.customer_failed);
                     return vnpOutput;
                 }
 
@@ -107,16 +108,16 @@ namespace Data.Business
                     if (transaction != null)
                     {
 
-                        vnpOutput.getVnpModel(vnp.vnp_TxnRef, string.Format("{0:#,0}", transaction.Point), transaction.CraeteDate.ToString("HH:mm:ss dd/MM/yyyy"), Transaction_Success, SystemParam.customer_success);
+                        vnpOutput.getVnpModel(vnp.vnp_TxnRef, string.Format("{0:#,0}", transactionMoney), transaction.CraeteDate.ToString("HH:mm:ss dd/MM/yyyy"), Transaction_Success, SystemParam.customer_success);
                     }
                     else
                     {
-                        vnpOutput.getVnpModel(vnp.vnp_TxnRef, string.Format("{0:#,0}", transaction.Point), transaction.CraeteDate.ToString("HH:mm:ss dd/MM/yyyy"), Transaction_False, SystemParam.customer_failed);
+                        vnpOutput.getVnpModel(vnp.vnp_TxnRef, string.Format("{0:#,0}", transactionMoney), transaction.CraeteDate.ToString("HH:mm:ss dd/MM/yyyy"), Transaction_False, SystemParam.customer_failed);
                     }
                 }
                 else
                 {
-                    vnpOutput.getVnpModel(vnp.vnp_TxnRef, string.Format("{0:#,0}", transaction.Point), transaction.CraeteDate.ToString("HH:mm:ss dd/MM/yyyy"), Transaction_False, SystemParam.customer_failed);
+                    vnpOutput.getVnpModel(vnp.vnp_TxnRef, string.Format("{0:#,0}", transactionMoney), transaction.CraeteDate.ToString("HH:mm:ss dd/MM/yyyy"), Transaction_False, SystemParam.customer_failed);
                 }
             }
             catch (Exception ex)
@@ -147,10 +148,11 @@ namespace Data.Business
                 if (transaction != null)
                 {
                     int money = 0;
+                    var transactionMoney = transaction.Point * 1000;
                     try
                     {
                         money = int.Parse(vnp.vnp_Amount) / 100;
-                        if (money != transaction.Point)
+                        if (money != transactionMoney)
                         {
                             output = output.GetPayOutputModel("Invalid amount", "04");
                             string Transaction_False = SystemParam.Transaction_False + output.RspCode;

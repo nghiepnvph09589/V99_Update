@@ -9,7 +9,13 @@
 			"name": "CheckPhoneRegister",
 			"request": {
 				"method": "POST",
-				"header": [],
+				"header": [
+					{
+						"key": "token",
+						"value": "{{token}}",
+						"type": "text"
+					}
+				],
 				"body": {
 					"mode": "raw",
 					"raw": "{\r\n    \"Email\":\"vietphuonga2@gmail.com\"\r\n}",
@@ -20,9 +26,9 @@
 					}
 				},
 				"url": {
-					"raw": "{{localhost}}/Service/CheckPhoneRegister",
+					"raw": "{{server}}/Service/CheckPhoneRegister",
 					"host": [
-						"{{localhost}}"
+						"{{server}}"
 					],
 					"path": [
 						"Service",
@@ -45,7 +51,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"point\":0\r\n}",
+					"raw": "{\r\n    \"point\":1\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -93,6 +99,72 @@
 					"path": [
 						"service",
 						"convertPointRankingtoPointV"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "createOrder",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "token",
+						"value": "46B07AF2EBFAD103A580C65E8E7F01F0",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"listOrderItem\": [\r\n        {\r\n            \"orderItemID\": 15,\r\n            \"itemID\": 7,\r\n            \"itemName\": \"Viên Bổ Thận DKNH\",\r\n            \"itemPrice\": 268000,\r\n            \"sumPrice\": 1876000,\r\n            \"qty\": 7,\r\n            \"warranty\": 1,\r\n            \"image\": \"http://tichdiemv99.winds.vn/Uploads/files/vien-bo-than.jpg\",\r\n            \"description\": \"<p><strong>Quy cách sản phẩm:</strong>&nbsp;30 viên nang/hộp</p>\\n\\n<p><strong>Thành phần:</strong><br />\\nNhục thung dung, Dâm dương hoắc, Ba kích, Câu kỷ tử, Thục địa, Đỗ trọng, Cá ngựa, Vitamin B1,B5,B6,E …</p>\\n\\n<p><strong>Công dụng:</strong></p>\\n\\n<p>– Giúp bổ thận dương, tăng cường chức năng sinh lý ở nam giới, giúp cải thiện tình trạng mãn dục ở nam giới, người hay đau lưng, mỏi gối do thận dương yếu.</p>\\n\\n<p>– Giúp đi tiểu dễ dàng, hỗ trợ cho trường hợp tiểu buốt, tiểu dắt, tiểu đêm nhiều lần.</p>\\n\\n<p><strong>Hướng dẫn sử dụng:</strong></p>\\n\\n<p>Người lớn: 2 viên/ lần x 2 lần/ ngày. Uống sau khi ăn 1 giờ.</p>\",\r\n            \"updateAt\": \"2021-05-18T17:28:02.243\",\r\n            \"status\": 1,\r\n            \"listOrderItemID\": null\r\n        }\r\n    ],\r\n    \"ProvinceID\": 1,\r\n    \"DistrictID\": 1,\r\n    \"BuyerName\": \"nguyentu\",\r\n    \"BuyerPhone\": \"0953553098\",\r\n    \"address\": \"Lkjklj\",\r\n    \"note\": \"\",\r\n    \"lastRefCode\": \"0968726027\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{local}}/Service/CreateOrder",
+					"host": [
+						"{{local}}"
+					],
+					"path": [
+						"Service",
+						"CreateOrder"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "ChargeMoneyToPoint",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "token",
+						"value": "{{token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"point\":100\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{server}}/service/ChargeMoneyToPoint",
+					"host": [
+						"{{server}}"
+					],
+					"path": [
+						"service",
+						"ChargeMoneyToPoint"
 					]
 				}
 			},
