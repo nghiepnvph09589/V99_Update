@@ -6,7 +6,7 @@ import {
   LoadingProgress,
   NumberFormat
 } from "@app/components";
-import { REDUCER } from "@app/constants/Constant";
+import { GET_HISTORY_POINT_TYPE, REDUCER } from "@app/constants/Constant";
 import theme, { colors } from "@app/constants/Theme";
 import React, { Component } from "react";
 import {
@@ -28,6 +28,8 @@ import NumberFormatTextInput from "react-number-format";
 import { showConfirm, showMessages } from "@app/utils/Alert";
 import { requestChargeMoneyToPoint } from "@app/constants/Api";
 import reactotron from "reactotron-react-native";
+import { getWalletPoints } from "@app/redux/actions";
+import NavigationUtil from "@app/navigation/NavigationUtil";
 export class LoadPointsScreen extends Component {
   constructor(props) {
     super(props);
@@ -38,6 +40,44 @@ export class LoadPointsScreen extends Component {
       isLoading: false
     };
   }
+  componentDidMount() {
+    Linking.getInitialURL()
+      .then(url => {
+        if (url) {
+          console.log("url", url);
+        }
+      })
+      .catch(err => {});
+    Linking.addEventListener("url", event => {
+      this.handleNavigate(event.url);
+    });
+  }
+  handleNavigate = url => {
+    const SUCCESS = "success";
+    const FAILED = "failed";
+    if (url.includes(SUCCESS)) {
+      const payload = {
+        page: 1,
+        type: GET_HISTORY_POINT_TYPE.WALLET_POINTS,
+        typePoint: 0
+      };
+      this.props.getWalletPoints(payload);
+      showMessages(R.strings().notification, "Nạp điểm thành công!", () => {
+        NavigationUtil.goBack();
+      });
+      return;
+    }
+    if (url.includes(FAILED)) {
+      showMessages(
+        R.strings().notification,
+        "Nạp điểm thất bại! Xin vui lòng thử lại.",
+        () => {
+          console.log("FAIL!");
+        }
+      );
+      return;
+    }
+  };
   requestRechargePoint = async point => {
     this.setState({ error: null, isLoading: true });
     try {
@@ -51,9 +91,9 @@ export class LoadPointsScreen extends Component {
             setTimeout(() => {
               Linking.openURL(res.data);
             }, 100);
-            Linking.addEventListener("url", event => {
-              console.log("event", event);
-            });
+            // Linking.addEventListener(res.data, event => {
+            //   console.log("event", event);
+            // });
             // reactotron.log("res", res);
           }
         );
@@ -358,7 +398,8 @@ export class LoadPointsScreen extends Component {
                 backgroundColor: colors.active,
                 alignSelf: "center",
                 marginTop: 10,
-                borderRadius: 5
+                borderRadius: 5,
+                marginBottom: 20
               }}
               onPress={() => {
                 this.setState({
@@ -388,8 +429,9 @@ const mapStateToProps = state => ({
   userState: state[REDUCER.USER].data
 });
 
-const mapDispatchToProps = {};
-
+const mapDispatchToProps = {
+  getWalletPoints
+};
 export default connect(
   mapStateToProps,
   mapDispatchToProps
