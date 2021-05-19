@@ -14,10 +14,10 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "2D02E47A1E0B4A5D006451C7"
-               BuildableName = "TICHDIEMV99-tvOS.app"
-               BlueprintName = "TICHDIEMV99-tvOS"
-               ReferencedContainer = "container:TICHDIEMV99.xcodeproj">
+               BlueprintIdentifier = "5C642AA10FB29936669CC269F42079C6"
+               BuildableName = "libAppAuth.a"
+               BlueprintName = "AppAuth"
+               ReferencedContainer = "container:Pods/Pods.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -28,20 +28,10 @@
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       shouldUseLaunchSchemeArgsEnv = "YES">
       <Testables>
-         <TestableReference
-            skipped = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "2D02E48F1E0B4A5D006451C7"
-               BuildableName = "TICHDIEMV99-tvOSTests.xctest"
-               BlueprintName = "TICHDIEMV99-tvOSTests"
-               ReferencedContainer = "container:TICHDIEMV99.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
       </Testables>
    </TestAction>
    <LaunchAction
-      buildConfiguration = "Debug"
+      buildConfiguration = "Release"
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       launchStyle = "0"
@@ -54,9 +44,9 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "2D02E47A1E0B4A5D006451C7"
-            BuildableName = "TICHDIEMV99-tvOS.app"
-            BlueprintName = "TICHDIEMV99-tvOS"
+            BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
+            BuildableName = "Ti&#x301;ch &#x111;ie&#x302;&#x309;m v99.app"
+            BlueprintName = "TICHDIEMV99"
             ReferencedContainer = "container:TICHDIEMV99.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
@@ -67,16 +57,15 @@
       savedToolIdentifier = ""
       useCustomWorkingDirectory = "NO"
       debugDocumentVersioning = "YES">
-      <BuildableProductRunnable
-         runnableDebuggingMode = "0">
+      <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "2D02E47A1E0B4A5D006451C7"
-            BuildableName = "TICHDIEMV99-tvOS.app"
-            BlueprintName = "TICHDIEMV99-tvOS"
-            ReferencedContainer = "container:TICHDIEMV99.xcodeproj">
+            BlueprintIdentifier = "5C642AA10FB29936669CC269F42079C6"
+            BuildableName = "libAppAuth.a"
+            BlueprintName = "AppAuth"
+            ReferencedContainer = "container:Pods/Pods.xcodeproj">
          </BuildableReference>
-      </BuildableProductRunnable>
+      </MacroExpansion>
    </ProfileAction>
    <AnalyzeAction
       buildConfiguration = "Debug">

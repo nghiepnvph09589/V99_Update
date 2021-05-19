@@ -1,5 +1,5 @@
 <resources>
-	<string moduleConfig="true" name="reactNativeCodePush_androidDeploymentKey">ttCixp9F3c3t1dzOBlArV4-WwWluJhLVx0NZ-</string>
+	<string moduleConfig="true" name="reactNativeCodePush_androidDeploymentKey">9CkAHOb-Ks_P0nKtkOGmIYiQ2uNoByPBlah49</string>
     <string name="app_name">Tích điểm V99</string>
     <string name="appCenterCrashes_whenToSendCrashes" moduleConfig="true" translatable="false">DO_NOT_ASK_JAVASCRIPT</string>
     <string name="appCenterAnalytics_whenToEnableAnalytics" moduleConfig="true" translatable="false">ALWAYS_SEND</string>

@@ -140,7 +140,7 @@ export default class TATextInput extends Component<Props, TAState, ViewProps> {
             this.setState({ isFocus: true });
           }}
           onBlur={this._onBlur}
-          onChange={e => reactotron.log(e)}
+          onChange={e => {}}
           {...otherProps}
         />
       </View>

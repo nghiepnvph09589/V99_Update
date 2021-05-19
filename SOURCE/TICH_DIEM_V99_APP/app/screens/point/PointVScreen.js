@@ -58,7 +58,7 @@ import WalletPointsItem from "@app/components/WalleVItem";
 import { getListPointV } from "../../redux/actions";
 import callAPI, { callAPIHook } from "@app/utils/CallApiHelper";
 import { requestVtoPoint } from "@app/constants/Api";
-
+import NumberFormatTextInput from "react-number-format";
 export class PointVScreen extends Component {
   componentDidMount() {
     this.getData();
@@ -132,13 +132,11 @@ export class PointVScreen extends Component {
   };
   renderFlastlist = () => {
     const { walletPointsState } = this.props;
-    // reactotron.log('walletPointsState', walletPointsState.data.listHistoriesPointMember)
-    // return
+
     if (walletPointsState.isLoading) return <Loading />;
     if (walletPointsState.error) return <Error onPress={this.getData} />;
     if (!walletPointsState.data.listHistoriesPointMember)
       return <Empty onRefresh={this.getData} />;
-    // return
     return (
       <FlatList
         refreshControl={
@@ -168,13 +166,14 @@ export class PointVScreen extends Component {
 }
 class Option extends Component {
   onChangeText = text => {
-    this.setState({ point: text });
+    this.setState({ point: text, inputvalue: text });
   };
 
   state = {
     modalVisible: false,
     isLoading: false,
-    error: null
+    error: null,
+    inputvalue: ""
   };
 
   setModalVisible = visible => {
@@ -184,10 +183,11 @@ class Option extends Component {
   postDataVtoPoint = async point => {
     this.setState({ error: null, isLoading: true });
     try {
-      const res = await requestVtoPoint(point);
+      const res = await requestVtoPoint(parseFloat(point.replace(/,/g, "")));
+      console.log(parseFloat(point.replace(/,/g, "")));
       await this.props.callBack();
       if (res) {
-        this.setState({ isLoading: false, point: "" }, () => {
+        this.setState({ isLoading: false, point: "", inputvalue: "" }, () => {
           showMessages(
             R.strings().notification,
             "Chuyển điểm thành công!",
@@ -237,16 +237,30 @@ class Option extends Component {
           }}
         >
           <View style={styles.modalView}>
-            <Text style={styles.modalText}>
-              Chuyển từ "Ví V" sang "Ví tích điểm"
-            </Text>
-            <TextInput
+            <Text style={styles.modalText}>Chuyển sang Ví tích điểm</Text>
+            <NumberFormatTextInput
+              value={this.state.inputvalue}
+              displayType={"text"}
+              thousandSeparator={true}
+              renderText={inputvalue => (
+                <TextInput
+                  style={styles.input}
+                  keyboardType="number-pad"
+                  thousandSeparator={true}
+                  value={inputvalue}
+                  placeholder="Nhập số điểm"
+                  onChangeText={text => this.onChangeText(text)}
+                />
+              )}
+            />
+
+            {/* <TextInput
               style={styles.input}
               keyboardType="number-pad"
               value={point}
               placeholder="Nhập số điểm"
               onChangeText={this.onChangeText}
-            />
+            /> */}
             <View
               style={{
                 flexDirection: "row",
