@@ -332,7 +332,8 @@ namespace Data.Business
             {
                 var cus = cnn.Customers;
                 var query = from MBH in cnn.MembersPointHistories
-                            where MBH.IsActive.Equals(SystemParam.ACTIVE)
+                            where MBH.IsActive.Equals(SystemParam.ACTIVE) && MBH.Status.HasValue ? (MBH.Status.Value == SystemParam.STATUS_TRANSACTION_SUCCESS) : true
+                            && MBH.TypeAdd == SystemParam.TYPE_POINT
                             && MBH.CustomerID == cusID && (MBH.Type == SystemParam.TYPE_REQUEST_DRAW_POINT || MBH.Type == SystemParam.TYPE_REQUEST_GIFT_POINT ||
                             MBH.Type == SystemParam.TYPE_FEE_USE_APP || MBH.Type == SystemParam.TYPE_ADD_POINT || (MBH.Type == SystemParam.TYPE_SYSTEM_ADD_POINT && MBH.TypeAdd == SystemParam.TYPE_POINT) ||
                             MBH.Type == SystemParam.TYPE_AWARDED_POINT || MBH.Type == SystemParam.TYPE_MINUS_POINT_ORDER || (MBH.Type == SystemParam.TYPEADD_POINT_FROM_BILL && MBH.TypeAdd == SystemParam.TYPE_POINT))
@@ -387,7 +388,7 @@ namespace Data.Business
                 var cus = cnn.Customers;
                 var query = from MBH in cnn.MembersPointHistories
                             where MBH.IsActive.Equals(SystemParam.ACTIVE)
-                            && MBH.CustomerID == cusID && ((MBH.Type == SystemParam.TYPE_SYSTEM_ADD_POINT && MBH.TypeAdd == SystemParam.TYPE_POINT_RANKING) || (MBH.Type == SystemParam.TYPEADD_POINT_FROM_BILL && MBH.TypeAdd == SystemParam.TYPE_POINT_RANKING))
+                            && MBH.CustomerID == cusID && MBH.TypeAdd == SystemParam.TYPE_POINT_RANKING
                             select new GetListHistoryMemberPointInputModel
                             {
                                 HistoryID = MBH.ID,

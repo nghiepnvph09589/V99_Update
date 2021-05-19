@@ -347,7 +347,7 @@ namespace APIProject.Controllers
             cnn.MembersPointHistories.Add(m);
             cnn.SaveChanges();
             var VnPayUrl = vnPayBus.GetUrl(m.ID);
-            return response(SystemParam.SUCCESS, SystemParam.SUCCESS_CODE, SystemParam.SUCCESS_MESSAGE, "");
+            return response(SystemParam.SUCCESS, SystemParam.SUCCESS_CODE, SystemParam.SUCCESS_MESSAGE, VnPayUrl);
         }
         [HttpPost]
         public JsonResultModel ConvertPointVtoPointRanking([FromBody] ConvertPointInputModel input)
@@ -378,7 +378,7 @@ namespace APIProject.Controllers
                 mv.TypeAdd = SystemParam.TYPE_POINT_V;
                 mv.CraeteDate = DateTime.Now;
                 mv.IsActive = SystemParam.ACTIVE;
-                mv.Comment = "Chuyển điểm từ ví V sang ví điểm tích lũy";
+                mv.Comment = "Chuyển điểm từ ví V sang ví tích điểm";
                 mv.Title = "Ví V đã bị trừ " + input.point + "điểm";
                 mv.Balance = balanceV;
 
@@ -398,11 +398,11 @@ namespace APIProject.Controllers
                 //Tạo thông báo cho người nhận
                 Notification ntf = new Notification();
                 ntf.CustomerID = cus.ID;
-                ntf.Content = "Bạn vừa chuyển điểm từ ví V sang ví điểm tích lũy";
+                ntf.Content = "Bạn vừa chuyển điểm từ ví V sang ví tích điểm";
                 ntf.Viewed = 0;
                 ntf.CreateDate = DateTime.Now;
                 ntf.IsActive = SystemParam.ACTIVE;
-                ntf.Title = "Bạn vừa chuyển " + input.point + " điểm từ ví V sang ví điểm tích lũy thành công";
+                ntf.Title = "Bạn vừa chuyển " + input.point + " điểm từ ví V sang ví tích điểm thành công";
                 ntf.Type = SystemParam.NOTIFY_NAVIGATE_REQUEST;
 
 
@@ -416,7 +416,7 @@ namespace APIProject.Controllers
                     NotifyDataModel notifyData = new NotifyDataModel();
                     notifyData.type = SystemParam.ONESIGNAL_NOTIFY_REQUEST_DETAIL;
                     notifyData.id = m.ID;
-                    string titleNoti = "Bạn vừa chuyển " + input.point + " điểm từ ví V sang ví điểm tích lũy thành công";
+                    string titleNoti = "Bạn vừa chuyển " + input.point + " điểm từ ví V sang ví tích điểm lũy thành công";
                     List<string> listDevice = new List<string>();
                     listDevice.Add(cus.DeviceID);
                     string value = packageBusiness.StartPushNoti(notifyData, listDevice, titleNoti, titleNoti);
@@ -461,7 +461,7 @@ namespace APIProject.Controllers
                 mv.TypeAdd = SystemParam.TYPE_POINT_V;
                 mv.CraeteDate = DateTime.Now;
                 mv.IsActive = SystemParam.ACTIVE;
-                mv.Comment = "Chuyển điểm từ ví điểm tích lũy sang ví V";
+                mv.Comment = "Chuyển điểm từ ví tích điểm sang ví V";
                 mv.Title = "Ví V đã được cộng " + (input.point * 4) + "điểm";
                 mv.Balance = balanceV;
 
@@ -474,18 +474,18 @@ namespace APIProject.Controllers
                 m.TypeAdd = SystemParam.TYPE_POINT_RANKING;
                 m.CraeteDate = DateTime.Now;
                 m.IsActive = SystemParam.ACTIVE;
-                m.Comment = "Chuyển điểm từ ví điểm tích lũy sang ví V";
+                m.Comment = "Chuyển điểm từ ví tích điểm sang ví V";
                 m.Title = "Ví tích điểm đã bị trừ" + input.point + "điểm";
                 m.Balance = balancePoint;
 
                 //Tạo thông báo cho người nhận
                 Notification ntf = new Notification();
                 ntf.CustomerID = cus.ID;
-                ntf.Content = "Bạn vừa chuyển điểm từ ví V sang ví điểm tích lũy";
+                ntf.Content = "Bạn vừa chuyển điểm từ ví tích điểm sang ví V";
                 ntf.Viewed = 0;
                 ntf.CreateDate = DateTime.Now;
                 ntf.IsActive = SystemParam.ACTIVE;
-                ntf.Title = "Bạn vừa chuyển " + input.point + " điểm từ ví V sang ví điểm tích lũy thành công";
+                ntf.Title = "Bạn vừa chuyển " + input.point + " điểm từ ví tích điểm sang ví V thành công";
                 ntf.Type = SystemParam.NOTIFY_NAVIGATE_REQUEST;
 
 
@@ -499,7 +499,7 @@ namespace APIProject.Controllers
                     NotifyDataModel notifyData = new NotifyDataModel();
                     notifyData.type = SystemParam.ONESIGNAL_NOTIFY_REQUEST_DETAIL;
                     notifyData.id = m.ID;
-                    string titleNoti = "Bạn vừa chuyển " + input.point + " điểm từ ví V sang ví điểm tích lũy thành công";
+                    string titleNoti = "Bạn vừa chuyển " + input.point + " điểm từ ví tích điểm sang ví V thành công";
                     List<string> listDevice = new List<string>();
                     listDevice.Add(cus.DeviceID);
                     string value = packageBusiness.StartPushNoti(notifyData, listDevice, titleNoti, titleNoti);
@@ -1316,35 +1316,7 @@ namespace APIProject.Controllers
         //    }
         //}
 
-        public List<OrderItem> CreateOrderItem(List<OrderDetailModel> lsOrderItem)
-        {
-            List<OrderItem> lsOI = new List<OrderItem>();
-            foreach (var orderItem in lsOrderItem)
-            {
-                // cập nhật những sản phẩm đc đặt mua thì xóa khỏi giỏ hàng
-                // nếu orderItemID == null là trường hợp đặt mua ngay, không có trong giỏ hàng
-                if (orderItem.OrderItemID != null)
-                {
-                    var currentCart = cnn.OrderItems.Find(orderItem.OrderItemID);
-                    currentCart.QTY = 0;
-                    currentCart.SumPrice = 0;
-                }
-
-                OrderItem oi = new OrderItem();
-                oi.ItemID = orderItem.ItemID;
-                oi.QTY = orderItem.Qty;
-                oi.SumPrice = orderItem.SumPrice;
-                oi.Status = 1;
-                oi.Type = SystemParam.TYPE_ORDER;
-                oi.Discount = 0;
-                oi.IsActive = SystemParam.ACTIVE;
-                oi.CreateDate = DateTime.Now;
-                oi.UpdateAt = DateTime.Now;
-                lsOI.Add(oi);
-            }
-            cnn.SaveChanges();
-            return lsOI;
-        }
+ 
 
 
         // hủy đơn hàng
@@ -1388,7 +1360,7 @@ namespace APIProject.Controllers
                             mr.Point = pointRanking;
                             mr.Type = SystemParam.TYPEADD_POINT_FROM_BILL;
                             mr.AddPointCode = Util.CreateMD5(DateTime.Now.ToString()).Substring(0, 6);
-                            mr.TypeAdd = SystemParam.TYPE_POINT;
+                            mr.TypeAdd = SystemParam.TYPE_POINT_RANKING;
                             mr.CraeteDate = DateTime.Now;
                             mr.IsActive = SystemParam.ACTIVE;
                             mr.Comment = "Hệ thống hoàn điểm khi đơn hàng bị hủy";
@@ -1711,6 +1683,7 @@ namespace APIProject.Controllers
         public ListCartOutputModel getListCart(int customerID)
         {
             ListCartOutputModel data = new ListCartOutputModel();
+            var cus = cnn.Customers.FirstOrDefault(x => x.ID == customerID);
             var cart = cnn.Orders.Where(u => u.IsActive.Equals(SystemParam.ACTIVE) && u.Type.Equals(SystemParam.TYPE_CART) && u.CustomerID.Equals(customerID));
             if (cart != null && cart.Count() > 0)
             {
@@ -1728,8 +1701,7 @@ namespace APIProject.Controllers
                     OrderItemID = c.ID,
                     ItemID = c.ItemID,
                     ItemName = c.Item.Name,
-                    ItemPrice = c.Item.Price,
-                    ItemPriceVip = c.Item.PriceVIP,
+                    ItemPrice = cus.IsVip == SystemParam.CUSTOMER_NORMAL ? c.Item.Price : c.Item.PriceVIP,
                     Image = c.Item.ImageUrl.Split(',').FirstOrDefault(),
                     Qty = c.QTY,
                     Warranty = c.Item.Warranty,
@@ -1809,7 +1781,7 @@ namespace APIProject.Controllers
                         OrderItem oi = new OrderItem();
                         oi.ItemID = dt.ID;
                         oi.QTY = SystemParam.QTY_DEFAULT_ADD_TO_CART;
-                        oi.SumPrice = dt.Price;
+                        oi.SumPrice = cus.IsVip == SystemParam.CUSTOMER_NORMAL ? dt.Price : dt.PriceVIP;
                         oi.Status = SystemParam.STATUS_CART_PENDING;
                         oi.Type = SystemParam.TYPE_CART;
                         oi.Discount = 0;
@@ -1824,7 +1796,7 @@ namespace APIProject.Controllers
                     od.IsActive = SystemParam.ACTIVE;
                     od.CreateDate = DateTime.Now;
                     od.CustomerID = customerID;
-                    od.TotalPrice = lstItem.Select(i => i.Price).Sum();
+                    od.TotalPrice = cus.IsVip == SystemParam.CUSTOMER_NORMAL ? lstItem.Select(i => i.Price).Sum() : lstItem.Select(i => i.PriceVIP).Sum();
                     od.Discount = 0;
                     od.OrderItems = odItem;
                     od.BuyerName = cus.Name;
@@ -1867,11 +1839,11 @@ namespace APIProject.Controllers
                         oi.QTY = SystemParam.QTY_DEFAULT_ADD_TO_CART;
                         if (customer.IsVip == SystemParam.CUSTOMER_VIP)
                         {
-                            oi.SumPrice = it.Price * oi.QTY;
+                            oi.SumPrice = it.PriceVIP * oi.QTY;                           
                         }
                         else
                         {
-                            oi.SumPrice = it.PriceVIP * oi.QTY;
+                            oi.SumPrice = it.Price * oi.QTY;
                         }
                         
                         oi.Status = SystemParam.STATUS_CART_PENDING;
@@ -1888,11 +1860,11 @@ namespace APIProject.Controllers
                         odit.QTY += SystemParam.QTY_DEFAULT_ADD_TO_CART;
                         if (customer.IsVip == SystemParam.CUSTOMER_VIP)
                         {
-                            odit.SumPrice = it.Price * odit.QTY;
+                            odit.SumPrice = it.PriceVIP * odit.QTY;                          
                         }
                         else
                         {
-                            odit.SumPrice = it.PriceVIP * odit.QTY;
+                            odit.SumPrice = it.Price * odit.QTY;
                         }
                         odit.UpdateAt = DateTime.Now;
                         odit.Order.TotalPrice += Convert.ToInt64(odit.SumPrice);

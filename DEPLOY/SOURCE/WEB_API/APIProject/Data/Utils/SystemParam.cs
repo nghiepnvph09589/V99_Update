@@ -27,11 +27,14 @@ namespace Data.Utils
         //public const string PASS_CONFIG = "sqsusteaeaztongt";
         //public const string PASS_EMAIL = "windsoft123456a@";
 
-        public const string APP_ID = "916a6532-ef76-4606-836c-16c1d3a7329f";
-        public const string Authorization = "Basic :YmFjZTA0YjktNGU0ZC00N2RmLTljYWQtYjM4MjI2OTQwY2E4";
+        //public const string APP_ID = "916a6532-ef76-4606-836c-16c1d3a7329f";
+        public const string APP_ID = "9e9fbbde-ba5c-42af-9c08-7888f0709c4a";
+        //public const string Authorization = "Basic :YmFjZTA0YjktNGU0ZC00N2RmLTljYWQtYjM4MjI2OTQwY2E4";
+        public const string Authorization = "Basic :MmExMjU3ODQtYTY3Zi00N2RlLWJhMTQtODViNWM0MWQ3MWIx";
         public const string URL_ONESIGNAL = "https://onesignal.com/api/v1/notifications";
         public const string URL_BASE_https = "Basic ://onesignal.com/api/v1/notifications";
-        public const string ANDROID_CHANNEL_ID = "958b57c5-9726-4c2e-b4ac-0e3f085a957b";
+        //public const string ANDROID_CHANNEL_ID = "958b57c5-9726-4c2e-b4ac-0e3f085a957b";
+        public const string ANDROID_CHANNEL_ID = "cf2a4a57-1d24-4a8d-8950-c853928144c3";
 
         // config VNPAY
         public const string vnp_Return_url = "http://tichdiemv99.winds.vn/VnPay/Index";

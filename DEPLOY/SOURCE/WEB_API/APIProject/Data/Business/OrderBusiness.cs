@@ -29,7 +29,35 @@ namespace Data.Business
         MembersPointHistory hisPoint = new MembersPointHistory();
         PointBusiness pointBus = new PointBusiness();
 
+        public List<OrderItem> CreateOrderItemOrder(List<OrderDetailModel> lsOrderItem)
+        {
+            List<OrderItem> lsOI = new List<OrderItem>();
+            foreach (var orderItem in lsOrderItem)
+            {
+                // cập nhật những sản phẩm đc đặt mua thì xóa khỏi giỏ hàng
+                // nếu orderItemID == null là trường hợp đặt mua ngay, không có trong giỏ hàng
+                if (orderItem.OrderItemID != null)
+                {
+                    var currentCart = cnn.OrderItems.Find(orderItem.OrderItemID);
+                    currentCart.QTY = 0;
+                    currentCart.SumPrice = 0;
+                }
 
+                OrderItem oi = new OrderItem();
+                oi.ItemID = orderItem.ItemID;
+                oi.QTY = orderItem.Qty;
+                oi.SumPrice = orderItem.SumPrice;
+                oi.Status = 1;
+                oi.Type = SystemParam.TYPE_ORDER;
+                oi.Discount = 0;
+                oi.IsActive = SystemParam.ACTIVE;
+                oi.CreateDate = DateTime.Now;
+                oi.UpdateAt = DateTime.Now;
+                lsOI.Add(oi);
+            }
+            cnn.SaveChanges();
+            return lsOI;
+        }
         public OrderOutputModel CreateOrder(OrderDetailOutputModel input, int cusID, string lastRefCode)
         {
             var conect = cnn.Database.BeginTransaction();
@@ -41,7 +69,7 @@ namespace Data.Business
                 Order od = new Order();
                 var cus = cnn.Customers.Where(c => c.ID == cusID).FirstOrDefault();
                 var code = Util.CreateMD5(DateTime.Now.ToString()).Substring(0, 6);
-                List<OrderItem> listOI = CreateOrderItem(input.listOrderItem);
+                List<OrderItem> listOI = CreateOrderItemOrder(input.listOrderItem);
                 var point = Math.Round(Convert.ToDouble(listOI.Select(u => u.SumPrice).Sum()) / 1000, 2);
                 //Tính toán lại số dư khi mua hàng
                 od.Code = code;
@@ -228,13 +256,13 @@ namespace Data.Business
                 {
                     OrderItemID = oi.ID,
                     ItemID = oi.ItemID,
-                    ItemName = oi.Item.Name,
-                    ItemPrice = oi.Item.Price,
+                    ItemName = oi.Item != null ? oi.Item.Name : "",
+                    ItemPrice = oi.Item != null ? oi.Item.Price : 0,
                     Qty = oi.QTY,
-                    Warranty = oi.Item.Warranty,
+                    Warranty = oi.Item != null ? oi.Item.Warranty : 0,
                     SumPrice = Convert.ToInt64(oi.SumPrice),
-                    Description = oi.Item.Description,
-                    Image = oi.Item.ImageUrl.Split(',').FirstOrDefault()
+                    Description = oi.Item != null ? oi.Item.Description : "",
+                    Image = oi.Item != null ? oi.Item.ImageUrl.Split(',').FirstOrDefault() : ""
                 }).ToList();
                 //data.listOrderItem = (from oi in cnn.OrderItems
                 //                      where oi.IsActive.Equals(SystemParam.ACTIVE) && oi.OrderID.Equals(orderID)
@@ -264,7 +292,7 @@ namespace Data.Business
                 Customer cus = cnn.Customers.Find(cusID);
                 Province pro = cnn.Provinces.Find(cus.ProvinceCode);
                 District dist = cnn.Districts.Find(cus.DistrictCode);
-                List<OrderItem> listOI = CreateOrderItem(lsOrderItem);
+                List<OrderItem> listOI = CreateOrderItem(lsOrderItem,cus.IsVip);
                 od.Code = Util.CreateMD5(DateTime.Now.ToString()).Substring(0, 6);
                 od.Status = 0;
                 od.PointAdd = 0;
@@ -287,7 +315,7 @@ namespace Data.Business
                 return null;
             }
         }
-        public List<OrderItem> CreateOrderItem(List<OrderDetailModel> lsOrderItem)
+        public List<OrderItem> CreateOrderItem(List<OrderDetailModel> lsOrderItem,int isVip)
         {
             List<OrderItem> lsOI = new List<OrderItem>();
             foreach (var orderItem in lsOrderItem)
@@ -295,14 +323,16 @@ namespace Data.Business
                 Item item = cnn.Items.Find(orderItem.ItemID);
                 if (item != null && item.Status.Equals(SystemParam.ACTIVE))
                 {
+                    
                     OrderItem oi = new OrderItem();
                     oi.ItemID = orderItem.ItemID;
                     oi.QTY = orderItem.Qty;
-                    oi.SumPrice = item.Price * orderItem.Qty;
+                    oi.SumPrice = isVip == SystemParam.CUSTOMER_NORMAL ? (item.Price * orderItem.Qty) : (item.PriceVIP * orderItem.Qty);
                     oi.Status = SystemParam.ACTIVE;
                     oi.Discount = 0;
                     oi.IsActive = SystemParam.ACTIVE;
                     oi.CreateDate = DateTime.Now;
+                    
                     lsOI.Add(oi);
                 }
             }
@@ -434,8 +464,8 @@ namespace Data.Business
                 var customer = cnn.Customers.Find(itemEdit.CustomerID);
                 //var PointNow = cnn.Customers.Find(itemEdit.CustomerID).Point;
                 var statusCurrent = itemEdit.Status;
-                var returnPoint = Math.Round(Convert.ToDouble(Convert.ToDouble(cnn.Orders.Find(ID).Point.GetValueOrDefault()) / 1000), 2);
-                var returnPointRanking = Math.Round(Convert.ToDouble(Convert.ToDouble(cnn.Orders.Find(ID).PointRanking.GetValueOrDefault()) / 1000), 2);
+                var returnPoint = Math.Round(Convert.ToDouble(Convert.ToDouble(cnn.Orders.Find(ID).Point.GetValueOrDefault()) ), 2);
+                var returnPointRanking = Math.Round(Convert.ToDouble(Convert.ToDouble(cnn.Orders.Find(ID).PointRanking.GetValueOrDefault()) ), 2);
                 var totalPoint = returnPoint + returnPointRanking;
                 var plusPoint = Math.Round(Convert.ToDouble((Convert.ToDouble(cnn.Orders.Find(ID).TotalPrice) / 1000) * SystemParam.PARAM_PLUS), 2);
                 double? cusPoint = customer.Point;
