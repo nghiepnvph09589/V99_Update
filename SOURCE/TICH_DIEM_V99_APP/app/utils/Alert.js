@@ -2,7 +2,7 @@ import I18n from "../i18n/i18n";
 import React, { Component } from "react";
 import { Alert } from "react-native";
 
-export const showConfirm = (title, content, action) => {
+export const showConfirm = (title, content, action, confirm) => {
   Alert.alert(
     title,
     content,
@@ -12,13 +12,13 @@ export const showConfirm = (title, content, action) => {
         style: "cancel"
       },
       {
-        text: title,
+        text: confirm || title,
         onPress: action
       }
     ],
     { cancelable: false }
-  )
-}
+  );
+};
 
 export const showMessages = (title, content, action) => {
   setTimeout(() => {
@@ -27,11 +27,11 @@ export const showMessages = (title, content, action) => {
       content,
       [
         {
-          text: 'Đóng',
+          text: "Đóng",
           onPress: action
         }
       ],
       { cancelable: false }
     );
-  }, 100)
+  }, 100);
 };

@@ -10,15 +10,24 @@ import {
   SafeAreaView,
   PermissionsAndroid,
   Platform,
-  Linking, StatusBar
+  Linking,
+  StatusBar
 } from "react-native";
 import { connect } from "react-redux";
 import I18n from "../i18n/i18n";
 import NavigationUtil from "../navigation/NavigationUtil";
-import { REDUCER, SCREEN_ROUTER, USER_ACTIVATED, UTILITY } from "../constants/Constant";
 import {
-  getHome, getUserInfoAction, getUtility,
-  getBank, getBankSelect
+  REDUCER,
+  SCREEN_ROUTER,
+  USER_ACTIVATED,
+  UTILITY
+} from "../constants/Constant";
+import {
+  getHome,
+  getUserInfoAction,
+  getUtility,
+  getBank,
+  getBankSelect
 } from "../redux/actions";
 import {
   Block,
@@ -26,14 +35,15 @@ import {
   PrimaryButton,
   FastImage,
   Loading,
-  Error, FstImage
+  Error,
+  FstImage
 } from "../components";
 import AsyncStorage from "@react-native-community/async-storage";
 import SwiperFlatList from "react-native-swiper-flatlist";
 import DateUtil from "../utils/DateUtil";
 import ObjectUtil from "../utils/ObjectUtil";
 import { requireLogin } from "../utils/AlertRequireLogin";
-import theme from '@theme'
+import theme from "@theme";
 import R from "@app/assets/R";
 import Toast, { BACKGROUND_TOAST } from "@app/utils/Toast";
 
@@ -44,7 +54,7 @@ class Option extends Component {
       <TouchableOpacity
         style={{
           flex: 1,
-          backgroundColor: 'white',
+          backgroundColor: "white",
           alignItems: "center",
           shadowColor: "#000",
           marginBottom: 20,
@@ -57,7 +67,7 @@ class Option extends Component {
           elevation: 2,
           padding: 5,
           borderRadius: 5,
-          marginHorizontal: '2.5%'
+          marginHorizontal: "2.5%"
         }}
         onPress={onPress}
       >
@@ -132,23 +142,24 @@ class News extends Component {
       <TouchableOpacity
         style={styles._viewProduct}
         onPress={() => {
-          NavigationUtil.navigate(SCREEN_ROUTER.DETAIL_UTILITY, { newsID: item.newsID });
-        }}>
+          NavigationUtil.navigate(SCREEN_ROUTER.DETAIL_UTILITY, {
+            newsID: item.newsID
+          });
+        }}
+      >
         <FstImage
           style={{
-            width: '100%', aspectRatio: 1.3,
+            width: "100%",
+            aspectRatio: 1.3,
             alignSelf: "center",
             borderRadius: 5,
-            overflow: 'hidden'
+            overflow: "hidden"
           }}
           resizeMode="cover"
           source={{ uri: item.urlImage }}
         />
 
-        <Text
-          numberOfLines={2}
-          style={[theme.fonts.regular16,
-          { margin: 10 }]}>
+        <Text numberOfLines={2} style={[theme.fonts.regular16, { margin: 10 }]}>
           {item.title}
         </Text>
       </TouchableOpacity>
@@ -167,8 +178,8 @@ export class HomeScreen extends Component {
     let token = await AsyncStorage.getItem("token");
     this.setState({ token }, () => {
       if (!!token) {
-        this.props.getBank()
-        this.props.getBankSelect()
+        this.props.getBank();
+        this.props.getBankSelect();
       }
     });
   };
@@ -196,7 +207,9 @@ export class HomeScreen extends Component {
             return (
               <TouchableOpacity
                 onPress={() => {
-                  NavigationUtil.navigate(SCREEN_ROUTER.DETAIL_UTILITY, { newsID: item.newsID });
+                  NavigationUtil.navigate(SCREEN_ROUTER.DETAIL_UTILITY, {
+                    newsID: item.newsID
+                  });
                 }}
               >
                 <FstImage
@@ -225,7 +238,7 @@ export class HomeScreen extends Component {
       >
         {!!homeState.listBanner.length && this._renderImageSlider()}
 
-        <View style={{ flexDirection: 'row', marginVertical: 10 }}>
+        <View style={{ flexDirection: "row", marginVertical: 10 }}>
           <Option
             onPress={() => {
               if (!!!this.state.token) {
@@ -257,31 +270,36 @@ export class HomeScreen extends Component {
                 return;
               }
               if (userState.status !== USER_ACTIVATED) {
-                Toast.show('Tài khoản chưa được kích hoạt, vui lòng nạp 300 điểm để được kích hoạt và sử dụng điểm', BACKGROUND_TOAST.FAIL)
-                return
+                Toast.show(
+                  "Tài khoản chưa được kích hoạt, vui lòng nạp 300 điểm để được kích hoạt và sử dụng điểm",
+                  BACKGROUND_TOAST.FAIL
+                );
+                return;
               }
               NavigationUtil.navigate(SCREEN_ROUTER.DRAW_POINTS);
             }}
           />
         </View>
         <View style={{ backgroundColor: theme.colors.white }}>
-          {!!homeState.news.length && <View style={styles.titleView}>
-            <Text
-              style={[
-                theme.fonts.semibold18,
-                { color: theme.colors.black_title, marginBottom: 5 }
-              ]}
-            >
-              {I18n.t("news")}
-            </Text>
-            <TouchableOpacity
-              onPress={() => {
-                NavigationUtil.navigate(SCREEN_ROUTER.UTILITY);
-              }}
-            >
-              <Text style={styles.all_title}>{R.strings().see_more}</Text>
-            </TouchableOpacity>
-          </View>}
+          {!!homeState.news.length && (
+            <View style={styles.titleView}>
+              <Text
+                style={[
+                  theme.fonts.semibold18,
+                  { color: theme.colors.black_title, marginBottom: 5 }
+                ]}
+              >
+                {I18n.t("news")}
+              </Text>
+              <TouchableOpacity
+                onPress={() => {
+                  NavigationUtil.navigate(SCREEN_ROUTER.UTILITY);
+                }}
+              >
+                <Text style={styles.all_title}>{R.strings().see_more}</Text>
+              </TouchableOpacity>
+            </View>
+          )}
           <ScrollView
             contentContainerStyle={{ paddingLeft: 15 }}
             horizontal
@@ -291,26 +309,29 @@ export class HomeScreen extends Component {
               return <News item={item} index={index} key={index} />;
             })}
           </ScrollView>
-
         </View>
         <View style={{ backgroundColor: theme.colors.white }}>
-          {!!homeState.listEvent.length && <View style={styles.titleView}>
-            <Text
-              style={[
-                theme.fonts.semibold18,
-                { color: theme.colors.black_title, marginBottom: 5 }
-              ]}
-            >
-              {R.strings().event}
-            </Text>
-            <TouchableOpacity
-              onPress={() => {
-                NavigationUtil.navigate(SCREEN_ROUTER.UTILITY, { initial_page: 1 });
-              }}
-            >
-              <Text style={styles.all_title}>{R.strings().see_more}</Text>
-            </TouchableOpacity>
-          </View>}
+          {!!homeState.listEvent.length && (
+            <View style={styles.titleView}>
+              <Text
+                style={[
+                  theme.fonts.semibold18,
+                  { color: theme.colors.black_title, marginBottom: 5 }
+                ]}
+              >
+                {R.strings().event}
+              </Text>
+              <TouchableOpacity
+                onPress={() => {
+                  NavigationUtil.navigate(SCREEN_ROUTER.UTILITY, {
+                    initial_page: 1
+                  });
+                }}
+              >
+                <Text style={styles.all_title}>{R.strings().see_more}</Text>
+              </TouchableOpacity>
+            </View>
+          )}
           <ScrollView
             contentContainerStyle={{ paddingLeft: 15 }}
             horizontal
@@ -320,7 +341,6 @@ export class HomeScreen extends Component {
               return <News item={item} index={index} key={index} />;
             })}
           </ScrollView>
-
         </View>
       </Block>
     );
@@ -332,18 +352,22 @@ export class HomeScreen extends Component {
     return (
       <Block>
         <ImageBackground
-          style={[{
-            flex: 1
-          },
-          Platform.OS !== 'android' && { paddingTop: 20, }]}
+          style={[
+            {
+              flex: 1
+            },
+            Platform.OS !== "android" && { paddingTop: 20 }
+          ]}
           resizeMode="stretch"
           source={require("../assets/images/img_bg_home.png")}
         >
           <ScrollView
             showsVerticalScrollIndicator={false}
-            contentContainerStyle={[{
-              justifyContent: "center",
-            }]}
+            contentContainerStyle={[
+              {
+                justifyContent: "center"
+              }
+            ]}
             refreshControl={
               <RefreshControl
                 refreshing={this.props.homeState.refreshing}
@@ -351,13 +375,10 @@ export class HomeScreen extends Component {
               />
             }
           >
-
             <View style={styles._viewHello}>
               {!!!this.state.token ? (
                 <Block>
-                  <Text
-                    style={[theme.fonts.semibold17, { color: "white" }]}
-                  >
+                  <Text style={[theme.fonts.semibold17, { color: "white" }]}>
                     Chào bạn
                   </Text>
                   <Text
@@ -374,35 +395,41 @@ export class HomeScreen extends Component {
                     style={{
                       borderRadius: 10,
                       alignSelf: "flex-start",
-                      width: '35%',
+                      width: "35%",
                       height: 35
                     }}
                     title="Đăng nhập"
                   />
                 </Block>
               ) : (
-                  <>
-                    <Block row center>
-                      <Text
-                        style={[
-                          theme.fonts.semibold17,
-                          { color: theme.colors.headerTextColor, marginTop: 4 }
-                        ]}
-                      >
-                        {I18n.t("hello")}{", "}{!ObjectUtil.isEmpty(homeState.userInfo) &&
-                          homeState.userInfo.customerName}
-                      </Text>
-                    </Block>
-                    <TouchableOpacity
-                      style={{ padding: 5 }}
-                      onPress={() => NavigationUtil.navigate(SCREEN_ROUTER.NOTIFY)}>
-                      <FstImage source={R.images.ic_bell}
-                        style={{ width: 20, height: 30, marginLeft: 10 }}
-                        resizeMode='contain'
-                      />
-                    </TouchableOpacity>
-                  </>
-                )}
+                <>
+                  <Block row center>
+                    <Text
+                      style={[
+                        theme.fonts.semibold17,
+                        { color: theme.colors.headerTextColor, marginTop: 4 }
+                      ]}
+                    >
+                      {I18n.t("hello")}
+                      {", "}
+                      {!ObjectUtil.isEmpty(homeState.userInfo) &&
+                        homeState.userInfo.customerName}
+                    </Text>
+                  </Block>
+                  <TouchableOpacity
+                    style={{ padding: 5 }}
+                    onPress={() =>
+                      NavigationUtil.navigate(SCREEN_ROUTER.NOTIFY)
+                    }
+                  >
+                    <FstImage
+                      source={R.images.ic_bell}
+                      style={{ width: 20, height: 30, marginLeft: 10 }}
+                      resizeMode="contain"
+                    />
+                  </TouchableOpacity>
+                </>
+              )}
             </View>
             {this._renderBody()}
           </ScrollView>
@@ -419,11 +446,15 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = {
   getHome,
-  getUtility, getBank,
+  getUtility,
+  getBank,
   getBankSelect
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(HomeScreen);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(HomeScreen);
 
 const styles = StyleSheet.create({
   _viewHello: {
@@ -459,7 +490,7 @@ const styles = StyleSheet.create({
     backgroundColor: theme.colors.white,
     marginRight: 10,
     borderRadius: 5,
-    overflow: 'hidden',
+    // overflow: 'hidden',
     shadowColor: "#000",
     marginBottom: 20,
     shadowOffset: {
@@ -468,7 +499,7 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.23,
     shadowRadius: 2.62,
-    elevation: 4,
+    elevation: 4
   },
   titleView: {
     paddingHorizontal: 15,
@@ -487,7 +518,7 @@ const styles = StyleSheet.create({
     marginHorizontal: theme.dimension.width * 0.025,
     aspectRatio: 2.5,
     borderRadius: 3,
-    overflow: "hidden",
+    overflow: "hidden"
   },
 
   _button: {
