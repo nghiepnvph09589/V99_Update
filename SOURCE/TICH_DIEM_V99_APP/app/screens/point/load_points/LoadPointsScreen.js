@@ -44,7 +44,7 @@ export class LoadPointsScreen extends Component {
     Linking.getInitialURL()
       .then(url => {
         if (url) {
-          console.log("url", url);
+          console.log("getInitialURL: ", url);
         }
       })
       .catch(err => {});
@@ -52,6 +52,10 @@ export class LoadPointsScreen extends Component {
       this.handleNavigate(event.url);
     });
   }
+  componentWillUnmount() {
+    Linking.removeAllListeners("url");
+  }
+
   handleNavigate = url => {
     const SUCCESS = "success";
     const FAILED = "failed";
