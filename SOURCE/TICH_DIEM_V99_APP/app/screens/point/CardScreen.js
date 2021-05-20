@@ -290,7 +290,14 @@ class Option extends Component {
                   );
                   return;
                 }
-                this.postDataVtoPoint(point);
+                showConfirm(
+                  R.strings().notification,
+                  `Bạn có chắc chắn muốn chuyển ${point} điểm không?`,
+                  () => {
+                    this.postDataVtoPoint(point);
+                  },
+                  "Đồng ý"
+                );
               })}
             </View>
           </View>

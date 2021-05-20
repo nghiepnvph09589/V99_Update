@@ -36,6 +36,16 @@
 				<string>com.googleusercontent.apps.243074458243-5uhanka2q5b2q8bphk0juenide0mnnmf</string>
 			</array>
 		</dict>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLName</key>
+			<string>Tích điểm</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>tichdiemv99</string>
+			</array>
+		</dict>
 	</array>
 	<key>CFBundleVersion</key>
 	<string>$(CURRENT_PROJECT_VERSION)</string>

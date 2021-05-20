@@ -25,7 +25,6 @@
 		3F5DB20ED728461FB51511F0 /* Roboto-ThinItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = BA36CB479A87411A9E7AB3F0 /* Roboto-ThinItalic.ttf */; };
 		4605073F2653645700930FB4 /* MyLaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4605073E2653645700930FB4 /* MyLaunchScreen.storyboard */; };
 		5C23BEA5164742889495F980 /* SourceSansPro-ExtraLight.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9A4ADBF31FA840148F00A97B /* SourceSansPro-ExtraLight.ttf */; };
-		67BE55D1FDB84D68F3D7FB15 /* libPods-TICHDIEMV99Tests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8CC268B64B09317A8C7D1435 /* libPods-TICHDIEMV99Tests.a */; };
 		6AF988758736489C8E8E0AD3 /* SourceSansPro-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6E17FC802E6A476AAAB8FCD3 /* SourceSansPro-Light.ttf */; };
 		744F0945664E495DB5917E00 /* SourceSansPro-SemiBoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C1E39637277A4C7CB86A8A8A /* SourceSansPro-SemiBoldItalic.ttf */; };
 		769D3426F99E44019F38ECE1 /* Roboto-BlackItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5531C09A36F048F7AA3E56BA /* Roboto-BlackItalic.ttf */; };
@@ -108,7 +107,6 @@
 		3D93656119D6281D7C9018FA /* libPods-TICHDIEMV99.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-TICHDIEMV99.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		3EA787AE8C3648D3B4D915EF /* Roboto-Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Roboto-Bold.ttf"; path = "../app/assets/fonts/Roboto-Bold.ttf"; sourceTree = "<group>"; };
 		4030A2C302D74C9EB20E4292 /* FontAwesome.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome.ttf"; sourceTree = "<group>"; };
-		429A036D270648CAE1D281DA /* Pods-TICHDIEMV99Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TICHDIEMV99Tests.debug.xcconfig"; path = "Target Support Files/Pods-TICHDIEMV99Tests/Pods-TICHDIEMV99Tests.debug.xcconfig"; sourceTree = "<group>"; };
 		4328E95D1B7941FBA5BB872A /* SourceSansPro-BlackItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "SourceSansPro-BlackItalic.ttf"; path = "../app/assets/fonts/SourceSansPro-BlackItalic.ttf"; sourceTree = "<group>"; };
 		4605073E2653645700930FB4 /* MyLaunchScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = MyLaunchScreen.storyboard; sourceTree = "<group>"; };
 		4FDBC33669384178B076A35D /* SourceSansPro-ExtraLight.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "SourceSansPro-ExtraLight.ttf"; path = "../assets/fonts/SourceSansPro-ExtraLight.ttf"; sourceTree = "<group>"; };
@@ -128,12 +126,10 @@
 		7B2A458F35D440F59FC057EE /* Octicons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Octicons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Octicons.ttf"; sourceTree = "<group>"; };
 		868D063A7E9A47B78AC85FF1 /* EvilIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = EvilIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/EvilIcons.ttf"; sourceTree = "<group>"; };
 		8B2FBB047DA947A484086D16 /* SourceSansPro-Italic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "SourceSansPro-Italic.ttf"; path = "../app/assets/fonts/SourceSansPro-Italic.ttf"; sourceTree = "<group>"; };
-		8CC268B64B09317A8C7D1435 /* libPods-TICHDIEMV99Tests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-TICHDIEMV99Tests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		8E34B81CAF94487880CCC4CA /* AntDesign.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = AntDesign.ttf; path = "../node_modules/react-native-vector-icons/Fonts/AntDesign.ttf"; sourceTree = "<group>"; };
 		8F08C978B1B94B50B329C162 /* Roboto-MediumItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Roboto-MediumItalic.ttf"; path = "../assets/fonts/Roboto-MediumItalic.ttf"; sourceTree = "<group>"; };
 		9428AEB9F7DD4D9AADA0A904 /* SimpleLineIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = SimpleLineIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/SimpleLineIcons.ttf"; sourceTree = "<group>"; };
 		9A4ADBF31FA840148F00A97B /* SourceSansPro-ExtraLight.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "SourceSansPro-ExtraLight.ttf"; path = "../app/assets/fonts/SourceSansPro-ExtraLight.ttf"; sourceTree = "<group>"; };
-		9E88D1E0FB74E8E709D02C06 /* Pods-TICHDIEMV99Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TICHDIEMV99Tests.release.xcconfig"; path = "Target Support Files/Pods-TICHDIEMV99Tests/Pods-TICHDIEMV99Tests.release.xcconfig"; sourceTree = "<group>"; };
 		A99E9CEB7FDB427491FA7B9F /* Fontisto.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Fontisto.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Fontisto.ttf"; sourceTree = "<group>"; };
 		AABD0410D94142C0833ADA79 /* SourceSansPro-BlackItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "SourceSansPro-BlackItalic.ttf"; path = "../assets/fonts/SourceSansPro-BlackItalic.ttf"; sourceTree = "<group>"; };
 		AD456596B54F4881B43648B3 /* SourceSansPro-ExtraLightItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "SourceSansPro-ExtraLightItalic.ttf"; path = "../app/assets/fonts/SourceSansPro-ExtraLightItalic.ttf"; sourceTree = "<group>"; };
@@ -168,7 +164,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				67BE55D1FDB84D68F3D7FB15 /* libPods-TICHDIEMV99Tests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -239,7 +234,6 @@
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
 				ED2971642150620600B7C4FE /* JavaScriptCore.framework */,
 				3D93656119D6281D7C9018FA /* libPods-TICHDIEMV99.a */,
-				8CC268B64B09317A8C7D1435 /* libPods-TICHDIEMV99Tests.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -249,8 +243,6 @@
 			children = (
 				5ADE38FDE4488CE788208067 /* Pods-TICHDIEMV99.debug.xcconfig */,
 				11779F9B7F7320692F9FAC5D /* Pods-TICHDIEMV99.release.xcconfig */,
-				429A036D270648CAE1D281DA /* Pods-TICHDIEMV99Tests.debug.xcconfig */,
-				9E88D1E0FB74E8E709D02C06 /* Pods-TICHDIEMV99Tests.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -367,7 +359,6 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 00E357021AD99517003FC87E /* Build configuration list for PBXNativeTarget "TICHDIEMV99Tests" */;
 			buildPhases = (
-				BF50E6D591EC8D0E9B588F06 /* [CP] Check Pods Manifest.lock */,
 				00E356EA1AD99517003FC87E /* Sources */,
 				00E356EB1AD99517003FC87E /* Frameworks */,
 				00E356EC1AD99517003FC87E /* Resources */,
@@ -667,28 +658,6 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-TICHDIEMV99/Pods-TICHDIEMV99-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		BF50E6D591EC8D0E9B588F06 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-TICHDIEMV99Tests-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
 		FD10A7F022414F080027D42C /* Start Packager */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -800,7 +769,6 @@
 /* Begin XCBuildConfiguration section */
 		00E356F61AD99517003FC87E /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 429A036D270648CAE1D281DA /* Pods-TICHDIEMV99Tests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_IDENTITY = "Apple Development";
@@ -830,7 +798,6 @@
 		};
 		00E356F71AD99517003FC87E /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 9E88D1E0FB74E8E709D02C06 /* Pods-TICHDIEMV99Tests.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_IDENTITY = "Apple Development";
@@ -863,7 +830,7 @@
 				CODE_SIGN_ENTITLEMENTS = TICHDIEMV99/TICHDIEMV99.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 3;
+				CURRENT_PROJECT_VERSION = 4;
 				DEAD_CODE_STRIPPING = NO;
 				DEVELOPMENT_TEAM = 7G476N269U;
 				ENABLE_BITCODE = NO;
@@ -894,7 +861,7 @@
 				CODE_SIGN_ENTITLEMENTS = TICHDIEMV99/TICHDIEMV99.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 3;
+				CURRENT_PROJECT_VERSION = 4;
 				DEVELOPMENT_TEAM = 7G476N269U;
 				ENABLE_BITCODE = NO;
 				EXCLUDED_ARCHS = "";

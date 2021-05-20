@@ -131,11 +131,11 @@ android {
     defaultConfig {
         multiDexEnabled true
         missingDimensionStrategy "react-native-camera", "general"
-        applicationId "vn.com.tdtd"
+        applicationId "vn.com.tichdiemv99"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
-        versionName "1.0.0"
+        versionName "1.0"
     }
     splits {
         abi {
