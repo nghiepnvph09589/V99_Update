@@ -310,9 +310,19 @@ export const requestGetListLastRefCode = () => {
 };
 
 export const requestVtoPoint = point => {
-  return handleResult(getAxios.post(`/api/Service/ConvertPointVtoPointRanking`,{point}));
+  return handleResult(
+    getAxios.post(`/api/Service/ConvertPointVtoPointRanking`, { point })
+  );
 };
 
 export const requestPointToV = point => {
-  return handleResult(getAxios.post(`/api/service/convertPointRankingtoPointV`,{point}));
+  return handleResult(
+    getAxios.post(`/api/service/convertPointRankingtoPointV`, { point })
+  );
+};
+
+export const requestChargeMoneyToPoint = point => {
+  return handleResult(
+    getAxios.post(`/api/service/ChargeMoneyToPoint`, { point })
+  );
 };

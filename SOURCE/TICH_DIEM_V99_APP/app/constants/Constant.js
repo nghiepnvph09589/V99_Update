@@ -1,4 +1,3 @@
-
 const SCREEN_ROUTER = {
   AUTH: "Auth",
   LOGIN: "Login",
@@ -7,33 +6,33 @@ const SCREEN_ROUTER = {
   REGISTER: "Register",
   FORGOT_PASS: "ForgotPassword",
   UPDATE_USER_INFO: "UpdateUserInfo",
-  MAIN: 'Main',
-  HOME: 'Home',
-  LIST_PRODUCT: 'ListProduct',
-  USER: 'User',
-  UPDATE_USER: 'UpdateUser',
+  MAIN: "Main",
+  HOME: "Home",
+  LIST_PRODUCT: "ListProduct",
+  USER: "User",
+  UPDATE_USER: "UpdateUser",
   ORDER: "order",
   STORE: "Store",
   HISTORY: "History",
-  GIFT_DETAIL: 'giftDetail',
-  DETAIL_PRODUCT: 'DetailProduct',
-  PRODUCT: 'Product',
-  CART: 'cart',
-  TOP_UP: 'topUp',
-  USE_POINT: 'UsePoint',
-  CONFIRM_ORDER: 'ConfirmOrder',
-  CUS_INFO: 'CusInfo',
-  QR_CODE: 'QrCode',
-  QR_CODE_SUCCESS: 'QrCodeSuccess',
-  NOTIFY: 'Notify',
-  DETAIL_ORDER: 'DetailOrder',
-  WARRANTY: 'Warranty',
-  DETAIL_STORE: 'DetailStore',
-  UTILITY: 'Utility',
-  DETAIL_UTILITY: 'Detail_utility',
-  CHANGE_PASS: 'Change_pass',
-  CHAT: 'Chat',
-  IMAGE_VIEWER: 'ImageViewer',
+  GIFT_DETAIL: "giftDetail",
+  DETAIL_PRODUCT: "DetailProduct",
+  PRODUCT: "Product",
+  CART: "cart",
+  TOP_UP: "topUp",
+  USE_POINT: "UsePoint",
+  CONFIRM_ORDER: "ConfirmOrder",
+  CUS_INFO: "CusInfo",
+  QR_CODE: "QrCode",
+  QR_CODE_SUCCESS: "QrCodeSuccess",
+  NOTIFY: "Notify",
+  DETAIL_ORDER: "DetailOrder",
+  WARRANTY: "Warranty",
+  DETAIL_STORE: "DetailStore",
+  UTILITY: "Utility",
+  DETAIL_UTILITY: "Detail_utility",
+  CHANGE_PASS: "Change_pass",
+  CHAT: "Chat",
+  IMAGE_VIEWER: "ImageViewer",
   INFO_DAIICHI: "Info_daiichi",
   UPDATE_IMAGE: "Update_image",
   CHECK_PHONE: "CHECK_PHONE",
@@ -49,59 +48,59 @@ const SCREEN_ROUTER = {
   BANK: "BANK",
   ADD_BANK: "ADD_BANK",
   DETAIL_POINTS_HISTORY: "DETAIL_POINTS_HISTORY",
-  INTRODUCE_CUSTOMERS: "INTRODUCE_CUSTOMERS",
+  INTRODUCE_CUSTOMERS: "INTRODUCE_CUSTOMERS"
 };
 
 const REDUCER = {
-  COUNT_CART: 'countCartReducer',
-  USER: 'UserReducer',
-  ADDRESS: 'addressReducer',
-  ADD_TO_CART: 'addToCartReducer',
-  WALLET_ACCUMULATE_POINTS: 'WALLET_ACCUMULATE_POINTS',
-  WALLET_POINTS: 'WALLET_POINTS',
-  HISTORY_DRAW_POINTS: 'HISTORY_DRAW_POINTS',
-  HISTORY_MOVING_POINTS: 'HISTORY_MOVING_POINTS',
-  BANK_SELECT: 'BANK_SELECT',
-  BANK: 'BANK',
-  NAVIGATE_TAB: 'NAVIGATE_TAB',
-  GET_LIST_POINT_V: 'getListPointVReducer'
-}
+  COUNT_CART: "countCartReducer",
+  USER: "UserReducer",
+  ADDRESS: "addressReducer",
+  ADD_TO_CART: "addToCartReducer",
+  WALLET_ACCUMULATE_POINTS: "WALLET_ACCUMULATE_POINTS",
+  WALLET_POINTS: "WALLET_POINTS",
+  HISTORY_DRAW_POINTS: "HISTORY_DRAW_POINTS",
+  HISTORY_MOVING_POINTS: "HISTORY_MOVING_POINTS",
+  BANK_SELECT: "BANK_SELECT",
+  BANK: "BANK",
+  NAVIGATE_TAB: "NAVIGATE_TAB",
+  GET_LIST_POINT_V: "getListPointVReducer"
+};
 
 const GIFT_TYPE = {
   GIFT: 1,
   CARD: 3,
   POIN_V: 4
-}
+};
 const GENDER = {
   MALE: 0,
-  FEMALE: 1,
-}
+  FEMALE: 1
+};
 const LOGIN_WITH = {
   LOGIN_WITH_PHONE: 4,
   LOGIN_WITH_FB: 1,
   LOGIN_WITH_GG: 2
-}
+};
 const ORDER = {
   PENDING: 1,
   CONFIRM: 3,
   CANCELED: 0,
   PAID: 2,
   REFUSE: 4,
-  HISTORY: '',
-}
+  HISTORY: ""
+};
 
 const DRAW_POINTS_STATUS = {
   PENDING: 1,
   CONFIRMED: 3,
-  REFUSE: 4,
-}
+  REFUSE: 4
+};
 
 const UTILITY = {
   NEWS: 1,
   EVENT: 2,
   GUARANTY: 3,
   ADVERTISEMENT: 4
-}
+};
 
 const NOTIFY_NAVIGATE = {
   ORDER_DETAIL: 1,
@@ -110,8 +109,8 @@ const NOTIFY_NAVIGATE = {
   NOTIFY: 5,
   POINTS_HISTORY: 6,
   DRAW_POINTS_DETAIL: 7,
-  REFUNS_WALLET_POINTS: 8,
-}
+  REFUNS_WALLET_POINTS: 8
+};
 const HISTORY = {
   ACCUMULATE: 1,
   DONATED: 2,
@@ -120,11 +119,11 @@ const HISTORY = {
   SYSTEM_DONATE: 5,
   CARD: 6,
   CANCELED_REQUEST: 7
-}
+};
 const AGENT = {
   CLIENT: 0,
   AGENT: 1
-}
+};
 const NAVIGATE_IN_NOTIFY = {
   ORDER: 1,
   DRAW_POINTS: 2,
@@ -132,19 +131,19 @@ const NAVIGATE_IN_NOTIFY = {
   NOTIFY_POINTS_HISTORY: 4,
   ADD_ACCUMULATE_POINTS: 9,
   NOTIFY_POINTS_SYSTEM: 5,
-  NOTIFY_ACCUMULATE_POINTS: 6,
-}
+  NOTIFY_ACCUMULATE_POINTS: 6
+};
 
 const ASYNCSTORAGE_KEY = {
-  TOKEN: 'token',
-  CODE_PUSH: 'code_push',
-}
+  TOKEN: "token",
+  CODE_PUSH: "code_push"
+};
 
 const GET_HISTORY_POINT_TYPE = {
   WALLET_ACCUMULATE_POINTS: 1,
   WALLET_POINTS: 2,
   LIST_POINT_V: 3
-}
+};
 
 const ACTION_POINTS_TYPE = {
   DRAW_POINTS: 1,
@@ -155,21 +154,31 @@ const ACTION_POINTS_TYPE = {
   SYSTEM_ADD_POINTS: 6,
   MINUS_POINTS: 7,
   REFUNS_POINTS: 8,
-  REWARD_POINTS:10,
+  REWARD_POINTS: 10,
   POINT_V: 11,
-  V_POINT:12,
+  V_POINT: 12,
   REGISTER: 13,
-  REFERENCE: 14
-
-}
-
-const USER_ACTIVATED = 1
-
-export {
-  SCREEN_ROUTER, GIFT_TYPE,
-  GENDER, REDUCER, LOGIN_WITH, ORDER, UTILITY,
-  NOTIFY_NAVIGATE, HISTORY, AGENT, NAVIGATE_IN_NOTIFY,
-  ASYNCSTORAGE_KEY, USER_ACTIVATED, GET_HISTORY_POINT_TYPE,
-  ACTION_POINTS_TYPE, DRAW_POINTS_STATUS
+  REFERENCE: 14,
+  VNPAY: 15
 };
 
+const USER_ACTIVATED = 1;
+
+export {
+  SCREEN_ROUTER,
+  GIFT_TYPE,
+  GENDER,
+  REDUCER,
+  LOGIN_WITH,
+  ORDER,
+  UTILITY,
+  NOTIFY_NAVIGATE,
+  HISTORY,
+  AGENT,
+  NAVIGATE_IN_NOTIFY,
+  ASYNCSTORAGE_KEY,
+  USER_ACTIVATED,
+  GET_HISTORY_POINT_TYPE,
+  ACTION_POINTS_TYPE,
+  DRAW_POINTS_STATUS
+};
