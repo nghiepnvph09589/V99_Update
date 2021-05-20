@@ -1,18 +1,12 @@
-package vn.com.tdtd;
+package vn.com.tichdiemv99;
 
 import android.app.Application;
 import android.content.Context;
 import com.facebook.react.PackageList;
 import com.facebook.react.ReactApplication;
-import com.dylanvann.fastimage.FastImageViewPackage;
-import com.reactnativecommunity.rnpermissions.RNPermissionsPackage;
-import org.reactnative.camera.RNCameraPackage;
 // import org.reactnative.camera.RNCameraPackage;
 //import com.reactnativecommunity.rnpermissions.RNPermissionsPackage;
-import com.facebook.reactnative.androidsdk.FBSDKPackage;
 import com.microsoft.codepush.react.CodePush;
-import com.geektime.rnonesignalandroid.ReactNativeOneSignalPackage;
-import com.AlexanderZaytsev.RNI18n.RNI18nPackage;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.soloader.SoLoader;

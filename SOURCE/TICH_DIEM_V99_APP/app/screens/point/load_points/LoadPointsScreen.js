@@ -28,7 +28,7 @@ import NumberFormatTextInput from "react-number-format";
 import { showConfirm, showMessages } from "@app/utils/Alert";
 import { requestChargeMoneyToPoint } from "@app/constants/Api";
 import reactotron from "reactotron-react-native";
-import { getWalletPoints } from "@app/redux/actions";
+import { getUserInfo, getWalletPoints } from "@app/redux/actions";
 import NavigationUtil from "@app/navigation/NavigationUtil";
 export class LoadPointsScreen extends Component {
   constructor(props) {
@@ -66,6 +66,7 @@ export class LoadPointsScreen extends Component {
         typePoint: 0
       };
       this.props.getWalletPoints(payload);
+      this.props.getUserInfo();
       showMessages(R.strings().notification, "Nạp điểm thành công!", () => {
         NavigationUtil.goBack();
       });
@@ -434,7 +435,8 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = {
-  getWalletPoints
+  getWalletPoints,
+  getUserInfo
 };
 export default connect(
   mapStateToProps,
