@@ -44,7 +44,7 @@ import codePush from "react-native-code-push";
 import R from "@app/assets/R";
 import LinkingUtils, { LINKING_TYPE } from "@app/utils/LinkingUtils";
 
-const HOTLINE = '0977.380.806'
+const HOTLINE = '0815.686.619'
 export class UserScreen extends Component {
   constructor(props) {
     super(props);
@@ -233,7 +233,7 @@ export class UserScreen extends Component {
                 style={[Theme.fonts.regular18, { flex: 1 }]}
                 numberOfLines={1}
               >
-                {userInfoState.data.customerName}
+                {userInfoState.data.customerName} - {(userInfoState.data.isVip===0)?'TK Thường':'TK Vip'}
               </Text>
             </View>
 
@@ -261,10 +261,13 @@ export class UserScreen extends Component {
               NavigationUtil.navigate(SCREEN_ROUTER.UPDATE_USER);
             }}
           />
-          {/* <UserItem
-            text={'Chính sách tích điểm và đổi điểm'}
+          <UserItem
+            text={'Chính sách và điều kiện'}
             img={R.images.ic_bookmark}
-          /> */}
+            onPress={() => {
+              NavigationUtil.navigate(SCREEN_ROUTER.POLICY_USER_SCREEN);
+            }}
+          />
           <UserItem
             text={I18n.t("bill")}
             img={R.images.ic_notepad}

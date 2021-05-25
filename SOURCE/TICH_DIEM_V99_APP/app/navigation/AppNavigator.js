@@ -52,6 +52,8 @@ import AsyncStorage from "@react-native-community/async-storage";
 import NavigationUtil from "./NavigationUtil";
 import Toast from "@app/utils/Toast";
 
+import PolicyUserScreen from '../screens/account/PolicyUserScreen';
+
 const TabBarComponent = props => <BottomTabBar {...props} />;
 
 const tabbarIcons = {
@@ -201,6 +203,7 @@ const Main = createStackNavigator({
     [SCREEN_ROUTER.DETAIL_DRAW_POINTS]: DetailDrawPointsScreen,
     [SCREEN_ROUTER.HISTORY_MOVING_POINTS]: HistoryMovingPointsScreen,
     [SCREEN_ROUTER.INTRODUCE_CUSTOMERS]: IntroduceCustomersScreen,
+    [SCREEN_ROUTER.POLICY_USER_SCREEN]: PolicyUserScreen,
 },
     {
         defaultNavigationOptions: {

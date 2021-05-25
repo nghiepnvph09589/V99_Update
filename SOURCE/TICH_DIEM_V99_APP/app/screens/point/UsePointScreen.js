@@ -31,8 +31,8 @@ export class UsePointScreen extends Component {
                         page={this.props.navigationState.initialPage}
                         initialPage={this.initialPage}
                     >
-                        <ListGiftScreen tabLabel={'Ví Point'} key={GIFT_TYPE.GIFT} />
-                        <CardScreen tabLabel={'Ví điểm tích'} key={GIFT_TYPE.CARD} />
+                        <ListGiftScreen tabLabel={'Ví VAPAY'} key={GIFT_TYPE.GIFT} />
+                        <CardScreen tabLabel={'Ví Tích Điểm'} key={GIFT_TYPE.CARD} />
                         <PoinVScreen tabLabel={'Ví V'} key={GIFT_TYPE.POIN_V} />
                     </ScrollableTabView>
                 </SafeAreaView>

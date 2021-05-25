@@ -193,7 +193,7 @@ export class DrawPointsScreen extends Component {
               color: theme.colors.black1
             }}
           >
-            Nhập số tiền muốn rút:
+            Nhập số điểm muốn rút:
           </Text>
           <TextInput
             keyboardType="number-pad"

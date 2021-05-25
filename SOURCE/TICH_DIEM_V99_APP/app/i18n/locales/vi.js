@@ -154,7 +154,7 @@ export default {
   search: "Tìm kiếm",
   enter_product: "Nhập tên sản phẩm",
   update_image_agent: "Cập nhật ảnh",
-  accumulate_points: 'Tích điểm',
+  accumulate_points: 'Ví',
   buy: 'Mua hàng',
   draw_points: 'Rút điểm',
   recharge: 'Nạp tiền',
@@ -176,4 +176,5 @@ export default {
   fee_use_app: 'Phí sử dụng ứng dụng',
   introduce_customers: 'Giới thiệu khách hàng',
   point_V: 'V',
+  policy_user_screen: 'Chính sách và điều kiện'
 };

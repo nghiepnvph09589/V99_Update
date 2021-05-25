@@ -79,6 +79,7 @@ export class PointVScreen extends Component {
     this.props.getListPointV(payload);
     this.props.getWalletAccumulate(payloadPoint);
   };
+  
 
   renderViewPoint = () => {
     const { userState } = this.props;
@@ -89,7 +90,7 @@ export class PointVScreen extends Component {
         resizeMode="contain"
       >
         <Block center middle>
-          <Text
+          {/* <Text
             style={{
               color: theme.colors.active,
               marginBottom: 5,
@@ -97,13 +98,23 @@ export class PointVScreen extends Component {
             }}
           >
             Điểm của bạn
-          </Text>
+          </Text> */}
           <NumberFormat
             fonts={theme.fonts.semibold25}
             color={theme.colors.active}
             value={userState.pointV}
             perfix={R.strings().point_V}
           />
+          <Text
+            style={{
+              color: theme.colors.black,
+              marginBottom: 5,
+              ...theme.fonts.regular12
+            }}
+          >
+            
+            ~{((userState.pointV)*23061.5).toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')} USD
+          </Text>
         </Block>
       </FstImage>
     );

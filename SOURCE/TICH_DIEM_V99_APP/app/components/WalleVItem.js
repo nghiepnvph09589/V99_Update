@@ -117,7 +117,7 @@ class WalletPointsItem extends Component {
                         <NumberFormat
                             title={'Số dư'}
                             value={item.balance}
-                            perfix='đ'
+                            perfix='V'
                             color={theme.colors.black_title}
                             fonts={theme.fonts.regular16}
                         />
@@ -138,7 +138,7 @@ class WalletPointsItem extends Component {
                         </Text>
                         <NumberFormat
                             value={item.point}
-                            perfix='đ'
+                            perfix='V'
                             color={TitleWalletPointsEnum[item.type].color}
                             fonts={theme.fonts.regular16}
                         />

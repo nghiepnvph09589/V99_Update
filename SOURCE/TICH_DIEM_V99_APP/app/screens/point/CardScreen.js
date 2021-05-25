@@ -128,7 +128,7 @@ export class CardScreen extends Component {
           onChangeTab={Keyboard.dismiss}
         >
           <WalletAccumulatePointsScreen tabLabel={"Lịch sử"} key={1} />
-          <PolicyScreen tabLabel={"Chính sách"} key={0} />
+          {/* <PolicyScreen tabLabel={"Chính sách"} key={0} /> */}
         </ScrollableTabView>
       </Block>
     );
