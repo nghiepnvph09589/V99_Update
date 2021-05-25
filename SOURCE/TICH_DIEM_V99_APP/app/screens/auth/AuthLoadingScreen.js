@@ -22,6 +22,8 @@ import SplashScreen from "react-native-splash-screen";
 import DeviceInfo from "react-native-device-info";
 import { requestGetAppVersion } from "@api";
 import theme from "@app/constants/Theme";
+import R from "@app/assets/R";
+import FastImage from "react-native-fast-image";
 
 // key code push
 // ios_pro:'QpNDLfGOBo4u7kN9rnVUCnOwbLInSjj5Rq_6S'
@@ -191,19 +193,19 @@ export class AuthLoadingScreen extends Component {
 
   render() {
     return (
-      <ImageBackground
+      <FastImage
         style={{
           width: "100%",
           height: "100%",
           alignItems: "center",
           justifyContent: "center"
         }}
-        source={require("../../assets/images/splash.png")}
+        source={R.images.splash}
       >
         <View style={{ position: "absolute", bottom: 40 }}>
           <ActivityIndicator size="large" color={theme.colors.white} />
         </View>
-      </ImageBackground>
+      </FastImage>
     );
   }
 }
