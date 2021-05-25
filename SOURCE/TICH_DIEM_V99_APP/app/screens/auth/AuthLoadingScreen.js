@@ -200,8 +200,8 @@ export class AuthLoadingScreen extends Component {
         }}
         source={require("../../assets/images/splash.png")}
       >
-        <View style={{ marginTop: "40%" }}>
-          <ActivityIndicator size="large" color={theme.colors.active} />
+        <View style={{ position: "absolute", bottom: 40 }}>
+          <ActivityIndicator size="large" color={theme.colors.white} />
         </View>
       </ImageBackground>
     );
