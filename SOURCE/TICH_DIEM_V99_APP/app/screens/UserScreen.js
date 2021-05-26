@@ -165,7 +165,7 @@ export class UserScreen extends Component {
             <Text style={{
               color: theme.colors.active,
               ...theme.fonts.regular18
-            }}>Point</Text>
+            }}>Điểm VAPAY</Text>
             <NumberFormat fonts={theme.fonts.regular18} value={userInfoState.data.point}
               perfix={R.strings().point} />
           </Block>
@@ -173,7 +173,7 @@ export class UserScreen extends Component {
             <Text style={{
               color: theme.colors.active,
               ...theme.fonts.regular18
-            }}>Điểm tích lũy</Text>
+            }}>Điểm tích</Text>
             <NumberFormat fonts={theme.fonts.regular18} value={userInfoState.data.pointRanking}
               perfix={R.strings().point} />
           </Block>
@@ -181,7 +181,7 @@ export class UserScreen extends Component {
             <Text style={{
               color: theme.colors.active,
               ...theme.fonts.regular18
-            }}>Point V</Text>
+            }}>Điểm V</Text>
             <NumberFormat fonts={theme.fonts.regular18} value={userInfoState.data.pointV}
               perfix={R.strings().point_V} />
           </Block>

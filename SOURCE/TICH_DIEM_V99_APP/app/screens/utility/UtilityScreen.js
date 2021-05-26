@@ -19,7 +19,7 @@ export default class UtilityScreen extends Component {
     const initialPage = navigation.getParam('initial_page');
     return (
       <Block>
-        <DCHeader title={R.strings().news} back />
+        <DCHeader title={R.strings().news_event} back />
         <SafeAreaView style={{ flex: 1, backgroundColor: Theme.colors.white }}>
           <ScrollableTabView
             initialPage={initialPage}

@@ -170,7 +170,9 @@ function strings(){
         see_more: I18n.t("see_more", { defaultValue: "" }),
         fee_use_app: I18n.t("fee_use_app", { defaultValue: "" }),
         introduce_customers: I18n.t("introduce_customers", { defaultValue: "" }),
-        point_V: I18n.t("point_V", {defaultValue: ""})
+        point_V: I18n.t("point_V", {defaultValue: ""}),
+        news_event: I18n.t("new_event", { defaultValue: "" }),
+        rank_product: I18n.t("rank_envent", {defaultValue:""})
 }}
 export default strings
         

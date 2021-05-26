@@ -121,7 +121,7 @@ export class MovingPointsScreen extends Component {
                     <Text style={{
                         ...theme.fonts.regular20,
                         color: theme.colors.black1
-                    }}>Nhập số tiền muốn chuyển:</Text>
+                    }}>Nhập số điểm muốn chuyển:</Text>
                     <TextInput
                         keyboardType='number-pad'
                         style={styles.text_input}

@@ -46,6 +46,7 @@ import { requireLogin } from "../utils/AlertRequireLogin";
 import theme from "@theme";
 import R from "@app/assets/R";
 import Toast, { BACKGROUND_TOAST } from "@app/utils/Toast";
+import reactotron from "reactotron-react-native";
 
 class Option extends Component {
   render() {
@@ -108,11 +109,11 @@ class Product extends Component {
           <FastImage
             style={{ height: 120, width: 120, alignSelf: "center" }}
             resizeMode="contain"
-            source={{ uri: item.image }}
+            source={{ uri: item.imageUrl }}
           />
 
           <Text style={[theme.fonts.robotoRegular15, { marginLeft: 10 }]}>
-            {item.name}
+            {item.itemName}
           </Text>
         </View>
 
@@ -189,8 +190,10 @@ export class HomeScreen extends Component {
   };
 
   componentDidMount() {
+    const { homeState, advertisementState } = this.props;
     this.checkLogin();
     this._onRefresh();
+    reactotron.log('pro' + homeState.listProductHome)
   }
 
   _renderImageSlider() {
@@ -230,6 +233,7 @@ export class HomeScreen extends Component {
     if (homeState.isLoading || advertisementState.isLoading) return <Loading />;
     if (homeState.error || advertisementState.error)
       return <Error onPress={() => this._onRefresh()} />;
+      reactotron.log('homeState',homeState)
     return (
       <Block
         style={{
@@ -281,6 +285,38 @@ export class HomeScreen extends Component {
           />
         </View>
         <View style={{ backgroundColor: theme.colors.white }}>
+          {!!homeState.product.length && (
+            <View style={styles.titleView}>
+              <Text
+                style={[
+                  theme.fonts.semibold18,
+                  { color: theme.colors.black_title, marginBottom: 5 }
+                ]}
+              >
+                {R.strings().rank_product}
+              </Text>
+              <TouchableOpacity
+                onPress={() => {
+                  NavigationUtil.navigate(SCREEN_ROUTER.UTILITY, {
+                    initial_page: 1
+                  });
+                }}
+              >
+                <Text style={styles.all_title}>{R.strings().see_more}</Text>
+              </TouchableOpacity>
+            </View>
+          )}
+          <ScrollView
+            contentContainerStyle={{ paddingLeft: 15 }}
+            horizontal
+            showsHorizontalScrollIndicator={false}
+          >
+            {homeState.product.map((item, index) => {
+              return <Product item={item} index={index} key={index} />;
+            })}
+          </ScrollView>
+        </View>
+        <View style={{ backgroundColor: theme.colors.white }}>
           {!!homeState.news.length && (
             <View style={styles.titleView}>
               <Text
@@ -289,7 +325,7 @@ export class HomeScreen extends Component {
                   { color: theme.colors.black_title, marginBottom: 5 }
                 ]}
               >
-                {I18n.t("news")}
+                {I18n.t("new_event")}
               </Text>
               <TouchableOpacity
                 onPress={() => {
@@ -310,38 +346,7 @@ export class HomeScreen extends Component {
             })}
           </ScrollView>
         </View>
-        <View style={{ backgroundColor: theme.colors.white }}>
-          {!!homeState.listEvent.length && (
-            <View style={styles.titleView}>
-              <Text
-                style={[
-                  theme.fonts.semibold18,
-                  { color: theme.colors.black_title, marginBottom: 5 }
-                ]}
-              >
-                {R.strings().event}
-              </Text>
-              <TouchableOpacity
-                onPress={() => {
-                  NavigationUtil.navigate(SCREEN_ROUTER.UTILITY, {
-                    initial_page: 1
-                  });
-                }}
-              >
-                <Text style={styles.all_title}>{R.strings().see_more}</Text>
-              </TouchableOpacity>
-            </View>
-          )}
-          <ScrollView
-            contentContainerStyle={{ paddingLeft: 15 }}
-            horizontal
-            showsHorizontalScrollIndicator={false}
-          >
-            {homeState.listEvent.map((item, index) => {
-              return <News item={item} index={index} key={index} />;
-            })}
-          </ScrollView>
-        </View>
+
       </Block>
     );
   }
@@ -349,6 +354,7 @@ export class HomeScreen extends Component {
   render() {
     const { homeState, advertisementState } = this.props;
     const news = 0;
+
     return (
       <Block>
         <ImageBackground

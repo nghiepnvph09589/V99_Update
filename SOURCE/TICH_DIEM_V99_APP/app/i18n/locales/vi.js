@@ -176,5 +176,7 @@ export default {
   fee_use_app: 'Phí sử dụng ứng dụng',
   introduce_customers: 'Giới thiệu khách hàng',
   point_V: 'V',
-  policy_user_screen: 'Chính sách và điều kiện'
+  policy_user_screen: 'Chính sách và điều kiện',
+  new_event: 'Tin tức - Sự kiện',
+  rank_product: 'Sản phẩm bán chạy'
 };

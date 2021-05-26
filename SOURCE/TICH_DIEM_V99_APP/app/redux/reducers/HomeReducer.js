@@ -31,9 +31,10 @@ export default function (state = initialState, action) {
         error: null,
         userInfo: action.payload.customerInfo,
         news: action.payload.listNews,
-        product: action.payload.listProduct,
+        product: action.payload.listProductHome,
         listBanner: action.payload.listBanner,
-        listEvent: action.payload.listEnvent
+        // listEvent: action.payload.listEnvent,
+        // listProductHome: action.payload.product
       };
 
     case DONATE_SUCCESS:
