@@ -51,12 +51,12 @@ export class ProductScreen extends Component {
 
   renderBody() {
     const { text } = this.state
-    const { productState, countCartState } = this.props
+    const {homeState, productState, countCartState } = this.props
     if (productState.isLoading) return <Loading />
     if (productState.error)
       return <Error
         onPress={() => this.props.getProduct()} />;
-
+        
     return (
       <Block>
         <SafeAreaView style={{ flex: 1, backgroundColor: theme.colors.white }}>
@@ -69,6 +69,7 @@ export class ProductScreen extends Component {
             {
               productState.data.map((item, index) => {
                 return <ListProductScreen
+                checkAcc = {homeState.userInfo.isVip}
                   tabLabel={item.name}
                   key={index}
                   item={item}
@@ -143,6 +144,7 @@ export class ProductScreen extends Component {
 }
 
 const mapStateToProps = state => ({
+  homeState: state.homeReducer,
   productState: state.productReducer,
   countCartState: state[REDUCER.COUNT_CART],
 });

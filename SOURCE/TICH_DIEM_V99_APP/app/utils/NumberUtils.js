@@ -13,3 +13,15 @@ export const parseIntComas = value => {
     if (!value) return 0
     return parseInt(value.toString().replace(/,/g, ''))
 }
+
+export function formatNumberToString(valu) {
+    if (!value) return ""
+    return value.toString().split(",").join("")
+  }
+export function formatPrice(value) {
+    if (Platform.OS === "androi") {
+      require("intl") // import intl object
+      require("intl/locale-data/jsonp/en") // load the required locale details
+    }
+    return new Intl.NumberFormat("en-ES").format(formatNumberToString(value))
+  }

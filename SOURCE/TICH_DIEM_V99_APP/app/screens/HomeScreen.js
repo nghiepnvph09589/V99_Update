@@ -47,6 +47,7 @@ import theme from "@theme";
 import R from "@app/assets/R";
 import Toast, { BACKGROUND_TOAST } from "@app/utils/Toast";
 import reactotron from "reactotron-react-native";
+import { formatNumber } from "@app/utils/NumberUtils";
 
 class Option extends Component {
   render() {
@@ -97,7 +98,8 @@ class Option extends Component {
 }
 class Product extends Component {
   render() {
-    const { item, index } = this.props;
+    const { item, index,checkAcc } = this.props;
+    // console.log(checkAcc)
     return (
       <TouchableOpacity
         style={styles._viewProduct}
@@ -109,28 +111,43 @@ class Product extends Component {
           <FastImage
             style={{ height: 120, width: 120, alignSelf: "center" }}
             resizeMode="contain"
-            source={{ uri: item.imageUrl }}
+            source={{ uri: item.image[0] }}
           />
 
-          <Text style={[theme.fonts.robotoRegular15, { marginLeft: 10 }]}>
-            {item.itemName}
+          <Text style={[theme.fonts.robotoRegular12, { marginLeft: 10, marginHorizontal: 10, }]}>
+            {item.name}
           </Text>
+
         </View>
 
-        <View style={{ flexDirection: "row", padding: 5 }}>
+        <View style={{ flexDirection: 'column', padding: 5 }}>
           <FastImage
             style={{ height: 15, width: 15 }}
             resizeMode="cover"
             source={R.images.ic_box}
           />
 
-          <NumberFormat
+          {/* <NumberFormat
             style={{ marginLeft: 8 }}
-            value={item.price}
+            value={'Giá thường: ' + item.price}
             color={theme.colors.red_money}
             perfix="đ"
             fonts={theme.fonts.robotoRegular12}
-          />
+          /> */}
+          <Text style={{
+            color: "red",
+            textDecorationLine:(checkAcc===0)?'none': 'line-through',
+            fontSize: 14
+          }}
+            children={'Giá thường: ' + formatNumber(item.price) + 'đ'} />
+
+          <Text style={{
+            textDecorationLine:(checkAcc===1)?'none': 'line-through',
+            color: "red",
+            fontSize: 14
+          }}
+            children={'Giá VIP: ' + formatNumber(item.priceVIP) + 'đ'} />
+
         </View>
       </TouchableOpacity>
     );
@@ -193,7 +210,7 @@ export class HomeScreen extends Component {
     const { homeState, advertisementState } = this.props;
     this.checkLogin();
     this._onRefresh();
-    reactotron.log('pro' + homeState.listProductHome)
+    // reactotron.log('pro' + homeState.listProductHome)
   }
 
   _renderImageSlider() {
@@ -233,7 +250,7 @@ export class HomeScreen extends Component {
     if (homeState.isLoading || advertisementState.isLoading) return <Loading />;
     if (homeState.error || advertisementState.error)
       return <Error onPress={() => this._onRefresh()} />;
-      reactotron.log('homeState',homeState)
+    // reactotron.log('homeState', homeState)
     return (
       <Block
         style={{
@@ -297,7 +314,7 @@ export class HomeScreen extends Component {
               </Text>
               <TouchableOpacity
                 onPress={() => {
-                  NavigationUtil.navigate(SCREEN_ROUTER.UTILITY, {
+                  NavigationUtil.navigate(SCREEN_ROUTER.PRODUCT, {
                     initial_page: 1
                   });
                 }}
@@ -312,7 +329,7 @@ export class HomeScreen extends Component {
             showsHorizontalScrollIndicator={false}
           >
             {homeState.product.map((item, index) => {
-              return <Product item={item} index={index} key={index} />;
+              return <Product item={item} index={index} key={index} checkAcc = {homeState.userInfo.isVip} />;
             })}
           </ScrollView>
         </View>

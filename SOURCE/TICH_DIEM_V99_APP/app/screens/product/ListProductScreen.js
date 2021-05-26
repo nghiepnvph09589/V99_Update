@@ -32,6 +32,7 @@ import * as Api from "../../constants/Api";
 import AsyncStorage from "@react-native-community/async-storage"
 import { SearchBar } from "react-native-elements";
 import R from "@app/assets/R";
+import { formatNumber } from "@app/utils/NumberUtils";
 
 const formatData = (listProd, numberColumns) => {
     const numberOfFullRows = Math.floor(listProd.length / numberColumns);
@@ -177,6 +178,7 @@ class ListProductScreen extends Component {
 
     renderBody() {
         const { indexSelected, data, isLoading, error, listProd } = this.state;
+        const {homeState} = this.props;
         if (isLoading) return <Loading />;
         if (error)
             return (
@@ -204,7 +206,7 @@ class ListProductScreen extends Component {
                         if (item.empty === true) {
                             return <View style={[styles.item, styles.itemInvisible]} />;
                         }
-                        return <ProductItem item={item} index={index} />;
+                        return <ProductItem item={item} index={index} checkAcc = {homeState.userInfo.isVip}/>;
                     }}
                     numColumns={numberColumns}
                     onEndReached={this.handleLoadMore}
@@ -226,7 +228,7 @@ class ListProductScreen extends Component {
 
 class ProductItem extends Component {
     render() {
-        const { item } = this.props;
+        const { item, checkAcc } = this.props;
         return (
             <TouchableOpacity
                 style={{
@@ -280,17 +282,30 @@ class ProductItem extends Component {
 
                 <View
                     style={{
-                        flexDirection: "row",
+                        flexDirection: 'column',
                         marginHorizontal: 16,
                         marginBottom: 10
                     }}
                 >
-                    <NumberFormat
-                        value={item.price}
+                    {/* <NumberFormat
+                        value={item.priceVIP}
                         color={theme.colors.red_money}
                         fonts={theme.fonts.robotoRegular14}
                         perfix="VNĐ"
-                    />
+                    /> */}
+                    <Text style={{
+            color: "red",
+            textDecorationLine:(checkAcc===0)?'none': 'line-through',
+            fontSize: 15
+          }}
+            children={'Giá thường: ' + formatNumber(item.price) + 'đ'} />
+
+          <Text style={{
+            textDecorationLine:(checkAcc===1)?'none': 'line-through',
+            color: "red",
+            fontSize: 15
+          }}
+            children={'Giá VIP: ' + formatNumber(item.priceVIP) + 'đ'} />
                 </View>
             </TouchableOpacity>
         );
@@ -298,9 +313,11 @@ class ProductItem extends Component {
 }
 
 const mapStateToProps = state => ({
+    homeState: state.homeReducer,
     cartState: state.cartReducer,
     countCartState: state[REDUCER.COUNT_CART],
-    listProductState: state.listProductReducer
+    listProductState: state.listProductReducer,
+    
 });
 
 const mapDispatchToProps = {

@@ -172,7 +172,7 @@ function strings(){
         introduce_customers: I18n.t("introduce_customers", { defaultValue: "" }),
         point_V: I18n.t("point_V", {defaultValue: ""}),
         news_event: I18n.t("new_event", { defaultValue: "" }),
-        rank_product: I18n.t("rank_envent", {defaultValue:""})
+        rank_product: I18n.t("rank_product", {defaultValue:""})
 }}
 export default strings
         
