@@ -98,13 +98,16 @@ class Option extends Component {
 }
 class Product extends Component {
   render() {
-    const { item, index,checkAcc } = this.props;
+    const { item, index, checkAcc } = this.props;
     // console.log(checkAcc)
     return (
       <TouchableOpacity
         style={styles._viewProduct}
         onPress={() => {
-          NavigationUtil.navigate(SCREEN_ROUTER.DETAIL_PRODUCT, { item });
+          NavigationUtil.navigate(SCREEN_ROUTER.DETAIL_PRODUCT, {
+            item,
+            checkAcc
+          });
         }}
       >
         <View>
@@ -114,13 +117,17 @@ class Product extends Component {
             source={{ uri: item.image[0] }}
           />
 
-          <Text style={[theme.fonts.robotoRegular12, { marginLeft: 10, marginHorizontal: 10, }]}>
+          <Text
+            style={[
+              theme.fonts.robotoRegular12,
+              { marginLeft: 10, marginHorizontal: 10 }
+            ]}
+          >
             {item.name}
           </Text>
-
         </View>
 
-        <View style={{ flexDirection: 'column', padding: 5 }}>
+        <View style={{ flexDirection: "column", padding: 5 }}>
           <FastImage
             style={{ height: 15, width: 15 }}
             resizeMode="cover"
@@ -134,20 +141,24 @@ class Product extends Component {
             perfix="đ"
             fonts={theme.fonts.robotoRegular12}
           /> */}
-          <Text style={{
-            color: "red",
-            textDecorationLine:(checkAcc===0)?'none': 'line-through',
-            fontSize: 14
-          }}
-            children={'Giá thường: ' + formatNumber(item.price) + 'đ'} />
+          <Text
+            style={{
+              color: "red",
+              textDecorationLine: !checkAcc ? "none" : "line-through",
+              ...theme.fonts.regular14
+            }}
+            children={"Giá thường: " + formatNumber(item.price) + "đ"}
+          />
 
-          <Text style={{
-            textDecorationLine:(checkAcc===1)?'none': 'line-through',
-            color: "red",
-            fontSize: 14
-          }}
-            children={'Giá VIP: ' + formatNumber(item.priceVIP) + 'đ'} />
-
+          <Text
+            style={{
+              marginTop: 8,
+              textDecorationLine: checkAcc ? "none" : "line-through",
+              color: "red",
+              ...theme.fonts.regular14
+            }}
+            children={"Giá VIP: " + formatNumber(item.priceVIP) + "đ"}
+          />
         </View>
       </TouchableOpacity>
     );
@@ -329,7 +340,14 @@ export class HomeScreen extends Component {
             showsHorizontalScrollIndicator={false}
           >
             {homeState.product.map((item, index) => {
-              return <Product item={item} index={index} key={index} checkAcc = {homeState.userInfo.isVip} />;
+              return (
+                <Product
+                  item={item}
+                  index={index}
+                  key={index}
+                  checkAcc={homeState?.userInfo?.isVip || 0}
+                />
+              );
             })}
           </ScrollView>
         </View>
@@ -363,7 +381,6 @@ export class HomeScreen extends Component {
             })}
           </ScrollView>
         </View>
-
       </Block>
     );
   }
