@@ -49,7 +49,11 @@ import R from "@app/assets/R";
 import Toast, { BACKGROUND_TOAST } from "@app/utils/Toast";
 import reactotron from "reactotron-react-native";
 import { formatNumber } from "@app/utils/NumberUtils";
+import LinkingUtils, { LINKING_TYPE } from "@app/utils/LinkingUtils";
+import Modal from "react-native-modal";
 
+const HOTLINE = '0815.686.919'
+const MESSENGER = 'https://m.me/V99Group2020'
 class Option extends Component {
   render() {
     const { text, img, onPress } = this.props;
@@ -219,7 +223,7 @@ export class HomeScreen extends Component {
   };
 
   componentDidMount() {
-    const { homeState, advertisementState } = this.props;
+    // const { homeState, advertisementState } = this.props;
     this.checkLogin();
     this._onRefresh();
     // reactotron.log('pro' + homeState.listProductHome)
@@ -385,9 +389,13 @@ export class HomeScreen extends Component {
       </Block>
     );
   }
+  setModalVisible = visible => {
+    this.setState({ modalVisible: visible });
+  };
 
   render() {
     const { homeState, advertisementState } = this.props;
+    const { modalVisible } = this.state;
     const news = 0;
 
     return (
@@ -488,6 +496,85 @@ export class HomeScreen extends Component {
             </View>
             {this._renderBody()}
           </ScrollView>
+
+          <View
+          style={{
+            marginTop:630,
+            marginLeft:320,
+            position: 'absolute',
+            justifyContent: 'flex-end',
+            alignItems: 'stretch',
+            }}>
+            <TouchableOpacity
+              onPress={() => {
+                this.setModalVisible(true)
+
+              }}
+              style={{
+                flexDirection: 'row',
+                padding: 10,
+                backgroundColor: theme.colors.active,
+                
+                borderRadius: 40
+              }}>
+              <FstImage
+                source={R.images.contact}
+                style={{ width: 40, height: 40, marginRight: 5 }}
+                resizeMode='contain' />
+            </TouchableOpacity>
+          </View>
+
+
+          <Modal
+            animationType="slide"
+            isVisible={modalVisible}
+            onBackdropPress={() => {
+              this.setModalVisible(!modalVisible);
+            }}
+          >
+            <View style={styles.modalView}>
+              <TouchableOpacity
+                onPress={() => {
+                  LinkingUtils(LINKING_TYPE.CALL, HOTLINE)
+                }}
+                style={{
+                  flexDirection: 'row',
+                  padding: 10,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  backgroundColor: theme.colors.active,
+                  alignSelf: 'center',
+                  borderRadius: 5,
+                  margin: 10
+                }}>
+                <FstImage
+                  source={R.images.ic_constulation}
+                  style={{ width: 20, height: 20, marginRight: 5 }}
+                  resizeMode='contain' />
+                <Text style={{ color: 'white', ...theme.fonts.regular18 }}>{HOTLINE}</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => {
+                  LinkingUtils(LINKING_TYPE.WEB, MESSENGER)
+                }}
+                style={{
+                  flexDirection: 'row',
+                  padding: 10,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  backgroundColor: theme.colors.active,
+                  alignSelf: 'center',
+                  borderRadius: 5
+                }}>
+                <FstImage
+                  source={R.images.messenger_contact}
+                  style={{ width: 20, height: 20, marginRight: 5 }}
+                  resizeMode='contain' />
+                <Text style={{ color: 'white', ...theme.fonts.regular18 }}>V99 GROUP</Text>
+              </TouchableOpacity>
+            </View>
+
+          </Modal>
         </ImageBackground>
       </Block>
     );
@@ -521,6 +608,20 @@ const styles = StyleSheet.create({
     alignItems: "center"
     // backgroundColor: "red",
     // flex:1
+  },
+  modalView: {
+    backgroundColor: "white",
+    borderRadius: 10,
+    padding: 20,
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5
   },
   _viewPoint: {
     marginVertical: 10,
