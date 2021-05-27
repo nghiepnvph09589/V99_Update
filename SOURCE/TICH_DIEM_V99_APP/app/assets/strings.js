@@ -170,9 +170,10 @@ function strings(){
         see_more: I18n.t("see_more", { defaultValue: "" }),
         fee_use_app: I18n.t("fee_use_app", { defaultValue: "" }),
         introduce_customers: I18n.t("introduce_customers", { defaultValue: "" }),
-        point_V: I18n.t("point_V", {defaultValue: ""}),
-        news_event: I18n.t("new_event", { defaultValue: "" }),
-        rank_product: I18n.t("rank_product", {defaultValue:""})
+        point_V: I18n.t("point_V", { defaultValue: "" }),
+        policy_user_screen: I18n.t("policy_user_screen", { defaultValue: "" }),
+        new_event: I18n.t("new_event", { defaultValue: "" }),
+        rank_product: I18n.t("rank_product", { defaultValue: "" })
 }}
 export default strings
         

@@ -25,13 +25,19 @@ import {
   FastImage,
   NumberFormat,
   LoadingProgress,
-  requestLogin, FstImage
+  requestLogin,
+  FstImage
 } from "../components";
 import UserItem from "../components/UserItem";
 import { Avatar } from "react-native-elements";
 import StepIndicator from "react-native-step-indicator";
 import NavigationUtil from "../navigation/NavigationUtil";
-import { SCREEN_ROUTER, REDUCER, AGENT, USER_ACTIVATED } from "../constants/Constant";
+import {
+  SCREEN_ROUTER,
+  REDUCER,
+  AGENT,
+  USER_ACTIVATED
+} from "../constants/Constant";
 import DialogInput from "react-native-dialog-input";
 import { requestLogout } from "../constants/Api";
 import { showConfirm, showMessages } from "../utils/Alert";
@@ -44,7 +50,7 @@ import codePush from "react-native-code-push";
 import R from "@app/assets/R";
 import LinkingUtils, { LINKING_TYPE } from "@app/utils/LinkingUtils";
 
-const HOTLINE = '0815.686.619'
+const HOTLINE = "0815.686.919";
 export class UserScreen extends Component {
   constructor(props) {
     super(props);
@@ -53,7 +59,7 @@ export class UserScreen extends Component {
       isModalVisible: false,
       code: "",
       isLoading: false,
-      update: false,
+      update: false
     };
   }
   componentDidMount = async () => {
@@ -144,50 +150,106 @@ export class UserScreen extends Component {
     }
   };
 
-
   renderViewPoint = () => {
     const { userInfoState } = this.props;
 
-    return (<>
-      {userInfoState.data.status !== USER_ACTIVATED ? <Text style={[Theme.fonts.regular16, {
-        marginVertical: 20,
-        textAlign: 'center',
-        paddingHorizontal: '5%',
-        color: theme.colors.red_money
-      }]}>Tài khoản chưa được kích hoạt, vui lòng nạp 300 điểm để được kích hoạt</Text>
-        : <View style={{
-          flexDirection: 'row',
-          alignItems: 'center',
-          justifyContent: 'center',
-          marginVertical: 10
-        }}>
-          <Block middle center style={{ borderRightWidth: 0.5, borderRightColor: theme.colors.border }}>
-            <Text style={{
-              color: theme.colors.active,
-              ...theme.fonts.regular18
-            }}>Điểm VAPAY</Text>
-            <NumberFormat fonts={theme.fonts.regular18} value={userInfoState.data.point}
-              perfix={R.strings().point} />
-          </Block>
-          <Block middle center style={{ borderLeftWidth: 0.5, borderLeftColor: theme.colors.border }}>
-            <Text style={{
-              color: theme.colors.active,
-              ...theme.fonts.regular18
-            }}>Điểm tích</Text>
-            <NumberFormat fonts={theme.fonts.regular18} value={userInfoState.data.pointRanking}
-              perfix={R.strings().point} />
-          </Block>
-          <Block middle center style={{ borderLeftWidth: 0.5, borderLeftColor: theme.colors.border }}>
-            <Text style={{
-              color: theme.colors.active,
-              ...theme.fonts.regular18
-            }}>Điểm V</Text>
-            <NumberFormat fonts={theme.fonts.regular18} value={userInfoState.data.pointV}
-              perfix={R.strings().point_V} />
-          </Block>
-        </View>}
-    </>)
-  }
+    return (
+      <>
+        {userInfoState.data.status !== USER_ACTIVATED ? (
+          <Text
+            style={[
+              Theme.fonts.regular16,
+              {
+                marginVertical: 20,
+                textAlign: "center",
+                paddingHorizontal: "5%",
+                color: theme.colors.red_money
+              }
+            ]}
+          >
+            Tài khoản chưa được kích hoạt, vui lòng nạp 300 điểm để được kích
+            hoạt
+          </Text>
+        ) : (
+          <View
+            style={{
+              flexDirection: "row",
+              alignItems: "center",
+              justifyContent: "center",
+              marginVertical: 10
+            }}
+          >
+            <Block
+              middle
+              center
+              style={{
+                borderRightWidth: 0.5,
+                borderRightColor: theme.colors.border
+              }}
+            >
+              <Text
+                style={{
+                  color: theme.colors.active,
+                  ...theme.fonts.regular18
+                }}
+              >
+                Điểm VAPAY
+              </Text>
+              <NumberFormat
+                fonts={theme.fonts.regular18}
+                value={userInfoState.data.point}
+                perfix={R.strings().point}
+              />
+            </Block>
+            <Block
+              middle
+              center
+              style={{
+                borderLeftWidth: 0.5,
+                borderLeftColor: theme.colors.border
+              }}
+            >
+              <Text
+                style={{
+                  color: theme.colors.active,
+                  ...theme.fonts.regular18
+                }}
+              >
+                Điểm tích
+              </Text>
+              <NumberFormat
+                fonts={theme.fonts.regular18}
+                value={userInfoState.data.pointRanking}
+                perfix={R.strings().point}
+              />
+            </Block>
+            <Block
+              middle
+              center
+              style={{
+                borderLeftWidth: 0.5,
+                borderLeftColor: theme.colors.border
+              }}
+            >
+              <Text
+                style={{
+                  color: theme.colors.active,
+                  ...theme.fonts.regular18
+                }}
+              >
+                Điểm V
+              </Text>
+              <NumberFormat
+                fonts={theme.fonts.regular18}
+                value={userInfoState.data.pointV}
+                perfix={R.strings().point_V}
+              />
+            </Block>
+          </View>
+        )}
+      </>
+    );
+  };
 
   _renderBody() {
     const { userInfoState } = this.props;
@@ -214,9 +276,7 @@ export class UserScreen extends Component {
           />
         }
       >
-        <View
-          style={styles._viewUser}
-        >
+        <View style={styles._viewUser}>
           <Avatar
             rounded
             source={{
@@ -233,14 +293,14 @@ export class UserScreen extends Component {
                 style={[Theme.fonts.regular18, { flex: 1 }]}
                 numberOfLines={1}
               >
-                {userInfoState.data.customerName} - {(userInfoState.data.isVip===0)?'TK Thường':'TK Vip'}
+                {userInfoState.data.customerName} -{" "}
+                {userInfoState.data.isVip === 0 ? "TK Thường" : "TK Vip"}
               </Text>
             </View>
 
             <Text style={[Theme.fonts.regular16, { marginTop: 3 }]}>
               {userInfoState.data.phone}
             </Text>
-
           </Block>
         </View>
 
@@ -255,14 +315,14 @@ export class UserScreen extends Component {
           }}
         >
           <UserItem
-            text={'Thông tin cá nhân'}
+            text={"Thông tin cá nhân"}
             img={R.images.ic_feather_user}
             onPress={() => {
               NavigationUtil.navigate(SCREEN_ROUTER.UPDATE_USER);
             }}
           />
           <UserItem
-            text={'Chính sách và điều kiện'}
+            text={"Chính sách và điều kiện"}
             img={R.images.ic_bookmark}
             onPress={() => {
               NavigationUtil.navigate(SCREEN_ROUTER.POLICY_USER_SCREEN);
@@ -288,6 +348,13 @@ export class UserScreen extends Component {
             img={R.images.ic_loan}
             onPress={() => {
               NavigationUtil.navigate(SCREEN_ROUTER.INTRODUCE_CUSTOMERS);
+            }}
+          />
+          <UserItem
+            text={"Lịch sử nhận thưởng"}
+            img={R.images.img_history_award}
+            onPress={() => {
+              NavigationUtil.navigate(SCREEN_ROUTER.HISTORY_AWARD_SCREEN);
             }}
           />
           <UserItem
@@ -317,22 +384,26 @@ export class UserScreen extends Component {
         {/* {this._renderPoint()} */}
         <TouchableOpacity
           onPress={() => {
-            LinkingUtils(LINKING_TYPE.CALL, HOTLINE)
+            LinkingUtils(LINKING_TYPE.CALL, HOTLINE);
           }}
           style={{
-            flexDirection: 'row',
+            flexDirection: "row",
             padding: 10,
-            justifyContent: 'center',
-            alignItems: 'center',
+            justifyContent: "center",
+            alignItems: "center",
             backgroundColor: theme.colors.active,
-            alignSelf: 'center',
+            alignSelf: "center",
             borderRadius: 5
-          }}>
+          }}
+        >
           <FstImage
             source={R.images.ic_constulation}
             style={{ width: 20, height: 20, marginRight: 5 }}
-            resizeMode='contain' />
-          <Text style={{ color: 'white', ...theme.fonts.regular18 }}>{HOTLINE}</Text>
+            resizeMode="contain"
+          />
+          <Text style={{ color: "white", ...theme.fonts.regular18 }}>
+            {HOTLINE}
+          </Text>
         </TouchableOpacity>
       </ScrollView>
     );
@@ -350,14 +421,17 @@ export class UserScreen extends Component {
 }
 
 const mapStateToProps = state => ({
-  userInfoState: state[REDUCER.USER],
+  userInfoState: state[REDUCER.USER]
 });
 
 const mapDispatchToProps = {
   getUserInfo
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(UserScreen);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(UserScreen);
 const styles = StyleSheet.create({
   _viewPoint: {
     width: "100%",

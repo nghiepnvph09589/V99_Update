@@ -61,6 +61,7 @@ const images = {
     img_decor_right: require("./images/img_decor_right.png"),
     img_draw_points: require("./images/img_draw_points.png"),
     img_empty: require("./images/img_empty.png"),
+    img_history_award: require("./images/img_history_award.png"),
     img_money: require("./images/img_money.png"),
     img_otp: require("./images/img_otp.png"),
     img_recharge: require("./images/img_recharge.png"),

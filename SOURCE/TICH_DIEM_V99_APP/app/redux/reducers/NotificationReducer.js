@@ -1,17 +1,26 @@
 import {
   GET_NOTIFICATION,
   GET_NOTIFICATION_SUCCESS,
-  GET_NOTIFICATION_FAIL, UPDATE_NOTIFICATION
+  GET_NOTIFICATION_FAIL,
+  UPDATE_NOTIFICATION,
+  CHECK_NOTI
 } from "../actions/type";
 
 const initialState = {
   data: [],
   isLoading: false,
-  error: null
+  error: null,
+  checkNoti: false
 };
 
-export default function (state = initialState, action) {
+export default function(state = initialState, action) {
   switch (action.type) {
+    case CHECK_NOTI:
+      return {
+        ...state,
+        checkNoti: action.payload
+      };
+
     case GET_NOTIFICATION:
       return {
         ...state,
@@ -38,7 +47,7 @@ export default function (state = initialState, action) {
       var itemSelected = {
         ...state.data[action.payload],
         viewed: 1
-      }
+      };
 
       return {
         ...state,
@@ -50,9 +59,7 @@ export default function (state = initialState, action) {
   }
 }
 
-
 changeItem = (array, item, index) => {
-  tempData = array,
-    tempData[index] = item
-  return tempData
-}
+  (tempData = array), (tempData[index] = item);
+  return tempData;
+};

@@ -36,12 +36,14 @@ import {
   GET_WALLET_ACCUMULATE_POINTS,
   GET_WALLET_POINTS,
   GET_HISTORY_DRAW_POINTS,
-  GET_BANK_SELECT, GET_BANK,
+  GET_BANK_SELECT,
+  GET_BANK,
   GET_HISTORY_MOVING_POINTS,
   UPDATE_NOTIFICATION,
   NAVIGATE_TAB,
   REMOVE_CART_SUCCESS,
-  GET_LIST_POINT_V
+  GET_LIST_POINT_V,
+  CHECK_NOTI
 } from "./type";
 
 export const getUserInfo = () => ({
@@ -133,7 +135,7 @@ export const updateCartItem = (item, index, isChecked) => ({
   payload: { item, index, isChecked }
 });
 
-export const removeCartSuccess = (payload) => ({
+export const removeCartSuccess = payload => ({
   type: REMOVE_CART_SUCCESS,
   payload
 });
@@ -191,8 +193,7 @@ export const getHistory = () => ({
   payload: {}
 });
 
-
-export const changePass = (payload) => ({
+export const changePass = payload => ({
   type: CHANGE_PASS,
   payload: payload
 });
@@ -206,7 +207,7 @@ export const getWarranty = () => ({
   type: GET_WARRANTY,
   payload: {}
 });
-export const setIsLogin = (payload) => ({
+export const setIsLogin = payload => ({
   type: SET_IS_LOGIN,
   payload: payload
 });
@@ -245,7 +246,7 @@ export const getBank = () => ({
   payload: {}
 });
 
-export const updateNotiItem = (index) => ({
+export const updateNotiItem = index => ({
   type: UPDATE_NOTIFICATION,
   payload: index
 });
@@ -257,5 +258,10 @@ export const navigateTab = payload => ({
 
 export const getListPointV = payload => ({
   type: GET_LIST_POINT_V,
+  payload
+});
+
+export const checkNoti = payload => ({
+  type: CHECK_NOTI,
   payload
 });
