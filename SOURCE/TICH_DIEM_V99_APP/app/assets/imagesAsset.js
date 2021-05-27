@@ -69,6 +69,9 @@ const images = {
     logo_vietcombank: require("./images/logo_vietcombank.png"),
     logo_vietinbank: require("./images/logo_vietinbank.png"),
     moving_point: require("./images/moving_point.png"),
-    splash: require("./images/splash.png")
+    splash: require("./images/splash.png"),
+    phone_call: require("./images/phone_call.png"),
+    contact: require("./images/customer_service.png"),
+    messenger_contact: require("./images/messenger.png")
     }
 export default images
