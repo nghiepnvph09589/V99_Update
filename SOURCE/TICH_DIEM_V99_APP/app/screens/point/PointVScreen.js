@@ -292,7 +292,7 @@ class Option extends Component {
                 if (!point) {
                   showMessages(
                     R.strings().notification,
-                    "Vui lòng nhấp số điểm!"
+                    "Vui lòng nhập số điểm!"
                   );
                   return;
                 }
