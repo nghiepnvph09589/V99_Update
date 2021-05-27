@@ -44,7 +44,7 @@ import SwiperFlatList from "react-native-swiper-flatlist";
 import DateUtil from "../utils/DateUtil";
 import ObjectUtil from "../utils/ObjectUtil";
 import { requireLogin } from "../utils/AlertRequireLogin";
-import theme from "@theme";
+import theme, { fonts } from "@theme";
 import R from "@app/assets/R";
 import Toast, { BACKGROUND_TOAST } from "@app/utils/Toast";
 import reactotron from "reactotron-react-native";
@@ -52,8 +52,8 @@ import { formatNumber } from "@app/utils/NumberUtils";
 import LinkingUtils, { LINKING_TYPE } from "@app/utils/LinkingUtils";
 import Modal from "react-native-modal";
 
-const HOTLINE = '0815.686.919'
-const MESSENGER = 'https://m.me/V99Group2020'
+const HOTLINE = "0815.686.919";
+const MESSENGER = "https://m.me/V99Group2020";
 class Option extends Component {
   render() {
     const { text, img, onPress } = this.props;
@@ -497,33 +497,35 @@ export class HomeScreen extends Component {
             {this._renderBody()}
           </ScrollView>
 
-          <View
-          style={{
-            marginTop:630,
-            marginLeft:320,
-            position: 'absolute',
-            justifyContent: 'flex-end',
-            alignItems: 'stretch',
-            }}>
-            <TouchableOpacity
-              onPress={() => {
-                this.setModalVisible(true)
-
-              }}
-              style={{
-                flexDirection: 'row',
-                padding: 10,
-                backgroundColor: theme.colors.active,
-                
-                borderRadius: 40
-              }}>
-              <FstImage
-                source={R.images.contact}
-                style={{ width: 40, height: 40, marginRight: 5 }}
-                resizeMode='contain' />
-            </TouchableOpacity>
-          </View>
-
+          {/* <View
+            style={{
+              bottom: 10,
+              right: 20,
+              position: "absolute",
+              justifyContent: "flex-end",
+              alignItems: "stretch",
+              backgroundColor: "yellow"
+            }}
+          > */}
+          <TouchableOpacity
+            onPress={() => {
+              this.setModalVisible(true);
+            }}
+            style={{
+              bottom: 20,
+              right: 15,
+              position: "absolute",
+              borderRadius: 55 / 2,
+              backgroundColor: "yellow"
+            }}
+          >
+            <FstImage
+              source={R.images.contact}
+              style={{ width: 55, height: 55 }}
+              resizeMode="contain"
+            />
+          </TouchableOpacity>
+          {/* </View> */}
 
           <Modal
             animationType="slide"
@@ -533,47 +535,67 @@ export class HomeScreen extends Component {
             }}
           >
             <View style={styles.modalView}>
-              <TouchableOpacity
-                onPress={() => {
-                  LinkingUtils(LINKING_TYPE.CALL, HOTLINE)
-                }}
+              <Text
                 style={{
-                  flexDirection: 'row',
-                  padding: 10,
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  backgroundColor: theme.colors.active,
-                  alignSelf: 'center',
-                  borderRadius: 5,
-                  margin: 10
-                }}>
-                <FstImage
-                  source={R.images.ic_constulation}
-                  style={{ width: 20, height: 20, marginRight: 5 }}
-                  resizeMode='contain' />
-                <Text style={{ color: 'white', ...theme.fonts.regular18 }}>{HOTLINE}</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                onPress={() => {
-                  LinkingUtils(LINKING_TYPE.WEB, MESSENGER)
+                  ...fonts.robotoMedium18,
+                  textAlign: "center"
                 }}
-                style={{
-                  flexDirection: 'row',
-                  padding: 10,
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  backgroundColor: theme.colors.active,
-                  alignSelf: 'center',
-                  borderRadius: 5
-                }}>
-                <FstImage
-                  source={R.images.messenger_contact}
-                  style={{ width: 20, height: 20, marginRight: 5 }}
-                  resizeMode='contain' />
-                <Text style={{ color: 'white', ...theme.fonts.regular18 }}>V99 GROUP</Text>
-              </TouchableOpacity>
+                children={"Liên hệ"}
+              />
+              <View style={{ marginTop: 12 }}>
+                <TouchableOpacity
+                  onPress={() => {
+                    this.setState({ modalVisible: false }, () => {
+                      setTimeout(() => {
+                        LinkingUtils(LINKING_TYPE.CALL, HOTLINE);
+                      }, 100);
+                    });
+                  }}
+                  style={{
+                    flexDirection: "row",
+                    padding: 10,
+                    backgroundColor: theme.colors.active,
+                    borderRadius: 5
+                  }}
+                >
+                  <FstImage
+                    source={R.images.ic_phone}
+                    style={{ width: 20, height: 20, marginRight: 5 }}
+                    tintColor="white"
+                    resizeMode="contain"
+                  />
+                  <Text style={{ color: "white", ...theme.fonts.regular18 }}>
+                    {HOTLINE}
+                  </Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  onPress={() => {
+                    this.setState({ modalVisible: false }, () => {
+                      setTimeout(() => {
+                        LinkingUtils(LINKING_TYPE.WEB, MESSENGER);
+                      }, 100);
+                    });
+                  }}
+                  style={{
+                    flexDirection: "row",
+                    marginTop: 10,
+                    padding: 10,
+                    alignItems: "center",
+                    backgroundColor: theme.colors.active,
+                    borderRadius: 5
+                  }}
+                >
+                  <FstImage
+                    source={R.images.messenger_contact}
+                    style={{ width: 20, height: 20, marginRight: 5 }}
+                    resizeMode="contain"
+                  />
+                  <Text style={{ color: "white", ...theme.fonts.regular18 }}>
+                    V99 GROUP
+                  </Text>
+                </TouchableOpacity>
+              </View>
             </View>
-
           </Modal>
         </ImageBackground>
       </Block>
@@ -612,8 +634,8 @@ const styles = StyleSheet.create({
   modalView: {
     backgroundColor: "white",
     borderRadius: 10,
-    padding: 20,
-    alignItems: "center",
+    paddingTop: 12,
+    paddingBottom: 20,
     shadowColor: "#000",
     shadowOffset: {
       width: 0,
@@ -621,7 +643,8 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.25,
     shadowRadius: 4,
-    elevation: 5
+    elevation: 5,
+    alignItems: "center"
   },
   _viewPoint: {
     marginVertical: 10,

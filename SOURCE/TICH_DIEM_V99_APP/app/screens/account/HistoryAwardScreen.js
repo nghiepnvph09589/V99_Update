@@ -1,7 +1,16 @@
-import { Block, Loading, Error } from "@app/components";
+import {
+  Block,
+  Loading,
+  Error,
+  Empty,
+  DCHeader,
+  NumberFormat
+} from "@app/components";
 import { requestGetRefPointHistory } from "@app/constants/Api";
+import { fonts } from "@app/constants/Theme";
 import { getHomeData } from "@app/redux/sagas/NetworkSaga";
 import DateUtil from "@app/utils/DateUtil";
+import { formatNumber, formatPrice } from "@app/utils/NumberUtils";
 import React, { Component } from "react";
 import {
   Text,
@@ -56,6 +65,8 @@ export default class HistoryAwardScreen extends Component {
           }}
         />
       );
+    if (!this.state.data?.length)
+      return <Empty onRefresh={() => this.getData()} />;
     return (
       <FlatList
         refreshing={this.state.isLoading}
@@ -67,24 +78,50 @@ export default class HistoryAwardScreen extends Component {
             style={{
               flexDirection: "row",
               justifyContent: "center",
-              alignContent: "center"
+              alignContent: "center",
+              borderBottomWidth: 0.8,
+              borderBottomColor: "#DDD",
+              paddingBottom: 5
             }}
           >
-            <Text style={{ flex: 0.7, textAlign: "center" }} children={"STT"} />
             <Text
-              style={{ flex: 3, textAlign: "center" }}
+              style={{
+                flex: 0.7,
+                textAlign: "center",
+                ...fonts.robotoMedium14
+              }}
+              children={"STT"}
+            />
+            <Text
+              style={{
+                flex: 3,
+                textAlign: "center",
+                ...fonts.robotoMedium14
+              }}
               children={"Người được giới thiệu"}
             />
             <Text
-              style={{ flex: 2.2, textAlign: "center" }}
+              style={{
+                flex: 2.2,
+                textAlign: "center",
+                ...fonts.robotoMedium14
+              }}
               children={"Số điện thoại"}
             />
             <Text
-              style={{ flex: 2.1, textAlign: "center" }}
+              style={{
+                flex: 2.1,
+                textAlign: "center",
+                ...fonts.robotoMedium14
+              }}
               children={"Thời gian"}
             />
             <Text
-              style={{ flex: 1.2, textAlign: "center" }}
+              style={{
+                flex: 1.2,
+                textAlign: "center",
+                ...fonts.robotoMedium14
+              }}
               children={"Điểm thưởng"}
             />
           </View>
@@ -97,17 +134,21 @@ export default class HistoryAwardScreen extends Component {
               flexDirection: "row",
               marginTop: 10,
               justifyContent: "center",
-              alignItems: "center"
+              alignItems: "center",
+              borderBottomWidth: 0.8,
+              borderBottomColor: "#DDD",
+              paddingBottom: 5
             }}
           >
             <Text
-              style={{ flex: 0.7, textAlign: "center" }}
+              style={{ flex: 0.7, textAlign: "center", ...fonts.regular14 }}
               children={index + 1}
             />
             <Text
               style={{
                 flex: 3,
-                textAlign: "center"
+                textAlign: "center",
+                ...fonts.regular14
               }}
               numberOfLines={3}
               children={item.customerRefName}
@@ -115,20 +156,27 @@ export default class HistoryAwardScreen extends Component {
             <Text
               style={{
                 flex: 2.1,
-                textAlign: "center"
+                textAlign: "center",
+                ...fonts.regular14
               }}
               children={item.customerRefPhone}
             />
             <Text
               style={{
                 flex: 2.2,
-                textAlign: "center"
+                textAlign: "center",
+                ...fonts.regular14
               }}
               children={DateUtil.formatDateTime(item.createdDate)}
             />
             <Text
-              style={{ flex: 1, alignSelf: "center", textAlign: "center" }}
-              children={item.point}
+              style={{
+                flex: 1,
+                alignSelf: "center",
+                textAlign: "center",
+                ...fonts.regular14
+              }}
+              children={formatNumber(item.point)}
             />
           </View>
         )}
@@ -138,16 +186,8 @@ export default class HistoryAwardScreen extends Component {
   render() {
     return (
       <Block>
-        <Header title={"Lịch sử nhận thưởng"} back />
-        <SafeAreaView style={{ flex: 1 }}>
-          <KeyboardAvoidingView
-            enabled
-            behavior={Platform.OS === "ios" ? "padding" : null}
-            style={{ flex: 1 }}
-          >
-            {this._renderBody()}
-          </KeyboardAvoidingView>
-        </SafeAreaView>
+        <DCHeader isWhiteBackground title={"Lịch sử nhận thưởng"} back />
+        <SafeAreaView style={{ flex: 1 }}>{this._renderBody()}</SafeAreaView>
       </Block>
     );
   }

@@ -22,7 +22,8 @@ import {
   getWalletPoints,
   updateUserLocal,
   navigateTab,
-  getWalletAccumulate
+  getWalletAccumulate,
+  checkNoti
 } from "./redux/actions";
 
 class AppContainer extends Component {
@@ -53,7 +54,7 @@ class AppContainer extends Component {
     const data = notification.payload.additionalData;
 
     this.props.getUserInfo();
-
+    this.props.checkNoti(true);
     const payloadWalletPoint = {
       page: 1,
       type: GET_HISTORY_POINT_TYPE.WALLET_POINTS,
@@ -64,7 +65,7 @@ class AppContainer extends Component {
       type: GET_HISTORY_POINT_TYPE.WALLET_ACCUMULATE_POINTS,
       typePoint: ""
     };
-    this.props.checkNoti(true);
+
     switch (type) {
       case NOTIFY_NAVIGATE.HISTORY: {
         break;
@@ -221,9 +222,9 @@ const mapDispatchToProps = {
   getWalletPoints,
   updateUserLocal,
   navigateTab,
-  getWalletAccumulate
+  getWalletAccumulate,
+  checkNoti
 };
-
 export default connect(
   mapStateToProps,
   mapDispatchToProps
