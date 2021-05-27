@@ -59,6 +59,9 @@ import { getListPointV } from "../../redux/actions";
 import callAPI, { callAPIHook } from "@app/utils/CallApiHelper";
 import { requestVtoPoint } from "@app/constants/Api";
 import NumberFormatTextInput from "react-number-format";
+
+const EXCHANGE_RATE = 0.01;
+
 export class PointVScreen extends Component {
   componentDidMount() {
     this.getData();
@@ -79,7 +82,6 @@ export class PointVScreen extends Component {
     this.props.getListPointV(payload);
     this.props.getWalletAccumulate(payloadPoint);
   };
-  
 
   renderViewPoint = () => {
     const { userState } = this.props;
@@ -112,8 +114,11 @@ export class PointVScreen extends Component {
               ...theme.fonts.regular12
             }}
           >
-            
-            ~{((userState.pointV)*23061.5).toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')} USD
+            ~
+            {(userState.pointV * EXCHANGE_RATE)
+              .toString()
+              .replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,")}{" "}
+            USD
           </Text>
         </Block>
       </FstImage>

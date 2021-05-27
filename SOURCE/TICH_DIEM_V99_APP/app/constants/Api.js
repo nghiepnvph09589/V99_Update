@@ -326,3 +326,7 @@ export const requestChargeMoneyToPoint = point => {
     getAxios.post(`/api/service/ChargeMoneyToPoint`, { point })
   );
 };
+
+export const requestGetRefPointHistory = () => {
+  return handleResult(getAxios.get(`/api/service/GetRefPointHistory`));
+};

@@ -27,7 +27,8 @@ import {
   getUserInfoAction,
   getUtility,
   getBank,
-  getBankSelect
+  getBankSelect,
+  checkNoti
 } from "../redux/actions";
 import {
   Block,
@@ -458,15 +459,29 @@ export class HomeScreen extends Component {
                   </Block>
                   <TouchableOpacity
                     style={{ padding: 5 }}
-                    onPress={() =>
-                      NavigationUtil.navigate(SCREEN_ROUTER.NOTIFY)
-                    }
+                    onPress={() => {
+                      this.props.checkNoti(false);
+                      NavigationUtil.navigate(SCREEN_ROUTER.NOTIFY);
+                    }}
                   >
                     <FstImage
                       source={R.images.ic_bell}
                       style={{ width: 20, height: 30, marginLeft: 10 }}
                       resizeMode="contain"
                     />
+                    {this.props.notificationState.checkNoti && (
+                      <View
+                        style={{
+                          width: 10,
+                          height: 10,
+                          backgroundColor: "red",
+                          borderRadius: 10 / 2,
+                          position: "absolute",
+                          right: 5,
+                          top: 8
+                        }}
+                      />
+                    )}
                   </TouchableOpacity>
                 </>
               )}
@@ -481,14 +496,16 @@ export class HomeScreen extends Component {
 const mapStateToProps = state => ({
   homeState: state.homeReducer,
   advertisementState: state.utilityReducer.advertisement,
-  userState: state[REDUCER.USER].data
+  userState: state[REDUCER.USER].data,
+  notificationState: state.notificationReducer
 });
 
 const mapDispatchToProps = {
   getHome,
   getUtility,
   getBank,
-  getBankSelect
+  getBankSelect,
+  checkNoti
 };
 
 export default connect(

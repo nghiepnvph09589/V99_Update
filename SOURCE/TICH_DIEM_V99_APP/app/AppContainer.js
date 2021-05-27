@@ -64,7 +64,7 @@ class AppContainer extends Component {
       type: GET_HISTORY_POINT_TYPE.WALLET_ACCUMULATE_POINTS,
       typePoint: ""
     };
-
+    this.props.checkNoti(true);
     switch (type) {
       case NOTIFY_NAVIGATE.HISTORY: {
         break;
@@ -80,6 +80,7 @@ class AppContainer extends Component {
 
       case NOTIFY_NAVIGATE.NOTIFY: {
         this.props.getNotification();
+
         break;
       }
 
@@ -114,7 +115,7 @@ class AppContainer extends Component {
 
     const token = await AsyncStorage.getItem(ASYNCSTORAGE_KEY.TOKEN);
     if (!token) return;
-
+    this.props.checkNoti(true);
     switch (type) {
       case NOTIFY_NAVIGATE.HISTORY: {
         this.props.getUserInfo();
